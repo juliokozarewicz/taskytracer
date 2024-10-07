@@ -9,7 +9,7 @@ const documentation = {
   "info": {
     "title": packageJson.name.toUpperCase(), 
     "version": packageJson.version, 
-    "description": packageJson.description
+    "description": "Tasky Tracer is a secure API designed for efficient task management. It features user authentication through JSON Web Tokens (JWT) and supports full Create, Read, Update, and Delete (CRUD) operations for managing to-do items. The API also provides functionalities for task prioritization, filtering, and collaboration, thereby enhancing productivity for both individuals and teams. This user-friendly API streamlines task management processes, making it a valuable tool for enhancing organizational efficiency."
   },
   // components, security etc...
   "components": {
