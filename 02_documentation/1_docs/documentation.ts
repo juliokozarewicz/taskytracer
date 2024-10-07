@@ -1,7 +1,7 @@
 const packageJson = require('../package.json');
 
 // domains and ports
-const *****_domain = `${process.env.*****}:${process.env.*****}`
+const TTTESTEEE_domain = `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`
 
 const documentation = {
   // configs
@@ -31,7 +31,7 @@ const documentation = {
     // --------------------------------------------------
     "/*****": {
       "post": {
-        "summary": "***** category *****",
+        "summary": "*****",
         "security": [
           {
             "BearerAuth": []
@@ -39,7 +39,7 @@ const documentation = {
         ],
         "tags": ["***** TAG *****"],
         servers: [
-          { url: *****_domain}
+          { url: TTTESTEEE_domain}
         ],
         "requestBody": {
           "required": true,
