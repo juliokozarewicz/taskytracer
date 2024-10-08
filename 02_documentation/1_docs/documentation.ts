@@ -1,8 +1,5 @@
 const packageJson = require('../package.json');
 
-// domains and ports
-const helloworld_domain = `${process.env.HELLOWORLD_HOST}:${process.env.HELLOWORLD_PORT}`
-
 const documentation = {
   // configs
   "openapi": "3.0.0",
@@ -34,9 +31,6 @@ const documentation = {
         "summary": "Get Hello World Message",
         "description": "Retrieves a hello world message. You can optionally provide a custom message via query parameter.",
         "tags": ["HelloWorld"],
-        "servers": [
-          { "url": helloworld_domain }
-        ],
         "parameters": [
           {
             "name": "message",

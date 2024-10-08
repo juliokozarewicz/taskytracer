@@ -5,12 +5,13 @@ events {
 }
 
 http {
+
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
     server {
+        
         listen 80;
-        server_name 186.206.108.7;
 
         # [DOCUMENTATION] /documentation/swagger
         location /documentation/swagger {
