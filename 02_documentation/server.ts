@@ -11,8 +11,6 @@ config({ path: path.resolve(__dirname, './.env') });
 config({ path: path.resolve(__dirname, '../01_nginx/.env') });
 //----------------------------------------------------------------------
 
-console.log(process.env.DOCUMENTATION_HOST)
-
 // express server
 //----------------------------------------------------------------------
 const app = express();

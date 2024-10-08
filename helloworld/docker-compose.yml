@@ -4,4 +4,4 @@ services:
     env_file:
       - .env
     ports:
-      - "${DOCUMENTATION_PORT}:${DOCUMENTATION_PORT}"
+      - "${HELLOWORLD_PORT}:${HELLOWORLD_PORT}"

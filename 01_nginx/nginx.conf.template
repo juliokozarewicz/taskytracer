@@ -10,6 +10,7 @@ http {
 
     server {
         listen 80;
+        server_name 186.206.108.7;
 
         # [DOCUMENTATION] /documentation/swagger
         location /documentation/swagger {

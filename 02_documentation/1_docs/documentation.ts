@@ -1,7 +1,7 @@
 const packageJson = require('../package.json');
 
 // domains and ports
-const TTTESTEEE_domain = `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`
+const helloworld_domain = `${process.env.HELLOWORLD_HOST}:${process.env.HELLOWORLD_PORT}`
 
 const documentation = {
   // configs
@@ -29,50 +29,49 @@ const documentation = {
   // endpoints
   "paths": {
     // --------------------------------------------------
-    "/*****": {
-      "post": {
-        "summary": "*****",
-        "security": [
+    "/helloworld/helloworld": {
+      "get": {
+        "summary": "Get Hello World Message",
+        "description": "Retrieves a hello world message. You can optionally provide a custom message via query parameter.",
+        "tags": ["HelloWorld"],
+        "servers": [
+          { "url": helloworld_domain }
+        ],
+        "parameters": [
           {
-            "BearerAuth": []
-          }
-        ],
-        "tags": ["***** TAG *****"],
-        servers: [
-          { url: TTTESTEEE_domain}
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "*****": {
-                    "type": "string",
-                    "example": "*****"
-                  },
-                },
-                "required": ["*****"]
-              }
+            "name": "message",
+            "in": "query",
+            "required": false,
+            "description": "Custom message to be returned. Defaults to 'Hello World!!!' if not provided.",
+            "schema": {
+              "type": "string",
+              "example": "Hello from the API!"
             }
           }
-        },
+        ],
         "responses": {
-          "201": {
-            "description": "'*****' created successfully",
+          "200": {
+            "description": "Successful response with hello world message.",
             "content": {
               "application/json": {
                 "examples": {
                   "successResponse": {
                     "value": {
                       "status": "success",
-                      "code": 201,
-                      "idCreated": "id",
-                      "message": "'*****' created successfully",
+                      "code": 200,
+                      "message": "Hello World!!!",
                       "links": {
-                        "self": "/*****",
-                        "next": "/*****"
+                        "self": "/helloworld/helloworld"
+                      }
+                    }
+                  },
+                  "customMessageResponse": {
+                    "value": {
+                      "status": "success",
+                      "code": 200,
+                      "message": "Hello from the API!",
+                      "links": {
+                        "self": "/helloworld/helloworld"
                       }
                     }
                   }
@@ -82,7 +81,7 @@ const documentation = {
           }
         }
       }
-    },
+    }
     // --------------------------------------------------
   }
 };
