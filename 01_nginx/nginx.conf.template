@@ -13,7 +13,7 @@ http {
         
         listen 80;
 
-        # [DOCUMENTATION] /documentation/swagger
+        # [ DOCUMENTATION ] /documentation/swagger
         location /documentation/swagger {
             proxy_pass $DOCUMENTATION_HOST:$DOCUMENTATION_PORT;
             proxy_set_header Host host;
@@ -22,7 +22,7 @@ http {
             proxy_set_header X-Forwarded-Proto scheme;
         }
 
-        # [DOCUMENTATION] /documentation/redocly
+        # [ DOCUMENTATION ] /documentation/redocly
         location /documentation/redocly {
             proxy_pass $DOCUMENTATION_HOST:$DOCUMENTATION_PORT;
             proxy_set_header Host host;
@@ -31,7 +31,7 @@ http {
             proxy_set_header X-Forwarded-Proto scheme;
         }
 
-        # [DOCUMENTATION] /helloworld/helloworld
+        # [ HELLO WORLD ] /helloworld/helloworld
         location /helloworld/helloworld {
             proxy_pass $HELLOWORLD_HOST:$HELLOWORLD_PORT;
             proxy_set_header Host host;
