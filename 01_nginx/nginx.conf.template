@@ -48,5 +48,69 @@ http {
             proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto scheme;
         }
+
+        # [ TASKS ] /tasks/category/create
+        location /tasks/category/create {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/category/list-all
+        location /tasks/category/list-all {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/category/delete/([0-9a-zA-Z-]+)$
+        location /tasks/category/delete/([0-9a-zA-Z-]+)$ {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/create
+        location /tasks/create {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/list
+        location /tasks/list {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/update/([0-9a-zA-Z-]+)$
+        location /tasks/update/([0-9a-zA-Z-]+)$ {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ TASKS ] /tasks/delete/([0-9a-zA-Z-]+)$
+        location /tasks/delete/([0-9a-zA-Z-]+)$ {
+            proxy_pass $TASKS_HOST:$TASKS_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
     }
 }
