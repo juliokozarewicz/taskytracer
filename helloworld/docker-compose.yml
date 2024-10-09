@@ -1,5 +1,5 @@
 services:
-  nginx:
+  helloworld:
     build: .
     env_file:
       - .env

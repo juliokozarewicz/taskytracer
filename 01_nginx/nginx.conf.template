@@ -10,7 +10,7 @@ http {
     default_type application/octet-stream;
 
     server {
-        
+
         listen 80;
 
         # [ DOCUMENTATION ] /documentation/swagger
@@ -24,6 +24,15 @@ http {
 
         # [ DOCUMENTATION ] /documentation/redocly
         location /documentation/redocly {
+            proxy_pass $DOCUMENTATION_HOST:$DOCUMENTATION_PORT;
+            proxy_set_header Host host;
+            proxy_set_header X-Real-IP remote_addr;
+            proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto scheme;
+        }
+
+        # [ DOCUMENTATION ] /documentation/json
+        location /documentation/json {
             proxy_pass $DOCUMENTATION_HOST:$DOCUMENTATION_PORT;
             proxy_set_header Host host;
             proxy_set_header X-Real-IP remote_addr;

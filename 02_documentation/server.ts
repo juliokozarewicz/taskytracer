@@ -67,7 +67,7 @@ app.get('/documentation/redocly', (request, response) => {
       <script src="https://cdn.jsdelivr.net/gh/wll8/redoc-try@1.4.9/dist/try.js"></script>
       <script>
         initTry({
-          openApi: '${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}/documentation/json',
+          openApi: '${process.env.NGINX_HOST}:${process.env.NGINX_PORT}/documentation/json',
           redocOptions: {scrollYOffset: 50},
         })
       </script>
