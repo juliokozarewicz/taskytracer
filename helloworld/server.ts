@@ -6,8 +6,7 @@ const cors = require('cors');
 
 // load '.env'
 //----------------------------------------------------------------------
-config({ path: path.resolve(__dirname, './.env') })
-config({ path: path.resolve(__dirname, '../01_nginx/.env') })
+config({ path: path.resolve(__dirname, './.env') });
 //----------------------------------------------------------------------
 
 // express server
@@ -40,6 +39,6 @@ app.use(express.json())
 app.use('/helloworld', routes)
 
 app.listen(PORT, () => {
-  console.log(`*** SERVER RUNING ON PORT: ${PORT} ***`)
+  console.log(`*** RUNING ON : ${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT} ***`)
 })
 //----------------------------------------------------------------------

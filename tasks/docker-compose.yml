@@ -1,0 +1,7 @@
+services:
+  tasks:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "${TASKS_PORT}:${TASKS_PORT}"

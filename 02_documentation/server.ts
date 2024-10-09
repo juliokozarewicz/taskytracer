@@ -8,7 +8,6 @@ const cors = require('cors');
 // load '.env'
 //----------------------------------------------------------------------
 config({ path: path.resolve(__dirname, './.env') });
-config({ path: path.resolve(__dirname, '../01_nginx/.env') });
 //----------------------------------------------------------------------
 
 // express server
@@ -20,8 +19,6 @@ const PORT = process.env.DOCUMENTATION_PORT;
 const corsOptions = {
   gateway: `${process.env.NGINX_HOST}:${process.env.NGINX_PORT}`,
   documentation: `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
 };
 app.use(cors(corsOptions));
 //----------------------------------------------------------------------
@@ -60,7 +57,6 @@ app.use(
 app.get('/documentation/json', cors(corsOptions), (request, response) => {
   response.json(documentation);
 });
-console.log(`${process.env.NGINX_HOST}:${process.env.NGINX_PORT}/documentation/json`)
 
 app.get('/documentation/redocly', cors(corsOptions), (request, response) => {
   const html = `
@@ -97,6 +93,6 @@ app.use(express.json());
 // run server
 //----------------------------------------------------------------------
 app.listen(PORT, () => {
-  console.log(`*** SERVER RUNING ON PORT: ${PORT} ***`);
-});
+  console.log(`*** RUNING ON : ${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT} ***`)
+})
 //----------------------------------------------------------------------
