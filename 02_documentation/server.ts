@@ -20,6 +20,8 @@ const PORT = process.env.DOCUMENTATION_PORT;
 const corsOptions = {
   gateway: `${process.env.NGINX_HOST}:${process.env.NGINX_PORT}`,
   documentation: `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
 };
 app.use(cors(corsOptions));
 //----------------------------------------------------------------------
@@ -55,11 +57,12 @@ app.use(
 )
 
 // redocly
-app.get('/documentation/json', (request, response) => {
+app.get('/documentation/json', cors(corsOptions), (request, response) => {
   response.json(documentation);
 });
+console.log(`${process.env.NGINX_HOST}:${process.env.NGINX_PORT}/documentation/json`)
 
-app.get('/documentation/redocly', (request, response) => {
+app.get('/documentation/redocly', cors(corsOptions), (request, response) => {
   const html = `
     <body>
       <div id="redoc-container"></div>
