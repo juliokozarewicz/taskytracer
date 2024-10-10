@@ -6,7 +6,7 @@ const documentation = {
   info: {
     title: packageJson.name.toUpperCase(),
     version: packageJson.version,
-    description: "Tasky Tracer is a secure API designed for efficient task management. It features user authentication through JSON Web Tokens (JWT) and supports full Create, Read, Update, and Delete (CRUD) operations for managing to-do items. The API also provides functionalities for task prioritization, filtering, and collaboration, enhancing productivity for both individuals and teams. This user-friendly API streamlines task management processes, making it a valuable tool for enhancing organizational efficiency."
+    description: packageJson.description,
   },
   // components, security etc...
   components: {
@@ -30,7 +30,7 @@ const documentation = {
       get: {
         summary: "Get Hello World Message",
         description: "Retrieves a hello world message. You can optionally provide a custom message via query parameter.",
-        tags: ["HelloWorld"],
+        tags: ["HELLO WORLD"],
         parameters: [
           {
             name: "message",
@@ -85,7 +85,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] CATEGORY"],
+        tags: ["TASKS"],
         requestBody: {
           required: true,
           content: {
@@ -137,7 +137,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] CATEGORY"],
+        tags: ["TASKS"],
         responses: {
           "200": {
             description: "A list of categories retrieved successfully",
@@ -218,7 +218,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] CATEGORY"],
+        tags: ["TASKS"],
         parameters: [
           {
             name: "categoryId",
@@ -285,7 +285,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] TASK"],
+        tags: ["TASKS"],
         requestBody: {
           required: true,
           content: {
@@ -423,7 +423,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] TASK"],
+        tags: ["TASKS"],
         parameters: [
           {
             name: "taskname",
@@ -523,7 +523,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] TASK"],
+        tags: ["TASKS"],
         parameters: [
           {
             name: "updateId",
@@ -621,7 +621,7 @@ const documentation = {
             BearerAuth: []
           }
         ],
-        tags: ["[TASKS] TASK"],
+        tags: ["TASKS"],
         parameters: [
           {
             name: "deleteId",
