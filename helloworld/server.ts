@@ -16,8 +16,11 @@ const PORT = process.env.HELLOWORLD_PORT
 
 // cors (authorized domain)
 const corsOptions = {
-  gateway: `${process.env.NGINX_HOST}:${process.env.NGINX_PORT}`,
-  documentation: `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`,
+  origin: [
+    `${process.env.NGINX_HOST}:${process.env.NGINX_PORT}`,
+    `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`
+  ],
+  methods: ['*']
 };
 app.use(cors(corsOptions));
 //----------------------------------------------------------------------
