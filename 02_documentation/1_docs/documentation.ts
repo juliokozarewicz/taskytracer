@@ -48,24 +48,28 @@ const documentation = {
             description: "Successful response with hello world message.",
             content: {
               "application/json": {
-                examples: {
-                  successResponse: {
-                    value: {
-                      status: "success",
-                      code: 200,
-                      message: "Hello World!!!",
-                      links: {
-                        self: "/helloworld/helloworld"
-                      }
-                    }
-                  },
-                  customMessageResponse: {
-                    value: {
-                      status: "success",
-                      code: 200,
-                      message: "Hello from the API!",
-                      links: {
-                        self: "/helloworld/helloworld"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Hello World!!!"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/helloworld/helloworld"
+                        }
                       }
                     }
                   }
@@ -80,6 +84,7 @@ const documentation = {
     "/tasks/category/create": {
       post: {
         summary: "Create a new category",
+        description: "Creates a new category for tasks. Requires a category name.",
         security: [
           {
             BearerAuth: []
@@ -108,16 +113,36 @@ const documentation = {
             description: "'category' created successfully",
             content: {
               "application/json": {
-                examples: {
-                  successResponse: {
-                    value: {
-                      status: "success",
-                      code: 201,
-                      idCreated: "id",
-                      message: "'category' created successfully",
-                      links: {
-                        self: "/tasks/category/create",
-                        next: "/tasks/category/list-all"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 201
+                    },
+                    idCreated: {
+                      type: "string",
+                      example: "93e83b42-ada5-417b-b63a-a0891ba00d45"
+                    },
+                    message: {
+                      type: "string",
+                      example: "'category' created successfully"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/tasks/category/create"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/tasks/category/list-all"
+                        }
                       }
                     }
                   }
@@ -132,6 +157,7 @@ const documentation = {
     "/tasks/category/list-all": {
       get: {
         summary: "List all categories",
+        description: "Retrieves a list of all categories that have been created.",
         security: [
           {
             BearerAuth: []
@@ -140,7 +166,7 @@ const documentation = {
         tags: ["TASKS"],
         responses: {
           "200": {
-            description: "A list of categories retrieved successfully",
+            description: "A list of categories retrieved successfully.",
             content: {
               "application/json": {
                 schema: {
@@ -213,6 +239,7 @@ const documentation = {
     "/tasks/category/delete/{categoryId}": {
       delete: {
         summary: "Delete a category by ID",
+        description: "Deletes a specific category based on the provided category ID.",
         security: [
           {
             BearerAuth: []
@@ -224,7 +251,7 @@ const documentation = {
             name: "categoryId",
             in: "path",
             required: true,
-            description: "ID of the category to delete",
+            description: "ID of the category to delete.",
             schema: {
               type: "string",
               example: "93e83b42-ada5-417b-b63a-a0891ba00d45"
@@ -233,7 +260,7 @@ const documentation = {
         ],
         responses: {
           "200": {
-            description: "Category deleted successfully",
+            description: "Category deleted successfully.",
             content: {
               "application/json": {
                 schema: {
@@ -280,6 +307,7 @@ const documentation = {
     "/tasks/create": {
       post: {
         summary: "Create a new task",
+        description: "Creates a new task under a specified category. Requires task details.",
         security: [
           {
             BearerAuth: []
@@ -322,11 +350,11 @@ const documentation = {
                 required: ["taskName", "category", "dueDate", "statusName"]
               }
             }
-          }
+          },
         },
         responses: {
           "201": {
-            description: "Task created successfully",
+            description: "Task created successfully.",
             content: {
               "application/json": {
                 schema: {
@@ -371,7 +399,7 @@ const documentation = {
             }
           },
           "409": {
-            description: "Conflict - Task already exists",
+            description: "Conflict - Task already exists.",
             content: {
               "application/json": {
                 schema: {
@@ -418,6 +446,7 @@ const documentation = {
     "/tasks/list": {
       get: {
         summary: "List all tasks based on provided filters",
+        description: "Retrieves all tasks, optionally filtered by task name, category, status, and due dates.",
         security: [
           {
             BearerAuth: []
@@ -478,32 +507,80 @@ const documentation = {
         ],
         responses: {
           "200": {
-            description: "Data received successfully",
+            description: "Data received successfully.",
             content: {
               "application/json": {
-                examples: {
-                  successResponse: {
-                    value: {
-                      status: "success",
-                      code: 200,
-                      message: "data received successfully",
-                      data: [
-                        {
-                          id: "22f70783-9891-4d64-a08c-c676e385616f",
-                          taskName: "My Task",
-                          category: "Work",
-                          description: "This is a task description",
-                          dueDate: "2023-10-01T00:00:00Z",
-                          statusName: "Completed"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "data received successfully"
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          id: {
+                            type: "string",
+                            example: "22f70783-9891-4d64-a08c-c676e385616f"
+                          },
+                          taskName: {
+                            type: "string",
+                            example: "My Task"
+                          },
+                          category: {
+                            type: "string",
+                            example: "Work"
+                          },
+                          description: {
+                            type: "string",
+                            example: "This is a task description"
+                          },
+                          dueDate: {
+                            type: "string",
+                            example: "2023-10-01T00:00:00Z"
+                          },
+                          statusName: {
+                            type: "string",
+                            example: "Completed"
+                          }
                         }
-                      ],
-                      meta: {
-                        total: 1
-                      },
-                      links: {
-                        self: "/tasks/list",
-                        next: "/tasks/",
-                        prev: "/tasks/list"
+                      }
+                    },
+                    meta: {
+                      type: "object",
+                      properties: {
+                        total: {
+                          type: "integer",
+                          example: 1
+                        }
+                      }
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/tasks/list"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/tasks/"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/tasks/list"
+                        }
                       }
                     }
                   }
@@ -518,6 +595,7 @@ const documentation = {
     "/tasks/update/{updateId}": {
       patch: {
         summary: "Update an existing task",
+        description: "Updates the details of an existing task specified by its ID.",
         security: [
           {
             BearerAuth: []
@@ -529,7 +607,7 @@ const documentation = {
             name: "updateId",
             in: "path",
             required: true,
-            description: "ID of the task to be updated",
+            description: "ID of the task to be updated.",
             schema: {
               type: "string",
               example: "22f70783-9891-4d64-a08c-c676e385616f"
@@ -571,20 +649,43 @@ const documentation = {
         },
         responses: {
           "200": {
-            description: "Task updated successfully",
+            description: "Task updated successfully.",
             content: {
               "application/json": {
-                examples: {
-                  successResponse: {
-                    value: {
-                      status: "success",
-                      code: 200,
-                      message: "'New Task Name' updated successfully",
-                      idUpdated: "22f70783-9891-4d64-a08c-c676e385616f",
-                      links: {
-                        self: "/tasks/update/22f70783-9891-4d64-a08c-c676e385616f",
-                        next: "/tasks/list",
-                        prev: "/tasks/list"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "'New Task Name' updated successfully"
+                    },
+                    idUpdated: {
+                      type: "string",
+                      example: "22f70783-9891-4d64-a08c-c676e385616f"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/tasks/update/22f70783-9891-4d64-a08c-c676e385616f"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/tasks/list"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/tasks/list"
+                        }
                       }
                     }
                   }
@@ -593,17 +694,41 @@ const documentation = {
             }
           },
           "404": {
-            description: "Task not found",
+            description: "Task not found.",
             content: {
               "application/json": {
-                example: {
-                  status: "error",
-                  statusCode: 404,
-                  message: "task not found",
-                  links: {
-                    self: "/tasks/update/22f70783-9891-4d64-a08c-c676e385616f",
-                    next: "/tasks/list",
-                    prev: "/tasks/list"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 404
+                    },
+                    message: {
+                      type: "string",
+                      example: "task not found"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/tasks/update/22f70783-9891-4d64-a08c-c676e385616f"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/tasks/list"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/tasks/list"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -616,6 +741,7 @@ const documentation = {
     "/tasks/delete/{deleteId}": {
       delete: {
         summary: "Delete a task by ID",
+        description: "Deletes a specific task identified by its ID.",
         security: [
           {
             BearerAuth: []
@@ -635,18 +761,35 @@ const documentation = {
         ],
         responses: {
           "200": {
-            description: "Task deleted successfully",
+            description: "Task deleted successfully.",
             content: {
               "application/json": {
-                examples: {
-                  successResponse: {
-                    value: {
-                      status: "success",
-                      code: 200,
-                      message: "successfully deleted",
-                      links: {
-                        next: "/tasks/list",
-                        prev: "/tasks/list"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "successfully deleted"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        next: {
+                          type: "string",
+                          example: "/tasks/list"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/tasks/list"
+                        }
                       }
                     }
                   }
@@ -655,18 +798,35 @@ const documentation = {
             }
           },
           "404": {
-            description: "Task not found",
+            description: "Task not found.",
             content: {
               "application/json": {
-                examples: {
-                  errorResponse: {
-                    value: {
-                      status: "error",
-                      code: 404,
-                      message: "task not found",
-                      links: {
-                        next: "/tasks/list",
-                        prev: "/tasks/list"
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 404
+                    },
+                    message: {
+                      type: "string",
+                      example: "task not found"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        next: {
+                          type: "string",
+                          example: "/tasks/list"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/tasks/list"
+                        }
                       }
                     }
                   }

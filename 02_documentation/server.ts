@@ -45,7 +45,6 @@ const options = {
     .wrapper section { margin-bottom: 50px; }
   `,
   customSiteTitle: packageJson.name.toUpperCase(),
-  
 };
 
 app.use(
@@ -65,6 +64,7 @@ app.get('/documentation/json', cors(corsOptions), (request, response) => {
 app.get('/documentation/redocly', cors(corsOptions), (request, response) => {
   const html = `
     <body>
+
       <div id="redoc-container"></div>
       <script src="https://cdn.jsdelivr.net/npm/redoc@2.0.0-rc.55/bundles/redoc.standalone.min.js"></script>
       <script src="https://cdn.jsdelivr.net/gh/wll8/redoc-try@1.4.9/dist/try.js"></script>
