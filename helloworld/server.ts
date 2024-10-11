@@ -43,6 +43,6 @@ app.use(express.json())
 app.use('/helloworld', routes)
 
 app.listen(PORT, () => {
-  console.log(`*** RUNING ON : ${process.env.DOCUMENTATION_HOST}:${PORT} ***`)
+  console.log(`*** RUNING ON : ${process.env.HELLOWORLD_HOST}:${PORT} ***`)
 })
 //----------------------------------------------------------------------
