@@ -28,14 +28,13 @@ http {
         location @json_error_400 {
             default_type application/json;
             add_header Content-Type application/json;
-            return 400 '{"status": "error", "code": 400, "message": "Bad Request: An error has occurred." }';
+            return 400 '{"status": "error", "code": 400, "message": "Bad Request: An error has occurred."}';
         }
 
         location @json_error_500 {
             default_type application/json;
             add_header Content-Type application/json;
-            return 500 '{"status": "error", "code": 500, "message": "An unexpected error has occurred, and we are investigating. Please try again later."
-            }';
+            return 500 '{"status": "error", "code": 500, "message": "An error has occurred, we are investigating. Please try again later."}';
         }
         #-----------------------------------------------
 
