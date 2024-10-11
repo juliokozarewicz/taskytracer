@@ -21,6 +21,7 @@ const PORT = process.env.TASKS_PORT;
 // cors (authorized domain)
 const corsOptions = {
   origin: [
+    `${process.env.DOMAIN_ORIGIN}`,
     `${process.env.NGINX_HOST}:${process.env.NGINX_PORT}`,
     `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`
   ],
@@ -76,6 +77,6 @@ app.use(errorHandler);
 //----------------------------------------------------------------------
 
 app.listen(PORT, () => {
-  console.log(`*** RUNING ON : ${process.env.TASKS_HOST}:${process.env.TASKS_PORT} ***`)
+  console.log(`*** RUNING ON : ${process.env.TASKS_HOST}:${PORT} ***`)
 })
 //----------------------------------------------------------------------
