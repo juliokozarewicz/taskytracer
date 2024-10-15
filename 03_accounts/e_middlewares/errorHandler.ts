@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { logsGenerator } from '../f_utils/logsGenerator';
-
+import { z } from 'zod';
 
 // create error function
 //------------------------------------------------------------------------
@@ -59,6 +59,21 @@ const errorHandler = (
       status: "error",
       statusCode: 400,
       message: "bad request, please check the data sent",
+      links: {
+        self: req.originalUrl,
+      }
+    });
+    return;
+  }
+  //------------------------------------------------------------------------
+
+  // create ZOD error
+  //------------------------------------------------------------------------
+  if (err instanceof z.ZodError) {
+    res.status(400).json({
+      status: "error",
+      statusCode: 400,
+      message: `(${err.errors[0].path}) ${err.errors[0].message}`,
       links: {
         self: req.originalUrl,
       }

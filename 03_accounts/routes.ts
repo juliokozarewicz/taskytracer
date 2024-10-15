@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { HelloWorldController } from './d_controllers/HelloWorldController'
+import { CreateAccountController } from './d_controllers/CreateAccountController'
 
 const router = Router()
 
 // instances
-const helloWorldController = new HelloWorldController()
+const createAccountController = new CreateAccountController()
 
 // routes
-router.get('/helloworld', helloWorldController.handle.bind(helloWorldController))
+router.post('/signup', createAccountController.handle.bind(createAccountController))
 
 export default router

@@ -5,6 +5,7 @@ import { config } from "dotenv"
 const cors = require('cors');
 import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
+import errorHandler from './e_middlewares/errorHandler';
 
 // load '.env'
 //----------------------------------------------------------------------
@@ -62,7 +63,12 @@ app.use(express.json())
 // run server
 //----------------------------------------------------------------------
 // microservice main route
-app.use('/helloworld', routes)
+app.use('/accounts', routes)
+
+// error handler
+//----------------------------------------------------------------------
+app.use(errorHandler);
+//----------------------------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`*** RUNING ON : ${process.env.ACCOUNTS_HOST}:${PORT} ***`)

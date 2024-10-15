@@ -5,7 +5,11 @@ import { CreateTaskValidation } from '../b_validations/CreateTaskValidation'
 
 export class CreateTaskController {
 
-    async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async handle(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
 
         try {
             
