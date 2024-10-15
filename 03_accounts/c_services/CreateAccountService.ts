@@ -31,7 +31,7 @@ export class CreateAccountService {
             await userRepository.save(existingUser)
 
             return {
-                status: 'success',
+                status: 'error',
                 code: 401,
                 message: `account disabled, please contact support`,
                 links: {
@@ -48,7 +48,6 @@ export class CreateAccountService {
             !existingUser.isActive &&
             !await bcrypt.compare(validatedData.password, existingUser.password)
         ) {
-
             throw createCustomError({
                 message: `if you want to reactivate your account, ` +
                     `enter your details correctly! If you forgot your password, ` +
@@ -80,6 +79,20 @@ export class CreateAccountService {
             }
         }
 
+        // existing email verification
+        if (existingUser) {
+            return {
+                status: 'error',
+                code: 409,
+                message: `email already registered`,
+                links: {
+                    self: '/accounts/signup',
+                    next: '/accounts/login',
+                    prev: '/accounts/login',
+                }
+            }
+        }
+
 
 
 
@@ -93,7 +106,9 @@ export class CreateAccountService {
         return {
             status: 'success',
             code: 201,
-            message: `account created successfully, please activate your account through the link sent to your email`,
+            message:
+                `account created successfully, please activate your ` +
+                `account through the link sent to your email`,
             links: {
                 self: '/accounts/signup',
                 next: '/accounts/login',

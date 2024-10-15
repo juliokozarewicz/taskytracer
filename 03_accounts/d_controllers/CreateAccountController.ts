@@ -21,6 +21,7 @@ export class CreateAccountController {
         name: escape(validatedBody.name),
         email: escape(validatedBody.email),
         password: escape(validatedBody.password),
+        link: escape(validatedBody.link),
       }
 
       // call execute

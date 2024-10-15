@@ -11,6 +11,9 @@ export const CreateAccountValidation = z.object({
     password: z.string()
         .min(8, "must be at least 8 characters long")
         .max(255, "contains too many characters"),
+    link: z.string()
+        .url("must be a valid link")
+        .max(255, "contains too many characters"),
 });
 
 // types
