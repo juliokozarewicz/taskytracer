@@ -22,6 +22,26 @@ export class CreateAccountService {
             }
         })
 
+        // account banned
+        if (
+            existingUser &&
+            existingUser.isBanned
+        ) {
+            existingUser.isActive = true
+            await userRepository.save(existingUser)
+
+            return {
+                status: 'success',
+                code: 401,
+                message: `account disabled, please contact support`,
+                links: {
+                    self: '/accounts/signup',
+                    next: '/accounts/signup',
+                    prev: '/accounts/login',
+                }
+            }
+        }
+
         // reactivate account invalid credentials
         if (
             existingUser &&
@@ -31,8 +51,8 @@ export class CreateAccountService {
 
             throw createCustomError({
                 message: `if you want to reactivate your account, ` +
-                          `enter your details correctly! If you forgot your password, ` +
-                          `change it and try again`,
+                    `enter your details correctly! If you forgot your password, ` +
+                    `change it and try again`,
                 code: 401,
                 next: '/accounts/signup',
                 prev: '/accounts/login'
@@ -59,6 +79,16 @@ export class CreateAccountService {
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
 
         return {
             status: 'success',
