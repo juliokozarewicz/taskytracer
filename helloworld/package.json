@@ -1,5 +1,6 @@
 {
-  "name": "Hello World",
+  "application_name": "tasky tracer",
+  "service_name": "hello world",
   "version": "1.0.0",
   "description": "Hello World API.",
   "main": "index.js",

@@ -1,5 +1,6 @@
 {
-  "name": "tasks",
+  "application_name": "tasky tracer",
+  "service_name": "tasks",
   "version": "1.0.0",
   "description": "A dedicated API for task management, offering full CRUD operations for creating, updating, and deleting to-do items. With support for prioritization and task filtering, this microservice allows users to organize their activities efficiently. Its architecture is designed to facilitate collaboration, making task management simple and productive for both individuals and teams.",
   "main": "index.js",

@@ -1,5 +1,6 @@
 {
-  "name": "Tasky Tracer",
+  "application_name": "tasky tracer",
+  "service_name": "documentation",
   "version": "1.0.0",
   "description": "Tasky Tracer is a secure API for managing tasks, featuring user authentication with JWT, and full CRUD operations for creating, updating, and deleting to-do items. With options for task prioritization, filtering, and collaboration, it simplifies task management for both individuals and teams, enhancing productivity in a user-friendly manner.",
   "main": "index.js",

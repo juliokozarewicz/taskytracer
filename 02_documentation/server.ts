@@ -45,7 +45,7 @@ const options = {
     }
     .wrapper section { margin-bottom: 50px; }
   `,
-  customSiteTitle: packageJson.name.toUpperCase(),
+  customSiteTitle: packageJson.application_name.toUpperCase(),
 };
 
 app.use(

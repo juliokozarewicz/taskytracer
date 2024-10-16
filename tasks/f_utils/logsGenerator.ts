@@ -37,7 +37,7 @@ function createDir() {
     }
 }
 
-export async function logsGenerator(
+export async function LogsGenerator(
     ip: string,
     level: string,
     statusCode: number,

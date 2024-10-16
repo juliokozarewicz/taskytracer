@@ -4,7 +4,7 @@ const documentation = {
   // configs
   openapi: "3.0.0",
   info: {
-    title: packageJson.name.toUpperCase(),
+    title: packageJson.application_name.toUpperCase(),
     version: packageJson.version,
     description: packageJson.description,
   },

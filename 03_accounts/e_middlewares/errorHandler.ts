@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { logsGenerator } from '../f_utils/logsGenerator';
+import { LogsGenerator } from '../f_utils/LogsGenerator';
 import { z } from 'zod';
 
 // create error function
@@ -95,7 +95,7 @@ const errorHandler = (
     }
   });
 
-  logsGenerator(
+  LogsGenerator(
     `${req.ip}`,
     'CRITICAL',
     500,

@@ -1,10 +1,12 @@
+const packageJson = require('../package.json');
 import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { CreateAccountValidationType } from "../b_validations/CreateAccountValidation"
 import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server"
-import { createCustomError } from '../e_middlewares/errorHandler'
 import bcrypt from 'bcrypt'
 import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
+import { EmailService } from "../f_utils/EmailSend"
+import { createHash } from 'crypto';
 
 export class CreateAccountService {
 
@@ -28,16 +30,19 @@ export class CreateAccountService {
             existingUser &&
             existingUser.isBanned
         ) {
-            existingUser.isActive = true
-            await userRepository.save(existingUser)
+
+            // send email banned account
+            await this.sendEmailText(
+                validatedData.email,
+                `Your account has been deactivated, please contact support.`
+            )
 
             return {
-                status: 'error',
-                code: 400,
+                status: 'success',
+                code: 201,
                 message: 
-                    'it was not possible to process your request, ' +
-                    'detailed information has been sent to your email',
-                    // `account disabled, please contact support`,
+                    `account created successfully, please activate your ` +
+                    `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/signup',
@@ -46,33 +51,19 @@ export class CreateAccountService {
             }
         }
 
-        // reactivate account invalid credentials
+        // existing account | password ok | acc ok | email ok | banned x
         if (
             existingUser &&
-            !existingUser.isActive &&
-            !await bcrypt.compare(validatedData.password, existingUser.password)
-        ) {
-            throw createCustomError({
-                message: 
-                    'it was not possible to process your request, ' +
-                    'detailed information has been sent to your email',
-                    // `if you want to reactivate your account, ` +
-                    // `enter your details correctly! If you forgot your password, ` +
-                    // `change it and try again`,
-                code: 400,
-                next: '/accounts/signup',
-                prev: '/accounts/login'
-            })
-        }
-
-        // reactivate account
-        if (
-            existingUser &&
-            !existingUser.isActive &&
-            await bcrypt.compare(validatedData.password, existingUser.password)
+            await bcrypt.compare(validatedData.password, existingUser.password) &&
+            existingUser.isActive &&
+            existingUser.isEmailConfirmed &&
+            !existingUser.isBanned
         ) {
 
-            // ##### sent email with code
+            await this.sendEmailText(
+                validatedData.email,
+                `You already have an active account with us, now you just need to log in.`
+            )
 
             return {
                 status: 'success',
@@ -82,24 +73,35 @@ export class CreateAccountService {
                     `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
-                    next: '/accounts/login',
+                    next: '/accounts/signup',
                     prev: '/accounts/login',
                 }
             }
         }
 
-        // existing email verification
-        if (existingUser) {
+        // existing account
+        if (
+            existingUser
+        ) {
+
+            // send email with code
+            await this.sendEmailCode(
+                validatedData.email,
+                `Click the link below to activate your account:`,
+                validatedData.link
+            )
+
+            // ##### commit code in db
+
             return {
-                status: 'error',
-                code: 400,
-                message: 
-                    'it was not possible to process your request, ' +
-                    'detailed information has been sent to your email',
-                    // `email already registered`,
+                status: 'success',
+                code: 201,
+                message:
+                    `account created successfully, please activate your ` +
+                    `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
-                    next: '/accounts/login',
+                    next: '/accounts/signup',
                     prev: '/accounts/login',
                 }
             }
@@ -126,7 +128,12 @@ export class CreateAccountService {
             newProfile.user = savedUser
             await commitUserTransaction.save(newProfile)
 
-            // ##### sent email with code
+            // send email with code
+            await this.sendEmailCode(
+                validatedData.email,
+                `Click the link below to activate your account:`,
+                validatedData.link
+            )
         })
 
         return {
@@ -145,8 +152,74 @@ export class CreateAccountService {
 
     // password hash
     private async hashPassword(password: string): Promise<string> {
-        const saltRounds = 12
-        return bcrypt.hash(password, saltRounds)
+        try {
+            const saltRounds = 12
+            return bcrypt.hash(password, saltRounds)
+        } catch (error) {
+            throw new Error(
+                `[./c_services/CreateAccountService.ts] ` +
+                `[CreateAccountService.hashPassword()] ` +
+                `${error}`
+            )
+        }
+    }
+
+    // send email with code
+    private async sendEmailCode(
+        email: string, textSend: string, link: string
+    ): Promise<string> {
+        try {
+            const emailService = new EmailService()
+            const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
+
+            const hashString = `${Date.now()*135}${email}${process.env.SECURITY_CODE}`
+            const codeAccount = createHash('sha256').update(hashString).digest('hex')
+
+            const activationLink = (
+                `${link}?` +
+                `email=${email}&` +
+                `code=${encodeURIComponent(codeAccount)}`
+            )
+
+            const message = `Hello, how are you? \n\n${textSend} \n\n${activationLink} \n\nBest regards, \n${packageJson.application_name.toUpperCase()}`
+
+            await emailService.sendTextEmail(
+                email,
+                subject,
+                message
+            )
+
+            return codeAccount
+        } catch (error) {
+            throw new Error(
+                `[./c_services/CreateAccountService.ts] ` +
+                `[CreateAccountService.sendEmailCode()] ` +
+                `${error}`
+            )
+        }
+    }
+
+    // send email text
+    private async sendEmailText(
+        email: string, textSend: string
+    ): Promise<void> {
+        try {
+            const emailService = new EmailService()
+            const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
+            const message = `Hello, how are you? \n\n${textSend} \n\nBest regards, \n${packageJson.application_name.toUpperCase()}`
+
+            await emailService.sendTextEmail(
+                email,
+                subject,
+                message
+            )
+        } catch (error) {
+            throw new Error(
+                `[./c_services/CreateAccountService.ts] ` +
+                `[CreateAccountService.sendEmailText()] ` +
+                `${error}`
+            )
+        }
     }
 
 }
