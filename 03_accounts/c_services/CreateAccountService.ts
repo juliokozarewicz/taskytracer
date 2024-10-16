@@ -33,8 +33,11 @@ export class CreateAccountService {
 
             return {
                 status: 'error',
-                code: 401,
-                message: `account disabled, please contact support`,
+                code: 400,
+                message: 
+                    'it was not possible to process your request, ' +
+                    'detailed information has been sent to your email',
+                    // `account disabled, please contact support`,
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/signup',
@@ -50,10 +53,13 @@ export class CreateAccountService {
             !await bcrypt.compare(validatedData.password, existingUser.password)
         ) {
             throw createCustomError({
-                message: `if you want to reactivate your account, ` +
-                    `enter your details correctly! If you forgot your password, ` +
-                    `change it and try again`,
-                code: 401,
+                message: 
+                    'it was not possible to process your request, ' +
+                    'detailed information has been sent to your email',
+                    // `if you want to reactivate your account, ` +
+                    // `enter your details correctly! If you forgot your password, ` +
+                    // `change it and try again`,
+                code: 400,
                 next: '/accounts/signup',
                 prev: '/accounts/login'
             })
@@ -65,13 +71,15 @@ export class CreateAccountService {
             !existingUser.isActive &&
             await bcrypt.compare(validatedData.password, existingUser.password)
         ) {
-            existingUser.isActive = true
-            await userRepository.save(existingUser)
+
+            // ##### sent email with code
 
             return {
                 status: 'success',
                 code: 201,
-                message: `user successfully reactivated`,
+                message:
+                    `account created successfully, please activate your ` +
+                    `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/login',
@@ -84,8 +92,11 @@ export class CreateAccountService {
         if (existingUser) {
             return {
                 status: 'error',
-                code: 409,
-                message: `email already registered`,
+                code: 400,
+                message: 
+                    'it was not possible to process your request, ' +
+                    'detailed information has been sent to your email',
+                    // `email already registered`,
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/login',
@@ -114,18 +125,9 @@ export class CreateAccountService {
             const newProfile = new AccountProfileEntity()
             newProfile.user = savedUser
             await commitUserTransaction.save(newProfile)
+
+            // ##### sent email with code
         })
-        
-
-
-
-
-
-
-
-
-
-
 
         return {
             status: 'success',
