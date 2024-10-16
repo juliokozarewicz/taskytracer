@@ -73,7 +73,7 @@ export class CreateAccountService {
                     `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
-                    next: '/accounts/signup',
+                    next: '/accounts/login',
                     prev: '/accounts/login',
                 }
             }
@@ -101,7 +101,7 @@ export class CreateAccountService {
                     `account through the link sent to your email`,
                 links: {
                     self: '/accounts/signup',
-                    next: '/accounts/signup',
+                    next: '/accounts/login',
                     prev: '/accounts/login',
                 }
             }
