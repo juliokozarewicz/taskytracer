@@ -51,7 +51,7 @@ export class CreateAccountService {
             }
         }
 
-        // existing account | password ok | acc ok | email ok | banned x
+        // existing account | password ok | acc ok | email ok | not banned
         if (
             existingUser &&
             await bcrypt.compare(validatedData.password, existingUser.password) &&
