@@ -1,4 +1,4 @@
-const packageJson = require('../package.json');
+const packageJson = require('../package.json')
 import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { CreateAccountValidationType } from "../b_validations/CreateAccountValidation"
 import { StandardResponse } from "../f_utils/StandardResponse"
@@ -6,8 +6,8 @@ import { AppDataSource } from "../server"
 import bcrypt from 'bcrypt'
 import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 import { EmailService } from "../f_utils/EmailSend"
-import { createHash } from 'crypto';
-import { EmailActivate } from "../a_entities/EmailActivate";
+import { createHash } from 'crypto'
+import { EmailActivate } from "../a_entities/EmailActivate"
 
 export class CreateAccountService {
 
@@ -23,7 +23,7 @@ export class CreateAccountService {
         // existing user
         const existingUser = await userRepository.findOne({
             where: {
-                email: validatedData.email.toLocaleLowerCase()
+                email: validatedData.email.toLowerCase()
             }
         })
 
@@ -36,7 +36,8 @@ export class CreateAccountService {
             // send email banned account
             await this.sendEmailText(
                 validatedData.email,
-                `Your account has been deactivated, please contact support.`
+                `Your account has been deactivated, please contact support. ` +
+                `If you haven't made any changes to your account, please change your password.`
             )
 
             return {
@@ -64,7 +65,8 @@ export class CreateAccountService {
 
             await this.sendEmailText(
                 validatedData.email,
-                `You already have an active account with us, now you just need to log in.`
+                `You already have an active account with us, now you just need to log in. ` +
+                `If you haven't made any changes to your account, please change your password.`
             )
 
             return {
@@ -86,25 +88,29 @@ export class CreateAccountService {
             existingUser
         ) {
 
-            // ##### commit code in db transaction (delete all old codes)
+            // commit code in db transaction
             // ------------------------------------------------------------------------------
             await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
                     validatedData.email,
-                    `Click the link below to activate your account:`,
+                    `Click the link below to activate your account. ` +
+                    `If you haven't made any changes to your account, please change your password.`,
                     validatedData.link
                 )
 
+                // delete all old tokens
+                await emailCodeRepository.delete({ email: existingUser.email.toLowerCase() })
+
+                // code commit db
                 const newEmailActivate = new EmailActivate()
-                newEmailActivate.id = existingUser.id
                 newEmailActivate.createdAt = new Date()
                 newEmailActivate.code = codeAccount
                 newEmailActivate.email = existingUser.email.toLowerCase()
                 newEmailActivate.user = existingUser
 
-                await emailCodeTransaction.save(newEmailActivate);
+                await emailCodeTransaction.save(newEmailActivate)
             })
             // ------------------------------------------------------------------------------
 
@@ -128,7 +134,7 @@ export class CreateAccountService {
         newUser.level = false
         newUser.isBanned = false
         newUser.name = validatedData.name
-        newUser.email = validatedData.email.toLocaleLowerCase()
+        newUser.email = validatedData.email.toLowerCase()
         newUser.isEmailConfirmed = false
         newUser.password = await this.hashPassword(validatedData.password)
 
@@ -145,11 +151,22 @@ export class CreateAccountService {
             await commitUserTransaction.save(newProfile)
 
             // send email with code
-            await this.sendEmailCode(
+            const codeAccount = await this.sendEmailCode(
                 validatedData.email,
                 `Click the link below to activate your account:`,
                 validatedData.link
             )
+
+            // delete all old tokens
+            await emailCodeRepository.delete({ email: savedUser.email.toLowerCase() })
+
+            // code commit db
+            const newEmailActivate = new EmailActivate()
+            newEmailActivate.createdAt = new Date()
+            newEmailActivate.code = codeAccount
+            newEmailActivate.email = savedUser.email.toLowerCase()
+            newEmailActivate.user = savedUser
+            await commitUserTransaction.save(newEmailActivate)
         })
         // ------------------------------------------------------------------------------
 
