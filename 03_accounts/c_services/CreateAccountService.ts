@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt'
 import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 import { EmailService } from "../f_utils/EmailSend"
 import { createHash } from 'crypto';
+import { EmailActivate } from "../a_entities/EmailActivate";
 
 export class CreateAccountService {
 
@@ -17,6 +18,7 @@ export class CreateAccountService {
         // database operations
         //-------------------------------------------------------------------------
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
+        const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
 
         // existing user
         const existingUser = await userRepository.findOne({
@@ -79,19 +81,31 @@ export class CreateAccountService {
             }
         }
 
-        // existing account
+        // existing account with problems
         if (
             existingUser
         ) {
 
             // send email with code
-            await this.sendEmailCode(
+            const codeAccount = await this.sendEmailCode(
                 validatedData.email,
                 `Click the link below to activate your account:`,
                 validatedData.link
             )
 
-            // ##### commit code in db
+            // ##### commit code in db transaction (delete all old codes)
+            // ------------------------------------------------------------------------------
+            await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
+
+                const newEmailActivate = new EmailActivate()
+                newEmailActivate.id = existingUser.id
+                newEmailActivate.code = codeAccount
+                newEmailActivate.email = existingUser.email.toLowerCase()
+                newEmailActivate.user = existingUser
+
+                await emailCodeTransaction.save(newEmailActivate);
+            })
+            // ------------------------------------------------------------------------------
 
             return {
                 status: 'success',
@@ -118,12 +132,13 @@ export class CreateAccountService {
         newUser.password = await this.hashPassword(validatedData.password)
 
         // transaction commit db, profile and email code
+        // ------------------------------------------------------------------------------
         await userRepository.manager.transaction(async commitUserTransaction => {
             
             // user
             const savedUser = await commitUserTransaction.save(newUser)
 
-            //profile
+            // profile
             const newProfile = new AccountProfileEntity()
             newProfile.user = savedUser
             await commitUserTransaction.save(newProfile)
@@ -135,6 +150,7 @@ export class CreateAccountService {
                 validatedData.link
             )
         })
+        // ------------------------------------------------------------------------------
 
         return {
             status: 'success',
