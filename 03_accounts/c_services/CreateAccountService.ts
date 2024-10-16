@@ -1,9 +1,10 @@
-import { AccountUserEntity } from "../a_entities/AccountUserEntity";
-import { CreateAccountValidationType } from "../b_validations/CreateAccountValidation";
-import { StandardResponse } from "../f_utils/StandardResponse";
-import { AppDataSource } from "../server";
+import { AccountUserEntity } from "../a_entities/AccountUserEntity"
+import { CreateAccountValidationType } from "../b_validations/CreateAccountValidation"
+import { StandardResponse } from "../f_utils/StandardResponse"
+import { AppDataSource } from "../server"
 import { createCustomError } from '../e_middlewares/errorHandler'
 import bcrypt from 'bcrypt'
+import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 
 export class CreateAccountService {
 
@@ -55,7 +56,7 @@ export class CreateAccountService {
                 code: 401,
                 next: '/accounts/signup',
                 prev: '/accounts/login'
-            });
+            })
         }
 
         // reactivate account
@@ -93,6 +94,29 @@ export class CreateAccountService {
             }
         }
 
+        // create user object to commit db
+        const newUser = new AccountUserEntity()
+        newUser.isActive = true
+        newUser.level = false
+        newUser.isBanned = false
+        newUser.name = validatedData.name
+        newUser.email = validatedData.email.toLocaleLowerCase()
+        newUser.isEmailConfirmed = false
+        newUser.password = await this.hashPassword(validatedData.password)
+
+        // transaction commit db, profile and email code
+        await userRepository.manager.transaction(async commitUserTransaction => {
+            
+            // user
+            const savedUser = await commitUserTransaction.save(newUser)
+
+            //profile
+            const newProfile = new AccountProfileEntity()
+            newProfile.user = savedUser
+            await commitUserTransaction.save(newProfile)
+        })
+        
+
 
 
 
@@ -115,6 +139,12 @@ export class CreateAccountService {
                 prev: '/accounts/login',
             }
         }
+    }
+
+    // password hash
+    private async hashPassword(password: string): Promise<string> {
+        const saltRounds = 12
+        return bcrypt.hash(password, saltRounds)
     }
 
 }
