@@ -58,11 +58,6 @@ app.use(cors(corsOptions));
 app.use(i18nMiddleware)
 //----------------------------------------------------------------------
 
-app.use((req, res, next) => {
-  console.log('Language detected:', req.language);
-  next();
-});
-
 // use json
 //----------------------------------------------------------------------
 app.use(express.json())
