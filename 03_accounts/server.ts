@@ -5,7 +5,8 @@ import { config } from "dotenv"
 const cors = require('cors');
 import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
-import errorHandler from './e_middlewares/errorHandler';
+import errorHandler from './e_middlewares/errorHandler'
+import { i18nMiddleware } from './e_middlewares/i18n'
 
 // load '.env'
 //----------------------------------------------------------------------
@@ -51,6 +52,16 @@ app.use(cors(corsOptions));
 
 // middlewares (INIT)
 // =============================================================================
+
+// translation
+//----------------------------------------------------------------------
+app.use(i18nMiddleware)
+//----------------------------------------------------------------------
+
+app.use((req, res, next) => {
+  console.log('Language detected:', req.language);
+  next();
+});
 
 // use json
 //----------------------------------------------------------------------

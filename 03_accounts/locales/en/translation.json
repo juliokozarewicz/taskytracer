@@ -1,0 +1,8 @@
+{
+    "account_deactivated": "Your account has been deactivated, please contact support. If you haven't made any changes to your account, please change your password.",
+    "account_active": "You already have an active account with us, now you just need to log in. If you haven't made any changes to your account, please change your password.",
+    "activation_email": "Click the link below to activate your account:",
+    "account_created_successfully": "account created successfully, please activate your account through the link sent to your email",
+    "email_greeting": "Hello, how are you?",
+    "email_closing": "Best regards"
+}

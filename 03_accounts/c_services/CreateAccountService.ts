@@ -8,11 +8,12 @@ import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 import { EmailService } from "../f_utils/EmailSend"
 import { createHash } from 'crypto'
 import { EmailActivate } from "../a_entities/EmailActivate"
+import { t } from 'i18next';
 
 export class CreateAccountService {
 
     async execute(
-        validatedData: CreateAccountValidationType
+        validatedData: CreateAccountValidationType,
     ): Promise<StandardResponse> {
 
         // database operations
@@ -36,16 +37,13 @@ export class CreateAccountService {
             // send email banned account
             await this.sendEmailText(
                 validatedData.email,
-                `Your account has been deactivated, please contact support. ` +
-                `If you haven't made any changes to your account, please change your password.`
+                t('account_deactivated')
             )
 
             return {
                 status: 'success',
                 code: 201,
-                message: 
-                    `account created successfully, please activate your ` +
-                    `account through the link sent to your email`,
+                message: t('account_created_successfully'),
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/signup',
@@ -65,16 +63,13 @@ export class CreateAccountService {
 
             await this.sendEmailText(
                 validatedData.email,
-                `You already have an active account with us, now you just need to log in. ` +
-                `If you haven't made any changes to your account, please change your password.`
+                t('account_active')
             )
 
             return {
                 status: 'success',
                 code: 201,
-                message:
-                    `account created successfully, please activate your ` +
-                    `account through the link sent to your email`,
+                message: t('account_created_successfully'),
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/login',
@@ -95,8 +90,7 @@ export class CreateAccountService {
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
                     validatedData.email,
-                    `Click the link below to activate your account. ` +
-                    `If you haven't made any changes to your account, please change your password.`,
+                    t('activation_email'),
                     validatedData.link
                 )
 
@@ -117,9 +111,7 @@ export class CreateAccountService {
             return {
                 status: 'success',
                 code: 201,
-                message:
-                    `account created successfully, please activate your ` +
-                    `account through the link sent to your email`,
+                message: t('account_created_successfully'),
                 links: {
                     self: '/accounts/signup',
                     next: '/accounts/login',
@@ -153,7 +145,7 @@ export class CreateAccountService {
             // send email with code
             const codeAccount = await this.sendEmailCode(
                 validatedData.email,
-                `Click the link below to activate your account:`,
+                t('activation_email'),
                 validatedData.link
             )
 
@@ -173,9 +165,7 @@ export class CreateAccountService {
         return {
             status: 'success',
             code: 201,
-            message:
-                `account created successfully, please activate your ` +
-                `account through the link sent to your email`,
+            message: t('account_created_successfully'),
             links: {
                 self: '/accounts/signup',
                 next: '/accounts/login',
@@ -215,7 +205,7 @@ export class CreateAccountService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `Hello, how are you? \n\n${textSend} \n\n${activationLink} \n\nBest regards, \n${packageJson.application_name.toUpperCase()}`
+            const message = `${t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
 
             await emailService.sendTextEmail(
                 email,
@@ -240,7 +230,7 @@ export class CreateAccountService {
         try {
             const emailService = new EmailService()
             const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
-            const message = `Hello, how are you? \n\n${textSend} \n\nBest regards, \n${packageJson.application_name.toUpperCase()}`
+            const message = `${t('email_greeting')} \n\n${textSend} \n\n${t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
 
             await emailService.sendTextEmail(
                 email,
