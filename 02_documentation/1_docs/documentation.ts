@@ -836,8 +836,138 @@ const documentation = {
           }
         }
       }
-    }
+    },
     // --------------------------------------------------
+    "/accounts/signup": {
+      post: {
+        summary: "Create a new account",
+        description: "Creates a new user account. If the user already exists, a new activation email will be sent.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    example: "John Doe"
+                  },
+                  email: {
+                    type: "string",
+                    format: "email",
+                    example: "john.doe@example.com"
+                  },
+                  password: {
+                    type: "string",
+                    example: "strongpassword123"
+                  },
+                  link: {
+                    type: "string",
+                    format: "uri",
+                    example: "https://example.com/activate"
+                  }
+                },
+                required: ["name", "email", "password", "link"]
+              }
+            }
+          }
+        },
+        responses: {
+          "201": {
+            description: "Account created successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 201
+                    },
+                    message: {
+                      type: "string",
+                      example: "Account created successfully"
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/signup"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/login"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            description: "Invalid input data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 400
+                    },
+                    message: {
+                      type: "string",
+                      example: "Invalid input data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            description: "User already exists",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 409
+                    },
+                    message: {
+                      type: "string",
+                      example: "User already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    // --------------------------------------------------    
   }
 };
 

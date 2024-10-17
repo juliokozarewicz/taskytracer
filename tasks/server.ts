@@ -6,17 +6,17 @@ import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
 import errorHandler from "./e_middlewares/errorHandler"
 import { rateLimiter } from "./e_middlewares/rateLimiter"
-const cors = require('cors');
+const cors = require('cors')
 
 // load '.env'
 //----------------------------------------------------------------------
-config({ path: path.resolve(__dirname, './.env') });
+config({ path: path.resolve(__dirname, './.env') })
 //----------------------------------------------------------------------
 
 // express server
 //----------------------------------------------------------------------
-const app = express();
-const PORT = process.env.TASKS_PORT;
+const app = express()
+const PORT = process.env.TASKS_PORT
 
 // cors (authorized domain)
 const corsOptions = {
@@ -26,8 +26,8 @@ const corsOptions = {
     `${process.env.DOCUMENTATION_HOST}:${process.env.DOCUMENTATION_PORT}`
   ],
   methods: ['*']
-};
-app.use(cors(corsOptions));
+}
+app.use(cors(corsOptions))
 //----------------------------------------------------------------------
 
 // database
@@ -55,12 +55,12 @@ AppDataSource.initialize()
 
 // rate limiter
 //----------------------------------------------------------------------
-app.use(rateLimiter);
+app.use(rateLimiter)
 //----------------------------------------------------------------------
 
 // use json
 //----------------------------------------------------------------------
-app.use(express.json());
+app.use(express.json())
 //----------------------------------------------------------------------
 
 // =============================================================================
@@ -69,11 +69,11 @@ app.use(express.json());
 // run server
 //----------------------------------------------------------------------
 // microservice main route
-app.use('/tasks', routes);
+app.use('/tasks', routes)
 
 // error handler
 //----------------------------------------------------------------------
-app.use(errorHandler);
+app.use(errorHandler)
 //----------------------------------------------------------------------
 
 app.listen(PORT, () => {
