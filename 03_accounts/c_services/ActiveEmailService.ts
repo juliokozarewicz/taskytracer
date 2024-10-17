@@ -10,7 +10,7 @@ import { createHash } from 'crypto'
 import { EmailActivate } from "../a_entities/EmailActivate"
 import { t } from 'i18next';
 
-export class CreateAccountService {
+export class ActiveEmailService {
 
     async execute(
         validatedData: CreateAccountValidationType,
@@ -28,8 +28,60 @@ export class CreateAccountService {
             }
         })
 
-        // existing user
-        if (existingUser) {
+        // account banned
+        if (
+            existingUser &&
+            existingUser.isBanned
+        ) {
+
+            // send email banned account
+            await this.sendEmailText(
+                validatedData.email,
+                t('account_deactivated')
+            )
+
+            return {
+                status: 'success',
+                code: 201,
+                message: t('account_created_successfully'),
+                links: {
+                    self: '/accounts/signup',
+                    next: '/accounts/signup',
+                    prev: '/accounts/login',
+                }
+            }
+        }
+
+        // existing account | password ok | acc ok | email ok | not banned
+        if (
+            existingUser &&
+            await bcrypt.compare(validatedData.password, existingUser.password) &&
+            existingUser.isActive &&
+            existingUser.isEmailConfirmed &&
+            !existingUser.isBanned
+        ) {
+
+            await this.sendEmailText(
+                validatedData.email,
+                t('account_active')
+            )
+
+            return {
+                status: 'success',
+                code: 201,
+                message: t('account_created_successfully'),
+                links: {
+                    self: '/accounts/signup',
+                    next: '/accounts/login',
+                    prev: '/accounts/login',
+                }
+            }
+        }
+
+        // existing account with problems
+        if (
+            existingUser
+        ) {
 
             // commit code in db transaction
             // ------------------------------------------------------------------------------
@@ -55,53 +107,60 @@ export class CreateAccountService {
                 await emailCodeTransaction.save(newEmailActivate)
             })
             // ------------------------------------------------------------------------------
+
+            return {
+                status: 'success',
+                code: 201,
+                message: t('account_created_successfully'),
+                links: {
+                    self: '/accounts/signup',
+                    next: '/accounts/login',
+                    prev: '/accounts/login',
+                }
+            }
         }
-        
-        // not existing user
-        if (!existingUser) {
 
-            // create user object to commit db
-            const newUser = new AccountUserEntity()
-            newUser.isActive = true
-            newUser.level = false
-            newUser.isBanned = false
-            newUser.name = validatedData.name
-            newUser.email = validatedData.email.toLowerCase()
-            newUser.isEmailConfirmed = false
-            newUser.password = await this.hashPassword(validatedData.password)
+        // create user object to commit db
+        const newUser = new AccountUserEntity()
+        newUser.isActive = true
+        newUser.level = false
+        newUser.isBanned = false
+        newUser.name = validatedData.name
+        newUser.email = validatedData.email.toLowerCase()
+        newUser.isEmailConfirmed = false
+        newUser.password = await this.hashPassword(validatedData.password)
 
-            // transaction commit db, profile and email code
-            // ------------------------------------------------------------------------------
-            await userRepository.manager.transaction(async commitUserTransaction => {
-                
-                // user
-                const savedUser = await commitUserTransaction.save(newUser)
+        // transaction commit db, profile and email code
+        // ------------------------------------------------------------------------------
+        await userRepository.manager.transaction(async commitUserTransaction => {
+            
+            // user
+            const savedUser = await commitUserTransaction.save(newUser)
 
-                // profile
-                const newProfile = new AccountProfileEntity()
-                newProfile.user = savedUser
-                await commitUserTransaction.save(newProfile)
+            // profile
+            const newProfile = new AccountProfileEntity()
+            newProfile.user = savedUser
+            await commitUserTransaction.save(newProfile)
 
-                // send email with code
-                const codeAccount = await this.sendEmailCode(
-                    validatedData.email,
-                    t('activation_email'),
-                    validatedData.link
-                )
+            // send email with code
+            const codeAccount = await this.sendEmailCode(
+                validatedData.email,
+                t('activation_email'),
+                validatedData.link
+            )
 
-                // delete all old tokens
-                await emailCodeRepository.delete({ email: savedUser.email.toLowerCase() })
+            // delete all old tokens
+            await emailCodeRepository.delete({ email: savedUser.email.toLowerCase() })
 
-                // code commit db
-                const newEmailActivate = new EmailActivate()
-                newEmailActivate.createdAt = new Date()
-                newEmailActivate.code = codeAccount
-                newEmailActivate.email = savedUser.email.toLowerCase()
-                newEmailActivate.user = savedUser
-                await commitUserTransaction.save(newEmailActivate)
-            })
-            // ------------------------------------------------------------------------------
-        }
+            // code commit db
+            const newEmailActivate = new EmailActivate()
+            newEmailActivate.createdAt = new Date()
+            newEmailActivate.code = codeAccount
+            newEmailActivate.email = savedUser.email.toLowerCase()
+            newEmailActivate.user = savedUser
+            await commitUserTransaction.save(newEmailActivate)
+        })
+        // ------------------------------------------------------------------------------
 
         return {
             status: 'success',
@@ -113,7 +172,6 @@ export class CreateAccountService {
                 prev: '/accounts/login',
             }
         }
-
     }
 
     // password hash
