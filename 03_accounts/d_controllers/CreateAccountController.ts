@@ -25,7 +25,7 @@ export class CreateAccountController {
       }
 
       // call execute
-      const createAccountService = new CreateAccountService()
+      const createAccountService = new CreateAccountService(req.t)
       const response = await createAccountService.execute(validatedData)
 
       //response

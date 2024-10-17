@@ -8,9 +8,13 @@ import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 import { EmailService } from "../f_utils/EmailSend"
 import { createHash } from 'crypto'
 import { EmailActivate } from "../a_entities/EmailActivate"
-import { t } from 'i18next';
+
 
 export class CreateAccountService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData: CreateAccountValidationType,
@@ -38,7 +42,7 @@ export class CreateAccountService {
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
                     validatedData.email,
-                    t('activation_email'),
+                    this.t('activation_email'),
                     validatedData.link
                 )
 
@@ -85,7 +89,7 @@ export class CreateAccountService {
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
                     validatedData.email,
-                    t('activation_email'),
+                    this.t('activation_email'),
                     validatedData.link
                 )
 
@@ -106,7 +110,7 @@ export class CreateAccountService {
         return {
             status: 'success',
             code: 201,
-            message: t('account_created_successfully'),
+            message: this.t('account_created_successfully'),
             links: {
                 self: '/accounts/signup',
                 next: '/accounts/login',
@@ -147,7 +151,7 @@ export class CreateAccountService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `${t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
+            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
 
             await emailService.sendTextEmail(
                 email,
@@ -172,7 +176,7 @@ export class CreateAccountService {
         try {
             const emailService = new EmailService()
             const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
-            const message = `${t('email_greeting')} \n\n${textSend} \n\n${t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
+            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
 
             await emailService.sendTextEmail(
                 email,
