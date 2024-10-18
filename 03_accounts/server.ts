@@ -5,7 +5,7 @@ import { config } from "dotenv"
 const cors = require('cors');
 import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
-import errorHandler from './e_middlewares/errorHandler'
+import ErrorHandler from './e_middlewares/ErrorHandler'
 import { i18nMiddleware } from './e_middlewares/i18n'
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
@@ -100,7 +100,7 @@ app.use('/accounts', routes)
 
 // error handler
 //----------------------------------------------------------------------
-app.use(errorHandler);
+app.use(ErrorHandler);
 //----------------------------------------------------------------------
 
 app.listen(PORT, () => {

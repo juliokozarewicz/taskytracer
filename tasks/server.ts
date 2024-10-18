@@ -4,9 +4,11 @@ import { config } from "dotenv"
 import path from "path"
 import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
-import errorHandler from "./e_middlewares/errorHandler"
-import { rateLimiter } from "./e_middlewares/rateLimiter"
+import errorHandler from "./e_middlewares/ErrorHandler"
 const cors = require('cors')
+import { i18nMiddleware } from './e_middlewares/i18n'
+import rateLimit from 'express-rate-limit';
+import { Request, Response } from 'express';
 
 // load '.env'
 //----------------------------------------------------------------------
@@ -52,6 +54,36 @@ AppDataSource.initialize()
 
 // middlewares (INIT)
 // =============================================================================
+
+// translation
+//----------------------------------------------------------------------
+app.use(i18nMiddleware)
+//----------------------------------------------------------------------
+
+// rate limiter
+//----------------------------------------------------------------------
+export const rateLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 min
+  max: 100, // 100 req
+  message: (req: Request, res: Response) => ({
+    status: "error",
+    code: 429,
+    message: req.t('too_many_requests'),
+  }),
+  keyGenerator: (req: Request) => {
+    const forwarded = req.headers['x-forwarded-for'];
+
+    if (typeof forwarded === 'string') {
+      return forwarded.split(',')[0];
+    } else if (Array.isArray(forwarded)) {
+      return forwarded[0];
+    }
+    return req.ip || 'unknown';
+  },
+});
+
+app.use(rateLimiter);
+//----------------------------------------------------------------------
 
 // rate limiter
 //----------------------------------------------------------------------

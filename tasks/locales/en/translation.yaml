@@ -1,0 +1,11 @@
+# STANDARD
+# -----------------------------------------------------------------------------
+# error handler
+bad_request: "Bad request, please check the data sent."
+server_error: "An error has occurred, please try again later."
+
+# rate limiter
+too_many_requests: "Too many requests, please try again later"
+# -----------------------------------------------------------------------------
+
+# OTHERS

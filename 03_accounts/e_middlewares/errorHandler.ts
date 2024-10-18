@@ -28,7 +28,7 @@ export function createCustomError({
 
 // middleware error
 //------------------------------------------------------------------------
-const errorHandler = (
+const ErrorHandler = (
   err: any,
   req: Request,
   res: Response,
@@ -73,7 +73,8 @@ const errorHandler = (
     res.status(400).json({
       status: "error",
       statusCode: 400,
-      message: `(${err.errors[0].path}) ${err.errors[0].message}`,
+      field: `${err.errors[0].path}`,
+      message: `${err.errors[0].message}`,
       links: {
         self: req.originalUrl,
       }
@@ -107,5 +108,5 @@ const errorHandler = (
   //------------------------------------------------------------------------
 };
 
-export default errorHandler;
+export default ErrorHandler;
 //------------------------------------------------------------------------

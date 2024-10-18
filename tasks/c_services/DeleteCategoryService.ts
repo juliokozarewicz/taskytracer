@@ -2,7 +2,7 @@ import { StandardResponse } from '../f_utils/StandardResponse'
 import { AppDataSource } from '../server'
 import { CategoryEntity } from '../a_entities/CategoryEntity'
 import { DeleteCategoryValidationType } from '../b_validations/DeleteCategoryValidation'
-import { createCustomError } from '../e_middlewares/errorHandler'
+import { createCustomError } from '../e_middlewares/ErrorHandler'
 
 export class DeleteCategoryService {
 
