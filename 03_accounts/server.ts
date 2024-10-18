@@ -64,7 +64,7 @@ app.use(i18nMiddleware)
 //----------------------------------------------------------------------
 export const rateLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 min
-  max: 3, // 100 req
+  max: 100, // 100 req
   message: (req: Request, res: Response) => ({
     status: "error",
     code: 429,
