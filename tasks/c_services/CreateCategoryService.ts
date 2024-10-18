@@ -5,6 +5,10 @@ import { CategoryEntity } from '../a_entities/CategoryEntity'
 import { CreateCategoryValidationType } from '../b_validations/CreateCategoryValidation'
 
 export class CreateCategoryService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:CreateCategoryValidationType
@@ -20,7 +24,7 @@ export class CreateCategoryService {
 
         if (existingCategory) {
             throw createCustomError({
-                "message": `'${existingCategory.category}' already exists`,
+                "message": `'${existingCategory.category}' ${this.t('already_exists')}`,
                 "code": 409,
                 "next": "/tasks/category/create",
                 "prev": "/tasks/category/create",

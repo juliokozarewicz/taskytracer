@@ -22,7 +22,7 @@ export class CreateCategoryController {
             }
 
             // call execute
-            const createCategoryService = new CreateCategoryService()
+            const createCategoryService = new CreateCategoryService(req.t)
             const response = await createCategoryService.execute(validatedData)
 
             //response

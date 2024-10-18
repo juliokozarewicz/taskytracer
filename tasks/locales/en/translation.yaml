@@ -9,3 +9,4 @@ too_many_requests: "Too many requests, please try again later"
 # -----------------------------------------------------------------------------
 
 # OTHERS
+already_exists: "already exists"
