@@ -11,7 +11,7 @@ i18next
     fallbackLng: 'en',
     preload: ['en', 'pt'],
     backend: {
-      loadPath: path.join(__dirname, '../locales/{{lng}}/translation.json'),
+      loadPath: path.join(__dirname, '../locales/{{lng}}/translation.yaml'),
     },
     detection: {
       order: ['header', 'querystring', 'cookie', 'session'],

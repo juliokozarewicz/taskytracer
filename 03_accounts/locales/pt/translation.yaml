@@ -1,0 +1,21 @@
+# STANDARD
+# -----------------------------------------------------------------------------
+# error handler
+bad_request: "Solicitação inválida, por favor verifique os dados enviados."
+server_error: "Ocorreu um erro, por favor tente novamente mais tarde."
+# -----------------------------------------------------------------------------
+
+# inputs validation
+account_deactivated: "Sua conta foi desativada, por favor entre em contato com o suporte. Se você não fez nenhuma alteração em sua conta, por favor mude sua senha."
+account_active: "Você já possui uma conta ativa conosco, agora você só precisa fazer login. Se você não fez nenhuma alteração em sua conta, por favor mude sua senha."
+activation_email: "Clique no link abaixo para ativar sua conta."
+account_created_successfully: "Conta criada com sucesso, por favor ative sua conta através do link enviado para seu e-mail."
+email_greeting: "Olá, como você está?"
+email_closing: "Atenciosamente."
+is_required: "Este campo é obrigatório."
+contains_too_many_characters: "Este campo contém caracteres demais."
+contains_disallowed_characters: "Este campo contém caracteres não permitidos."
+must_be_a_valid_email: "Deve ser um endereço de e-mail válido."
+must_be_at_least_8_characters_long: "Deve ter pelo menos 8 caracteres."
+must_contain_at_least_one_uppercase_letter: "Deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial."
+must_be_a_valid_link: "Deve ser um link válido."

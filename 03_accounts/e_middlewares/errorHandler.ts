@@ -58,7 +58,7 @@ const errorHandler = (
     res.status(400).json({
       status: "error",
       statusCode: 400,
-      message: "bad request, please check the data sent",
+      message: req.t("bad_request"),
       links: {
         self: req.originalUrl,
       }
@@ -87,7 +87,7 @@ const errorHandler = (
   res.status(500).json({
     status: "error",
     statusCode: 500,
-    message: "An error has occurred, please try again later",
+    message: req.t("server_error"),
     links: {
       self: req.originalUrl,
       next: '/',

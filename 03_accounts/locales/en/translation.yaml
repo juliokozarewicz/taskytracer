@@ -1,0 +1,24 @@
+# STANDARD
+# -----------------------------------------------------------------------------
+# error handler
+bad_request: "Bad request, please check the data sent."
+server_error: "An error has occurred, please try again later."
+
+# ##### rate limiter
+to_many_requests: "Too many requests, please try again later"
+# -----------------------------------------------------------------------------
+
+# inputs validation
+account_deactivated: "Your account has been deactivated, please contact support. If you haven't made any changes to your account, please change your password."
+account_active: "You already have an active account with us, now you just need to log in. If you haven't made any changes to your account, please change your password."
+activation_email: "Click the link below to activate your account."
+account_created_successfully: "Account created successfully, please activate your account through the link sent to your email."
+email_greeting: "Hello, how are you?"
+email_closing: "Best regards."
+is_required: "This field is required."
+contains_too_many_characters: "This field contains too many characters."
+contains_disallowed_characters: "This field contains disallowed characters."
+must_be_a_valid_email: "Must be a valid email address."
+must_be_at_least_8_characters_long: "Must be at least 8 characters long."
+must_contain_at_least_one_uppercase_letter: "Must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+must_be_a_valid_link: "Must be a valid link."

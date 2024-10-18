@@ -14,7 +14,7 @@ export class CreateAccountController {
     try {
       
       // validation
-      const validatedBody =  CreateAccountValidation.parse(req.body)
+      const validatedBody =  CreateAccountValidation(req).parse(req.body)
 
       // data object
       const validatedData = {

@@ -7,6 +7,7 @@ import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
 import errorHandler from './e_middlewares/errorHandler'
 import { i18nMiddleware } from './e_middlewares/i18n'
+import { rateLimiter } from './e_middlewares/rateLimiter';
 
 // load '.env'
 //----------------------------------------------------------------------
@@ -52,6 +53,11 @@ app.use(cors(corsOptions));
 
 // middlewares (INIT)
 // =============================================================================
+
+// rate limiter
+//----------------------------------------------------------------------
+app.use(rateLimiter)
+//----------------------------------------------------------------------
 
 // translation
 //----------------------------------------------------------------------
