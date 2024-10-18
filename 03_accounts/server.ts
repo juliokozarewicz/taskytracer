@@ -5,10 +5,10 @@ import { config } from "dotenv"
 const cors = require('cors');
 import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
-import ErrorHandler from './e_middlewares/ErrorHandler'
 import { i18nMiddleware } from './e_middlewares/i18n'
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
+import ErrorHandler from './e_middlewares/ErrorHandler';
 
 // load '.env'
 //----------------------------------------------------------------------

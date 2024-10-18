@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express from "express"
 import routes from "./routes"
 import { config } from "dotenv"
 import path from "path"
@@ -68,7 +68,7 @@ export const rateLimiter = rateLimit({
   message: (req: Request, res: Response) => ({
     status: "error",
     code: 429,
-    message: req.t('too_many_requests'),
+    message: (req as any).t('too_many_requests'),
   }),
   keyGenerator: (req: Request) => {
     const forwarded = req.headers['x-forwarded-for'];
