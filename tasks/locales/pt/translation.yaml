@@ -1,0 +1,12 @@
+# PADRÃO
+# -----------------------------------------------------------------------------
+# manipulador de erros
+bad_request: "Requisição inválida, por favor verifique os dados enviados."
+server_error: "Ocorreu um erro, por favor tente novamente mais tarde."
+
+# limitador de taxa
+too_many_requests: "Muitas requisições, por favor tente novamente mais tarde."
+# -----------------------------------------------------------------------------
+
+# criar categoria
+already_exists: "já existe"

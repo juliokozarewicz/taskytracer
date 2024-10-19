@@ -8,5 +8,5 @@ server_error: "An error has occurred, please try again later."
 too_many_requests: "Too many requests, please try again later"
 # -----------------------------------------------------------------------------
 
-# OTHERS
+# create category
 already_exists: "already exists"
