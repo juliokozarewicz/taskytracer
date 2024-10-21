@@ -5,6 +5,10 @@ import { DeleteCategoryValidationType } from '../b_validations/DeleteCategoryVal
 import { createCustomError } from '../e_middlewares/ErrorHandler'
 
 export class DeleteCategoryService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:DeleteCategoryValidationType
@@ -20,7 +24,7 @@ export class DeleteCategoryService {
 
         if (deleteCategoryResult.affected === 0) {
             throw createCustomError({
-                message: "category not found",
+                message: this.t("category_not_found"),
                 code: 404,
                 next: "/tasks/category/list-all",
                 prev: "/tasks/category/list-all",
@@ -31,7 +35,7 @@ export class DeleteCategoryService {
         return {
             "status": 'success',
             "code": 200,
-            "message": "successfully deleted",
+            "message": this.t("successfully_deleted"),
             "links": {
                 "next": '/tasks/category/list-all',
                 "prev": '/tasks/category/list-all',

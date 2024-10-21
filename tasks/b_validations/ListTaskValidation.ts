@@ -1,58 +1,61 @@
-import { z } from 'zod';
+import { z } from 'zod'
+import { Request } from 'express'
 
-export const ListTaskValidation = z.object({
+export const ListTaskValidation = (req: Request) => {
+    return z.object({
 
     taskname: z.string()
-        .min(1, "is required")
-        .max(255, "contains too many characters")
+        .min(1, req.t("is_required"))
+        .max(255, req.t("too_many_characters"))
         .regex(
             /^[^<>&'"/]+$/,
-            "contains disallowed characters"
+            req.t("disallowed_characters")
         )
         .optional(),
 
     category: z.string()
-        .min(1, "is required")
-        .max(255, "contains too many characters")
+        .min(1, req.t("is_required"))
+        .max(255, req.t("too_many_characters"))
         .regex(
             /^[^<>&'"/]+$/,
-            "contains disallowed characters"
+            req.t("disallowed_characters")
         )
         .optional(),
 
     description: z.string()
-        .min(1, "is required")
-        .max(500, "contains too many characters")
+        .min(1, req.t("is_required"))
+        .max(500, req.t("too_many_characters"))
         .regex(
             /^[^<>&'"/]+$/,
-            "contains disallowed characters"
+            req.t("disallowed_characters")
         )
         .optional(),
 
     initduedate: z.string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, "must be in the format YYYY-MM-DD")
+        .regex(/^\d{4}-\d{2}-\d{2}$/, req.t("date_format"))
         .refine(date => !isNaN(Date.parse(date)), {
-            message: "must be a valid date",
+            message: req.t("valid_date"),
         })
         .optional(),
     
     endduedate: z.string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, "must be in the format YYYY-MM-DD")
+        .regex(/^\d{4}-\d{2}-\d{2}$/, req.t("date_format"))
         .refine(date => !isNaN(Date.parse(date)), {
-            message: "must be a valid date",
+            message: req.t("valid_date"),
         })
         .optional(),
 
     status: z.string()
-        .min(1, "is required")
-        .max(500, "contains too many characters")
+        .min(1, req.t("is_required"))
+        .max(500, req.t("too_many_characters"))
         .regex(
             /^[^<>&'"/]+$/,
-            "contains disallowed characters"
+            req.t("disallowed_characters")
         )
         .optional(),
 
-});
+    });
+};
 
 // types
-export type ListTaskValidationType = z.infer<typeof ListTaskValidation>;
+export type ListTaskValidationType = z.infer<ReturnType<typeof ListTaskValidation>>;

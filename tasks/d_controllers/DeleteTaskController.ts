@@ -20,7 +20,7 @@ export class DeleteTaskController {
             }
 
             // call execute
-            const deleteTaskService = new DeleteTaskService()
+            const deleteTaskService = new DeleteTaskService(req.t)
             const response = await deleteTaskService.execute(validatedData)
 
             //response

@@ -10,7 +10,7 @@ export class UpdateTaskController {
         try {
 
             // validation
-            const validatedBody = UpdateTaskValidation.parse({
+            const validatedBody = UpdateTaskValidation(req).parse({
                 updateId: req.params.updateId,
                 ...req.body,
             });
@@ -26,7 +26,7 @@ export class UpdateTaskController {
             }
 
             // call execute
-            const updateTaskService = new UpdateTaskService()
+            const updateTaskService = new UpdateTaskService(req.t)
             const response = await updateTaskService.execute(validatedData)
 
             //response

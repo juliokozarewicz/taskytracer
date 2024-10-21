@@ -38,7 +38,7 @@ export class CreateCategoryService {
         return {
             "status": 'success',
             "code": 201,
-            "message": `'${validatedData.categoryName}' created successfully`,
+            "message": `'${validatedData.categoryName}' ${this.t('created_successfully')}`,
             "idCreated": `${newCategory.id}`,
             "links": {
                 "self": '/tasks/category/create',

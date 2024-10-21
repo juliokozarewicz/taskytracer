@@ -14,7 +14,7 @@ export class CreateTaskController {
         try {
             
             // validation
-            const validatedBody =  CreateTaskValidation.parse(req.body)
+            const validatedBody =  CreateTaskValidation(req).parse(req.body)
 
             // data object
             const validatedData = {
@@ -26,7 +26,7 @@ export class CreateTaskController {
             }
 
             // call execute
-            const createTaskService = new CreateTaskService()
+            const createTaskService = new CreateTaskService(req.t)
             const response = await createTaskService.execute(validatedData)
 
             //response

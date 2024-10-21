@@ -8,7 +8,7 @@ export class ListAllCategoriesController {
         try {
 
             // call execute
-            const listAllCategoriesService = new ListAllCategoriesService()
+            const listAllCategoriesService = new ListAllCategoriesService(req.t)
             const response = await listAllCategoriesService.execute()
 
             //response

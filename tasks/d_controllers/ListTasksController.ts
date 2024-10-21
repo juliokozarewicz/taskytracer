@@ -27,7 +27,7 @@ export class ListTasksController {
 
             // validation (ZOD)
             //----------------------------------------------------------------
-            const validatingData = ListTaskValidation.parse(cleanedQuery)
+            const validatingData = ListTaskValidation(req).parse(cleanedQuery)
             //----------------------------------------------------------------
 
             // data object (escape)
@@ -44,7 +44,7 @@ export class ListTasksController {
 
             // call execute
             //----------------------------------------------------------------
-            const listAllTasksService = new ListAllTasksService()
+            const listAllTasksService = new ListAllTasksService(req.t)
             const response = await listAllTasksService.execute(validatedData)
             //----------------------------------------------------------------
 

@@ -14,7 +14,7 @@ export class CreateCategoryController {
         try {
 
             // validation
-            const validatedBody =  CreateCategoryValidation.parse(req.body)
+            const validatedBody =  CreateCategoryValidation(req).parse(req.body)
 
             // data init
             const validatedData = {

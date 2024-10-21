@@ -5,6 +5,10 @@ import { createCustomError } from '../e_middlewares/ErrorHandler'
 import { AppDataSource } from '../server'
 
 export class UpdateTaskService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:UpdateTaskValidationType
@@ -31,7 +35,7 @@ export class UpdateTaskService {
         // not found
         if (updateTask.affected === 0) {
             throw createCustomError({
-                message: "task not found",
+                message: this.t("task_not_found"),
                 code: 404,
                 next: "/tasks/list",
                 prev: "/tasks/list",
@@ -47,7 +51,7 @@ export class UpdateTaskService {
         return {
             "status": 'success',
             "code": 200,
-            "message": `'${updatedTask?.taskName}' updated successfully`,
+            "message": `'${updatedTask?.taskName}' ${this.t("successfully_updated")}`,
             "idUpdated": `${updatedTask?.id}`,
             "links": {
                 "self": '/tasks/create',

@@ -21,7 +21,7 @@ export class DeleteCategoryController {
             validatedData.categoryId = escape(validatedCategoryId.categoryId)
 
             // call execute
-            const deleteCategoryService = new DeleteCategoryService()
+            const deleteCategoryService = new DeleteCategoryService(req.t)
             const response = await deleteCategoryService.execute(validatedData)
 
             //response

@@ -3,6 +3,10 @@ import { AppDataSource } from '../server'
 import { CategoryEntity } from '../a_entities/CategoryEntity'
 
 export class ListAllCategoriesService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(): Promise<StandardResponse> {
 
@@ -19,7 +23,7 @@ export class ListAllCategoriesService {
         return {
             "status": 'success',
             "code": 200,
-            "message": "data received successfully",
+            "message": this.t("data_received_successfully"),
             "data": existingCategory,
             "meta": {
                 "total": existingCategory.length,

@@ -6,6 +6,10 @@ import { AppDataSource } from '../server'
 
 
 export class CreateTaskService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:CreateTaskValidationType
@@ -24,7 +28,7 @@ export class CreateTaskService {
 
         if (existingTask) {
             throw createCustomError({
-                "message": `'${existingTask.taskName}' already exists`,
+                "message": `'${existingTask.taskName}' ${this.t("already_exists")}`,
                 "code": 409,
                 "next": "/tasks/list",
                 "prev": "/tasks/list",
@@ -44,7 +48,7 @@ export class CreateTaskService {
         return {
             "status": 'success',
             "code": 201,
-            "message": `'${newTask.taskName}' created successfully`,
+            "message": `'${newTask.taskName}' ${this.t("created_successfully")}`,
             "idCreated": `${newTask.id}`,
             "links": {
                 "self": '/tasks/create',

@@ -9,4 +9,13 @@ too_many_requests: "Muitas requisições, por favor tente novamente mais tarde."
 # -----------------------------------------------------------------------------
 
 # criar categoria
-already_exists: "já existe"
+already_exists: "já existe."
+created_successfully: "criado com sucesso."
+too_many_characters: "contém muitos caracteres."
+disallowed_characters: "contém caracteres não permitidos."
+is_required: "é obrigatório."
+date_format: "precisa estar no formato YYYY-MM-DD."
+valid_date: "precisa ser uma data válida."
+category_not_found": "categoria não encontrada."
+successfully_deleted: "apagado com sucesso."
+data_received_successfully: "dados recebidos com sucesso."

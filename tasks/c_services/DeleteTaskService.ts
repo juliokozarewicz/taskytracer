@@ -6,6 +6,10 @@ import { TaskEntity } from '../a_entities/TaskEntity'
 
 
 export class DeleteTaskService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:DeleteTaskValidationType
@@ -21,7 +25,7 @@ export class DeleteTaskService {
 
         if (deleteTaskResult.affected === 0) {
             throw createCustomError({
-                message: "task not found",
+                message: this.t("task_not_found"),
                 code: 404,
                 next: "/tasks/list",
                 prev: "/tasks/list",
@@ -32,7 +36,7 @@ export class DeleteTaskService {
         return {
             "status": 'success',
             "code": 200,
-            "message": "successfully deleted",
+            "message": this.t("successfully_deleted"),
             "links": {
                 "next": '/tasks/list',
                 "prev": '/tasks/list',

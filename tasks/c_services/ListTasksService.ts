@@ -4,6 +4,10 @@ import { ListTaskValidationType } from '../b_validations/ListTaskValidation'
 import { AppDataSource } from '../server'
 
 export class ListAllTasksService {
+    private t: (key: string) => string;
+    constructor(t: (key: string) => string) {
+        this.t = t;
+    }
 
     async execute(
         validatedData:ListTaskValidationType
@@ -73,7 +77,7 @@ export class ListAllTasksService {
         return {
             "status": 'success',
             "code": 200,
-            "message": "data received successfully",
+            "message": this.t("data_received_successfully"),
             "data": existingTask,
             "meta": {
                 "total": existingTask.length,
