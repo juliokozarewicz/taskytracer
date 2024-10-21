@@ -12,9 +12,9 @@ import { EmailActivate } from "../a_entities/EmailActivate"
 
 export class CreateAccountService {
 
-    private t: (key: string) => string;
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(
@@ -155,7 +155,7 @@ export class CreateAccountService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
+            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(
                 email,
@@ -181,7 +181,7 @@ export class CreateAccountService {
         try {
             const emailService = new EmailService()
             const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
-            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`;
+            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(
                 email,

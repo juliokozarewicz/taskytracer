@@ -1,9 +1,10 @@
-import { z } from 'zod';
-import { Request } from 'express'; // Import Request from express
+import { z } from 'zod'
+import { Request } from 'express' // Import Request from express
 
 // Function to create a validation schema with translations
 export const CreateAccountValidation = (req: Request) => {
     return z.object({
+
         name: z.string()
             .min(1, req.t("is_required")) // Minimum length is 1 character
             .max(255, req.t("contains_too_many_characters")) // Maximum length is 255 characters
@@ -18,8 +19,9 @@ export const CreateAccountValidation = (req: Request) => {
         link: z.string()
             .url(req.t("must_be_a_valid_link")) // Must be a valid URL format
             .max(255, req.t("contains_too_many_characters")), // Maximum length is 255 characters
-    });
-};
+
+    })
+}
 
 // types
-export type CreateAccountValidationType = z.infer<ReturnType<typeof CreateAccountValidation>>; // Infer type from the validation schema
+export type CreateAccountValidationType = z.infer<ReturnType<typeof CreateAccountValidation>> // Infer type from the validation schema

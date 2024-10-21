@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import { CreateAccountService } from '../c_services/CreateAccountService';
-import { CreateAccountValidation } from '../b_validations/CreateAccountValidation';
+import { NextFunction, Request, Response } from 'express'
+import { CreateAccountService } from '../c_services/CreateAccountService'
+import { CreateAccountValidation } from '../b_validations/CreateAccountValidation'
 import { escape } from 'lodash'
 
 export class CreateAccountController {
