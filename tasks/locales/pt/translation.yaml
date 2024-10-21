@@ -1,14 +1,11 @@
-# PADRÃO
-# -----------------------------------------------------------------------------
-# manipulador de erros
+# Manipulador de erros
 bad_request: "Requisição inválida, por favor verifique os dados enviados."
 server_error: "Ocorreu um erro, por favor tente novamente mais tarde."
 
-# limitador de taxa
+# Limitador de taxa
 too_many_requests: "Muitas requisições, por favor tente novamente mais tarde."
-# -----------------------------------------------------------------------------
 
-# criar categoria
+# Criar categoria
 already_exists: "já existe."
 created_successfully: "criado com sucesso."
 too_many_characters: "contém muitos caracteres."
@@ -16,6 +13,8 @@ disallowed_characters: "contém caracteres não permitidos."
 is_required: "é obrigatório."
 date_format: "precisa estar no formato YYYY-MM-DD."
 valid_date: "precisa ser uma data válida."
-category_not_found": "categoria não encontrada."
+category_not_found: "categoria não encontrada."
 successfully_deleted: "apagado com sucesso."
 data_received_successfully: "dados recebidos com sucesso."
+task_not_found: "tarefa não encontrada."
+successfully_updated: "atualizado com sucesso."
