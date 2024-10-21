@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { Request } from 'express';
+import { z } from 'zod'
+import { Request } from 'express'
 
 export const CreateTaskValidation = (req: Request) => {
     return z.object({
@@ -43,8 +43,8 @@ export const CreateTaskValidation = (req: Request) => {
                 req.t("disallowed_characters")
             ),
 
-    });
-};
+    })
+}
 
 // types
-export type CreateTaskValidationType = z.infer<ReturnType<typeof CreateTaskValidation>>;
+export type CreateTaskValidationType = z.infer<ReturnType<typeof CreateTaskValidation>>

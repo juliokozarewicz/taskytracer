@@ -5,9 +5,10 @@ import { CategoryEntity } from '../a_entities/CategoryEntity'
 import { CreateCategoryValidationType } from '../b_validations/CreateCategoryValidation'
 
 export class CreateCategoryService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(

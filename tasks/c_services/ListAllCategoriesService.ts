@@ -3,9 +3,10 @@ import { AppDataSource } from '../server'
 import { CategoryEntity } from '../a_entities/CategoryEntity'
 
 export class ListAllCategoriesService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(): Promise<StandardResponse> {

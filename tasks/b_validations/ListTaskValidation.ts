@@ -54,8 +54,8 @@ export const ListTaskValidation = (req: Request) => {
         )
         .optional(),
 
-    });
-};
+    })
+}
 
 // types
-export type ListTaskValidationType = z.infer<ReturnType<typeof ListTaskValidation>>;
+export type ListTaskValidationType = z.infer<ReturnType<typeof ListTaskValidation>>

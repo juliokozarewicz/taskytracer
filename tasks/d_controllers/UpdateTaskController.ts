@@ -5,7 +5,11 @@ import { UpdateTaskService } from '../c_services/UpdateTaskService'
 
 export class UpdateTaskController {
 
-    async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async handle(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
 
         try {
 
@@ -13,7 +17,7 @@ export class UpdateTaskController {
             const validatedBody = UpdateTaskValidation(req).parse({
                 updateId: req.params.updateId,
                 ...req.body,
-            });
+            })
 
             // data object
             const validatedData = {

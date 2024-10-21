@@ -5,9 +5,10 @@ import { DeleteCategoryValidationType } from '../b_validations/DeleteCategoryVal
 import { createCustomError } from '../e_middlewares/ErrorHandler'
 
 export class DeleteCategoryService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(

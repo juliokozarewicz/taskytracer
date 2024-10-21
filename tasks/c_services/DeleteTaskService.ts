@@ -6,9 +6,10 @@ import { TaskEntity } from '../a_entities/TaskEntity'
 
 
 export class DeleteTaskService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(

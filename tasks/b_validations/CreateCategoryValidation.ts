@@ -12,8 +12,8 @@ export const CreateCategoryValidation = (req: Request) => {
                 req.t("disallowed_characters")
             ),
 
-    });
-};
+    })
+}
 
 // types
-export type CreateCategoryValidationType = z.infer<ReturnType<typeof CreateCategoryValidation>>;
+export type CreateCategoryValidationType = z.infer<ReturnType<typeof CreateCategoryValidation>>

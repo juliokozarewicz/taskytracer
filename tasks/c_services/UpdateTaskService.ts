@@ -5,9 +5,10 @@ import { createCustomError } from '../e_middlewares/ErrorHandler'
 import { AppDataSource } from '../server'
 
 export class UpdateTaskService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(
@@ -30,7 +31,7 @@ export class UpdateTaskService {
                 dueDate: validatedData.dueDate,
                 statusName: validatedData.statusName,
             }
-        );
+        )
 
         // not found
         if (updateTask.affected === 0) {
@@ -39,13 +40,13 @@ export class UpdateTaskService {
                 code: 404,
                 next: "/tasks/list",
                 prev: "/tasks/list",
-            });
+            })
         }
 
         // get updated data
         const updatedTask = await taskRepository.findOneBy({
             id: validatedData.updateId
-        });
+        })
         //-------------------------------------------------------------------------
 
         return {

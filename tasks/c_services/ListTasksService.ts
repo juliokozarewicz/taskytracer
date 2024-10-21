@@ -4,9 +4,10 @@ import { ListTaskValidationType } from '../b_validations/ListTaskValidation'
 import { AppDataSource } from '../server'
 
 export class ListAllTasksService {
-    private t: (key: string) => string;
+
+    private t: (key: string) => string
     constructor(t: (key: string) => string) {
-        this.t = t;
+        this.t = t
     }
 
     async execute(
@@ -38,20 +39,20 @@ export class ListAllTasksService {
             )
         }
         if (validatedData.initduedate || validatedData.endduedate) {
-            const conditions: string[] = [];
-            const parameters: { [key: string]: any } = {};
+            const conditions: string[] = []
+            const parameters: { [key: string]: any } = {}
 
             if (validatedData.initduedate) {
-                conditions.push('task.dueDate >= :initDueDate');
-                parameters.initDueDate = new Date(validatedData.initduedate);
+                conditions.push('task.dueDate >= :initDueDate')
+                parameters.initDueDate = new Date(validatedData.initduedate)
             }
 
             if (validatedData.endduedate) {
-                conditions.push('task.dueDate <= :endDueDate');
-                parameters.endDueDate = new Date(validatedData.endduedate);
+                conditions.push('task.dueDate <= :endDueDate')
+                parameters.endDueDate = new Date(validatedData.endduedate)
             }
 
-            queryBuilder.andWhere(conditions.join(' AND '), parameters);
+            queryBuilder.andWhere(conditions.join(' AND '), parameters)
         }        
         if (validatedData.status) {
             queryBuilder.andWhere(
@@ -60,7 +61,7 @@ export class ListAllTasksService {
             )
         }
 
-        queryBuilder.orderBy('task.dueDate', 'ASC');
+        queryBuilder.orderBy('task.dueDate', 'ASC')
 
         const existingTask = await queryBuilder
             .select([

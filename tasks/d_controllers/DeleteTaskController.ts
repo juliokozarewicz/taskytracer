@@ -5,14 +5,18 @@ import { DeleteTaskService } from '../c_services/DeleteTaskService'
 
 export class DeleteTaskController {
 
-    async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async handle(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
 
         try {
 
             // validation
             const validatedBody = DeleteTaskValidation.parse({
                 deleteId: req.params.deleteId,
-            });
+            })
 
             // data object
             const validatedData = {

@@ -3,7 +3,11 @@ import { ListAllCategoriesService } from '../c_services/ListAllCategoriesService
 
 export class ListAllCategoriesController {
 
-    async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async handle(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
 
         try {
 

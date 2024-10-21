@@ -5,7 +5,11 @@ import { escape } from 'lodash'
 
 export class DeleteCategoryController {
 
-    async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async handle(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
 
         try {
 

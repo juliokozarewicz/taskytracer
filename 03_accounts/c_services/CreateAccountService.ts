@@ -11,6 +11,7 @@ import { EmailActivate } from "../a_entities/EmailActivate"
 
 
 export class CreateAccountService {
+
     private t: (key: string) => string;
     constructor(t: (key: string) => string) {
         this.t = t;
@@ -122,6 +123,7 @@ export class CreateAccountService {
 
     // password hash
     private async hashPassword(password: string): Promise<string> {
+
         try {
             const saltRounds = 12
             return bcrypt.hash(password, saltRounds)
@@ -132,12 +134,14 @@ export class CreateAccountService {
                 `${error}`
             )
         }
+
     }
 
     // send email with code
     private async sendEmailCode(
         email: string, textSend: string, link: string
     ): Promise<string> {
+
         try {
             const emailService = new EmailService()
             const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
@@ -173,6 +177,7 @@ export class CreateAccountService {
     private async sendEmailText(
         email: string, textSend: string
     ): Promise<void> {
+
         try {
             const emailService = new EmailService()
             const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`

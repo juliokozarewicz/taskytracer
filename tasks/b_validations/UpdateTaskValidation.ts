@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 import { Request } from 'express'
 
 export const UpdateTaskValidation  = (req: Request) => {
@@ -51,8 +51,8 @@ export const UpdateTaskValidation  = (req: Request) => {
         )
         .optional(),
 
-    });
-};
+    })
+}
 
 // types
-export type UpdateTaskValidationType = z.infer<ReturnType<typeof UpdateTaskValidation>>;
+export type UpdateTaskValidationType = z.infer<ReturnType<typeof UpdateTaskValidation>>
