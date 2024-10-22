@@ -144,7 +144,7 @@ export class CreateAccountService {
 
         try {
             const emailService = new EmailService()
-            const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
+            const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
 
             const hashString = `${Date.now()*135}${email}${process.env.SECURITY_CODE}`
             const codeAccount = createHash('sha256').update(hashString).digest('hex')
@@ -180,7 +180,7 @@ export class CreateAccountService {
 
         try {
             const emailService = new EmailService()
-            const subject = `[${packageJson.application_name.toUpperCase()}] - Account Service`
+            const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
             const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(
