@@ -14,7 +14,7 @@ account_active: "You already have an active account with us, now you just need t
 activation_email: "Click the link below to activate your account."
 account_created_successfully: "Account created successfully, please activate your account through the link sent to your email."
 email_greeting: "Hello, how are you?"
-email_closing: "Best regards."
+email_closing: "Best regards"
 is_required: "This field is required."
 contains_too_many_characters: "This field contains too many characters."
 contains_disallowed_characters: "This field contains disallowed characters."

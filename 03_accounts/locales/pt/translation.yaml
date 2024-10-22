@@ -14,7 +14,7 @@ account_active: "Você já possui uma conta ativa conosco, agora você só preci
 activation_email: "Clique no link abaixo para ativar sua conta."
 account_created_successfully: "Conta criada com sucesso, por favor, ative sua conta através do link enviado para seu e-mail."
 email_greeting: "Olá, como você está?"
-email_closing: "Atenciosamente."
+email_closing: "Atenciosamente"
 is_required: "Este campo é obrigatório."
 contains_too_many_characters: "Este campo contém muitos caracteres."
 contains_disallowed_characters: "Este campo contém caracteres não permitidos."
