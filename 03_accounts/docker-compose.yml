@@ -1,7 +1,7 @@
 services:
-  helloworld:
+  accounts:
     build: .
     env_file:
       - .env
     ports:
-      - "${HELLOWORLD_PORT}:${HELLOWORLD_PORT}"
+      - "${ACCOUNTS_HOST}:${ACCOUNTS_PORT}"
