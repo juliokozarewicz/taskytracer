@@ -124,14 +124,18 @@ export class CreateAccountService {
     private async hashPassword(password: string): Promise<string> {
 
         try {
+
             const saltRounds = 12
             return bcrypt.hash(password, saltRounds)
+
         } catch (error) {
+
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.hashPassword()] ` +
                 `${error}`
             )
+
         }
 
     }
@@ -142,6 +146,7 @@ export class CreateAccountService {
     ): Promise<string> {
 
         try {
+
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
 
@@ -163,13 +168,17 @@ export class CreateAccountService {
             )
 
             return codeAccount
+
         } catch (error) {
+
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.sendEmailCode()] ` +
                 `${error}`
             )
+
         }
+
     }
 
     // send email text
@@ -178,6 +187,7 @@ export class CreateAccountService {
     ): Promise<void> {
 
         try {
+
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
             const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
@@ -187,13 +197,17 @@ export class CreateAccountService {
                 subject,
                 message
             )
+
         } catch (error) {
+
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.sendEmailText()] ` +
                 `${error}`
             )
+
         }
+
     }
 
 }

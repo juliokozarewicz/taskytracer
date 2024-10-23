@@ -77,6 +77,7 @@ export class ResendEmailCodeService {
     ): Promise<string> {
 
         try {
+
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
 
@@ -98,13 +99,17 @@ export class ResendEmailCodeService {
             )
 
             return codeAccount
+
         } catch (error) {
+
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.sendEmailCode()] ` +
                 `${error}`
             )
+
         }
+
     }
 
     // send email text
@@ -113,6 +118,7 @@ export class ResendEmailCodeService {
     ): Promise<void> {
 
         try {
+
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
             const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
@@ -122,13 +128,17 @@ export class ResendEmailCodeService {
                 subject,
                 message
             )
+
         } catch (error) {
+
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.sendEmailText()] ` +
                 `${error}`
             )
+
         }
+
     }
 
 }
