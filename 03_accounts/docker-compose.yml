@@ -4,4 +4,4 @@ services:
     env_file:
       - .env
     ports:
-      - "${ACCOUNTS_HOST}:${ACCOUNTS_PORT}"
+      - "${ACCOUNTS_PORT}:${ACCOUNTS_PORT}"
