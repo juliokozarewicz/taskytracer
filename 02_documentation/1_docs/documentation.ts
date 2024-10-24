@@ -970,7 +970,7 @@ const documentation = {
     // --------------------------------------------------
     "/accounts/resend-code": {
       post: {
-        summary: "Resend Activation Email Code",
+        summary: "Resend activation email code",
         description: "Sends a new activation email code to the specified email address. The email must be registered in the system.",
         security: [
           {
