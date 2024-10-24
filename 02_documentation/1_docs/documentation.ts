@@ -28,7 +28,7 @@ const documentation = {
     // --------------------------------------------------
     "/helloworld/helloworld": {
       get: {
-        summary: "Get Hello World Message",
+        summary: "Get hello world message",
         description: "Retrieves a hello world message. You can optionally provide a custom message via query parameter.",
         tags: ["HELLO WORLD"],
         parameters: [
