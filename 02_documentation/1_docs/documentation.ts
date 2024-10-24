@@ -967,7 +967,86 @@ const documentation = {
         }
       }
     },
-    // --------------------------------------------------    
+    // --------------------------------------------------
+    "/accounts/resend-code": {
+      post: {
+        summary: "Resend Activation Email Code",
+        description: "Sends a new activation email code to the specified email address. The email must be registered in the system.",
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    format: "email",
+                    example: "user@example.com"
+                  },
+                  link: {
+                    type: "string",
+                    format: "uri",
+                    example: "https://example.com/activate"
+                  }
+                },
+                required: ["email", "link"]
+              }
+            }
+          }
+        },
+        responses: {
+          "201": {
+            description: "Activation email code resent successfully.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 201
+                    },
+                    message: {
+                      type: "string",
+                      example: "Please activate your account through the link sent to your email."
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/resend-code"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/activate-email"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+        }
+      }
+    },
+    // --------------------------------------------------
   }
 };
 

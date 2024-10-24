@@ -3,7 +3,6 @@ const packageJson = require('../package.json')
 import { AccountUserEntity } from "../a_entities/AccountUserEntity";
 import { ResendEmailCodeValidationType } from "../b_validations/ResendEmailCodeValidation";
 import { StandardResponse } from "../f_utils/StandardResponse"
-import { t } from 'i18next';
 import { AppDataSource } from "../server";
 import { EmailService } from "../f_utils/EmailSend";
 import { EmailActivate } from '../a_entities/EmailActivate';
@@ -33,6 +32,7 @@ export class ResendEmailCodeService {
 
             // commit code in db transaction
             // ------------------------------------------------------------------------------
+
             await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
 
                 // send email with code
@@ -54,6 +54,7 @@ export class ResendEmailCodeService {
 
                 await emailCodeTransaction.save(newEmailActivate)
             })
+
             // ------------------------------------------------------------------------------
 
         }
@@ -61,7 +62,7 @@ export class ResendEmailCodeService {
         return {
             status: 'success',
             code: 201,
-            message: t('resend_successfully'),
+            message: this.t('resend_successfully'),
             links: {
                 self: '/accounts/resend-code',
                 next: '/accounts/activate-email',
