@@ -61,7 +61,7 @@ export class ResendEmailCodeService {
 
         return {
             status: 'success',
-            code: 201,
+            code: 200,
             message: this.t('resend_successfully'),
             links: {
                 self: '/accounts/resend-code',
