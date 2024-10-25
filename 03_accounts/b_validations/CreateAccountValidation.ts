@@ -17,8 +17,9 @@ export const CreateAccountValidation = (req: Request) => {
             .max(255, req.t("contains_too_many_characters")) // Maximum length is 255 characters
             .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/, req.t("must_contain_at_least_one_uppercase_letter")), // Must include at least one uppercase letter, one lowercase letter, one number, and one special character
         link: z.string()
-            .url(req.t("must_be_a_valid_link")) // Must be a valid URL format
-            .max(255, req.t("contains_too_many_characters")), // Maximum length is 255 characters
+            .min(1, req.t("is_required"))
+            .url(req.t("must_be_a_valid_link"))
+            .max(255, req.t("contains_too_many_characters")),
 
     })
 }

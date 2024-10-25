@@ -1047,6 +1047,84 @@ const documentation = {
       }
     },
     // --------------------------------------------------
+    "/accounts/activate-email": {
+      post: {
+        summary: "Activate email",
+        description: "Activates a user's email address using a provided code.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    format: "email",
+                    example: "user@example.com"
+                  },
+                  code: {
+                    type: "string",
+                    example: "123456"
+                  }
+                },
+                required: ["email", "code"]
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Email activated successfully.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Your email has been successfully activated."
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/activate-email"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/login"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/resend-code"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        security: [
+          {
+            BearerAuth: []
+          }
+        ]
+      }
+    },
+    // --------------------------------------------------
   }
 };
 

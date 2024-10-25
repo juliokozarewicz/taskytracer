@@ -8,9 +8,7 @@ export const ActivateEmailValidation = (req: Request) => {
             .email(req.t("must_be_a_valid_email"))
             .max(255, req.t("contains_too_many_characters")),
         code: z.string()
-            .length(200, req.t("contains_too_many_characters")),
-        urlRedirect: z.string()
-            .url(req.t("must_be_a_valid_link"))
+            .min(1, req.t("is_required"))
             .max(255, req.t("contains_too_many_characters")),
 
     })

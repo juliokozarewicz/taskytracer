@@ -21,6 +21,44 @@ export class ActivateEmailService {
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
 
+        // search for code and email
+        const existingCodeStored = await emailCodeRepository.findOne({
+            where: {
+                email: validatedData.email.toLowerCase(),
+                code: validatedData.code
+            }
+        })
+
+        // active email
+        if (existingCodeStored) {
+
+            const user = await userRepository.findOne({
+                where: { email: validatedData.email.toLowerCase() }
+            });
+        
+            if (user) {
+                user.isEmailConfirmed = true;
+                await userRepository.save(user);
+            }
+
+            await emailCodeRepository.delete({ email: validatedData.email.toLowerCase() })
+        }
+
+        if (!existingCodeStored) {
+
+            return {
+                status: 'error',
+                code: 404,
+                message: this.t('activate_email_error'),
+                links: {
+                    self: '/accounts/resend-code',
+                    next: '/accounts/activate-email',
+                    prev: '/accounts/login',
+                }
+            }
+
+        }
+
         return {
             status: 'success',
             code: 200,
