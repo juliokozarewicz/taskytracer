@@ -40,7 +40,7 @@ const ErrorHandler = (
   if (err.name === 'CustomErrorHandler') {
     res.status(err.code).json({
       status: "error",
-      statusCode: err.code,
+      code: err.code,
       message: err.message,
       links: {
         self: req.originalUrl,
@@ -57,7 +57,7 @@ const ErrorHandler = (
   if (err instanceof SyntaxError) {
     res.status(400).json({
       status: "error",
-      statusCode: 400,
+      code: 400,
       message: req.t("bad_request"),
       links: {
         self: req.originalUrl,
@@ -72,7 +72,7 @@ const ErrorHandler = (
   if (err instanceof z.ZodError) {
     res.status(400).json({
       status: "error",
-      statusCode: 400,
+      code: 400,
       field: `${err.errors[0].path}`,
       message: `${err.errors[0].message}`,
       links: {
@@ -87,7 +87,7 @@ const ErrorHandler = (
   //------------------------------------------------------------------------
   res.status(500).json({
     status: "error",
-    statusCode: 500,
+    code: 500,
     message: req.t("server_error"),
     links: {
       self: req.originalUrl,

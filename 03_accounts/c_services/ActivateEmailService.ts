@@ -6,6 +6,7 @@ import { AppDataSource } from "../server";
 import { EmailService } from "../f_utils/EmailSend";
 import { EmailActivate } from '../a_entities/EmailActivate';
 import { ActivateEmailValidationType } from '../b_validations/ActivateEmailValidation';
+import { createCustomError } from '../e_middlewares/ErrorHandler';
 
 export class ActivateEmailService {
 
@@ -29,35 +30,45 @@ export class ActivateEmailService {
             }
         })
 
-        // active email
-        if (existingCodeStored) {
+        // existing user
+        const existingUser = await userRepository.findOne({
+            where: { email: validatedData.email.toLowerCase() }
+        });
 
-            const user = await userRepository.findOne({
+        // active email
+        if (
+            existingCodeStored &&
+            existingUser &&
+            !existingUser.isEmailConfirmed
+        ) {
+
+            // get user
+            const existingUser = await userRepository.findOne({
                 where: { email: validatedData.email.toLowerCase() }
             });
-        
-            if (user) {
-                user.isEmailConfirmed = true;
-                await userRepository.save(user);
+            
+            // commit database
+            if (existingUser) {
+                existingUser.isEmailConfirmed = true;
+                await userRepository.save(existingUser);
             }
 
-            await emailCodeRepository.delete({ email: validatedData.email.toLowerCase() })
         }
 
+        // existing code stored
         if (!existingCodeStored) {
 
-            return {
-                status: 'error',
-                code: 404,
-                message: this.t('activate_email_error'),
-                links: {
-                    self: '/accounts/resend-code',
-                    next: '/accounts/activate-email',
-                    prev: '/accounts/login',
-                }
-            }
+            throw createCustomError({
+                "message": `${this.t('activate_email_error')}`,
+                "code": 404,
+                "next": "/accounts/activate-email",
+                "prev": "/accounts/login",
+            })
 
         }
+
+        // delete all codes
+        await emailCodeRepository.delete({ email: validatedData.email.toLowerCase() })
 
         return {
             status: 'success',

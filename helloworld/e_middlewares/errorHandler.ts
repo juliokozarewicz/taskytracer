@@ -40,7 +40,7 @@ const errorHandler = (
   if (err.name === 'CustomErrorHandler') {
     res.status(err.code).json({
       status: "error",
-      statusCode: err.code,
+      code: err.code,
       message: err.message,
       links: {
         self: req.originalUrl,
@@ -57,7 +57,7 @@ const errorHandler = (
   if (err instanceof SyntaxError) {
     res.status(400).json({
       status: "error",
-      statusCode: 400,
+      code: 400,
       message: "bad request, please check the data sent",
       links: {
         self: req.originalUrl,
@@ -71,7 +71,7 @@ const errorHandler = (
   //------------------------------------------------------------------------
   res.status(500).json({
     status: "error",
-    statusCode: 500,
+    code: 500,
     message: "An error has occurred, please try again later",
     links: {
       self: req.originalUrl,
