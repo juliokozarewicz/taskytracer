@@ -157,7 +157,7 @@ http {
         }
 
         # [ ACCOUNTS ]
-        location /accounts/resend-code {
+        location /accounts/activate-email-link {
             proxy_pass $ACCOUNTS_HOST:$ACCOUNTS_PORT;
             proxy_set_header Host host;
             proxy_set_header X-Real-IP remote_addr;

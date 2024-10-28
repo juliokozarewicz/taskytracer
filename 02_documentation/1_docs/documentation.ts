@@ -968,7 +968,7 @@ const documentation = {
       }
     },
     // --------------------------------------------------
-    "/accounts/resend-code": {
+    "/accounts/activate-email-link": {
       post: {
         summary: "Resend activation email code",
         description: "Sends a new activation email code to the specified email address. The email must be registered in the system.",
@@ -1026,7 +1026,7 @@ const documentation = {
                       properties: {
                         self: {
                           type: "string",
-                          example: "/accounts/resend-code"
+                          example: "/accounts/activate-email-link"
                         },
                         next: {
                           type: "string",
@@ -1107,7 +1107,7 @@ const documentation = {
                         },
                         prev: {
                           type: "string",
-                          example: "/accounts/resend-code"
+                          example: "/accounts/activate-email-link"
                         }
                       }
                     }
