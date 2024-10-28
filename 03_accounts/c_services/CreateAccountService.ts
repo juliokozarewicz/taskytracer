@@ -52,7 +52,7 @@ export class CreateAccountService {
                 // code commit db
                 const newEmailActivate = new EmailActivate()
                 newEmailActivate.createdAt = new Date()
-                newEmailActivate.code = codeAccount
+                newEmailActivate.code = codeAccount + "_activate-email"
                 newEmailActivate.email = existingUser.email.toLowerCase()
                 newEmailActivate.user = existingUser
 
@@ -99,7 +99,7 @@ export class CreateAccountService {
                 // code commit db
                 const newEmailActivate = new EmailActivate()
                 newEmailActivate.createdAt = new Date()
-                newEmailActivate.code = codeAccount
+                newEmailActivate.code = codeAccount + "_activate-email"
                 newEmailActivate.email = savedUser.email.toLowerCase()
                 newEmailActivate.user = savedUser
                 await commitUserTransaction.save(newEmailActivate)

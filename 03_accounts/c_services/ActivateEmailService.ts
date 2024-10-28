@@ -26,7 +26,7 @@ export class ActivateEmailService {
         const existingCodeStored = await emailCodeRepository.findOne({
             where: {
                 email: validatedData.email.toLowerCase(),
-                code: validatedData.code
+                code: validatedData.code + "_activate-email"
             }
         })
 
@@ -38,6 +38,7 @@ export class ActivateEmailService {
         // active email
         if (
             existingCodeStored &&
+            existingCodeStored.code.split('_').pop() === "activate-email" &&
             existingUser &&
             !existingUser.isEmailConfirmed
         ) {

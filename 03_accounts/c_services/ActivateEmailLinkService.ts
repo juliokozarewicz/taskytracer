@@ -48,7 +48,7 @@ export class ActivateEmailLinkService {
                 // code commit db
                 const newEmailActivate = new EmailActivate()
                 newEmailActivate.createdAt = new Date()
-                newEmailActivate.code = codeAccount
+                newEmailActivate.code = codeAccount + "_activate-email"
                 newEmailActivate.email = existingUser.email.toLowerCase()
                 newEmailActivate.user = existingUser
 
