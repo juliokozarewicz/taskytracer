@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { Request } from 'express'
 
 // Function to create a validation schema with translations
-export const ResendEmailCodeValidation = (req: Request) => {
+export const ActivateEmailLinkValidation = (req: Request) => {
     return z.object({
 
         email: z.string()
@@ -17,4 +17,4 @@ export const ResendEmailCodeValidation = (req: Request) => {
 }
 
 // types
-export type ResendEmailCodeValidationType = z.infer<ReturnType<typeof ResendEmailCodeValidation>> 
+export type ActivateEmailLinkValidationType = z.infer<ReturnType<typeof ActivateEmailLinkValidation>> 

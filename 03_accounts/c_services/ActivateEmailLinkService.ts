@@ -1,13 +1,13 @@
 import { createHash } from 'crypto'
 const packageJson = require('../package.json')
 import { AccountUserEntity } from "../a_entities/AccountUserEntity";
-import { ResendEmailCodeValidationType } from "../b_validations/ResendEmailCodeValidation";
 import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server";
 import { EmailService } from "../f_utils/EmailSend";
 import { EmailActivate } from '../a_entities/EmailActivate';
+import { ActivateEmailLinkValidationType } from '../b_validations/ActivateEmailLinkValidation';
 
-export class ResendEmailCodeService {
+export class ActivateEmailLinkService {
 
     private t: (key: string) => string
     constructor(t: (key: string) => string) {
@@ -15,7 +15,7 @@ export class ResendEmailCodeService {
     }
 
     async execute(
-        validatedData: ResendEmailCodeValidationType,
+        validatedData: ActivateEmailLinkValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)

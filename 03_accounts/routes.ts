@@ -12,7 +12,7 @@ const activeEmailController = new ActiveEmailController()
 
 // routes
 router.post('/signup', createAccountController.handle.bind(createAccountController))
-router.post('/resend-code', resendEmailController.handle.bind(resendEmailController))
+router.post('/activate-email-link', resendEmailController.handle.bind(resendEmailController))
 router.post('/activate-email', activeEmailController.handle.bind(activeEmailController))
 
 export default router

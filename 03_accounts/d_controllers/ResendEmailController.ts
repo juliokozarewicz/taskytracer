@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
-import { ResendEmailCodeValidation } from '../b_validations/ResendEmailCodeValidation'
-import { ResendEmailCodeService } from '../c_services/ResendEmailCodeService'
+import { ActivateEmailLinkService } from '../c_services/ActivateEmailLinkService'
+import { ActivateEmailLinkValidation } from '../b_validations/ActivateEmailLinkValidation'
 
 export class ResendEmailController {
 
@@ -20,7 +20,7 @@ export class ResendEmailController {
     try {
 
       // validation
-      const validatedBody =  ResendEmailCodeValidation(req).parse(req.body)
+      const validatedBody =  ActivateEmailLinkValidation(req).parse(req.body)
 
       // data object
       const validatedData = {
@@ -29,7 +29,7 @@ export class ResendEmailController {
       }
 
       // call execute
-      const resendEmailCodeService = new ResendEmailCodeService(req.t)
+      const resendEmailCodeService = new ActivateEmailLinkService(req.t)
       const response = await resendEmailCodeService.execute(validatedData)
 
       //response
