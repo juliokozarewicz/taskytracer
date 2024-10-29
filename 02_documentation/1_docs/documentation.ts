@@ -1171,7 +1171,7 @@ const documentation = {
                     },
                     message: {
                       type: "string",
-                      example: "Altere sua senha clicando no link enviado ao seu email."
+                      example: "Change your password by clicking the link sent to your email."
                     },
                     links: {
                       type: "object",
@@ -1195,8 +1195,46 @@ const documentation = {
               }
             }
           },
-          "400": {
-            description: "Invalid request data.",
+        }
+      }
+    },
+    // --------------------------------------------------
+    "/accounts/change-password": {
+      patch: {
+        summary: "Change user password",
+        description: "Allows a user to change their password using a valid email, a password, and a verification code.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    example: "user@example.com",
+                    description: "The email address of the user changing their password."
+                  },
+                  password: {
+                    type: "string",
+                    example: "P@ssw0rd123",
+                    description: "The new password for the user. Must be at least 8 characters long and contain uppercase letters, digits, and special characters."
+                  },
+                  code: {
+                    type: "string",
+                    example: "123456",
+                    description: "The verification code sent to the user's email for changing the password."
+                  }
+                },
+                required: ["email", "password", "code"]
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Password changed successfully.",
             content: {
               "application/json": {
                 schema: {
@@ -1204,45 +1242,38 @@ const documentation = {
                   properties: {
                     status: {
                       type: "string",
-                      example: "error"
+                      example: "success"
                     },
                     code: {
                       type: "integer",
-                      example: 400
+                      example: 200
                     },
                     message: {
                       type: "string",
-                      example: "must_be_a_valid_email"
+                      example: "Password changed successfully. Please log in to continue."
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/change-password"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/login"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/change-password-link"
+                        }
+                      }
                     }
                   }
                 }
               }
             }
           },
-          "404": {
-            description: "User not found.",
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    status: {
-                      type: "string",
-                      example: "error"
-                    },
-                    code: {
-                      type: "integer",
-                      example: 404
-                    },
-                    message: {
-                      type: "string",
-                      example: "User not found."
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },

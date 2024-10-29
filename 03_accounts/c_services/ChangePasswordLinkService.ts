@@ -1,11 +1,11 @@
 import { createHash } from 'crypto'
 const packageJson = require('../package.json')
-import { AccountUserEntity } from "../a_entities/AccountUserEntity";
+import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { StandardResponse } from "../f_utils/StandardResponse"
-import { AppDataSource } from "../server";
-import { EmailService } from "../f_utils/EmailSend";
-import { EmailActivate } from '../a_entities/EmailActivate';
-import { ChangePasswordLinkValidationType } from '../b_validations/ChangePasswordLinkValidation';
+import { AppDataSource } from "../server"
+import { EmailService } from "../f_utils/EmailSend"
+import { EmailActivate } from '../a_entities/EmailActivate'
+import { ChangePasswordLinkValidationType } from '../b_validations/ChangePasswordLinkValidation'
 
 export class ChangePasswordLinkService {
 
@@ -64,7 +64,7 @@ export class ChangePasswordLinkService {
             code: 200,
             message: this.t('change_password_sent_ok'),
             links: {
-                self: '/accounts/resend-code',
+                self: '/accounts/activate-email-link',
                 next: '/accounts/activate-email',
                 prev: '/accounts/login',
             }

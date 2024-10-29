@@ -64,7 +64,7 @@ export class ActivateEmailLinkService {
             code: 200,
             message: this.t('resend_successfully'),
             links: {
-                self: '/accounts/resend-code',
+                self: '/accounts/activate-email-link',
                 next: '/accounts/activate-email',
                 prev: '/accounts/login',
             }

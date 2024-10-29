@@ -2,10 +2,11 @@ import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server"
 import { EmailActivate } from '../a_entities/EmailActivate'
-import { ActivateEmailValidationType } from '../b_validations/ActivateEmailValidation'
+import { ChangePasswordValidationType } from '../b_validations/ChangePasswordValidation'
 import { createCustomError } from '../e_middlewares/ErrorHandler'
+import bcrypt from 'bcrypt'
 
-export class ActivateEmailService {
+export class ChangePasswordService {
 
     private t: (key: string) => string
     constructor(t: (key: string) => string) {
@@ -13,7 +14,7 @@ export class ActivateEmailService {
     }
 
     async execute(
-        validatedData: ActivateEmailValidationType,
+        validatedData: ChangePasswordValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
@@ -23,7 +24,7 @@ export class ActivateEmailService {
         const existingCodeStored = await emailCodeRepository.findOne({
             where: {
                 email: validatedData.email.toLowerCase(),
-                code: validatedData.code + "_activate-email"
+                code: validatedData.code + "_change-password"
             }
         })
 
@@ -32,22 +33,21 @@ export class ActivateEmailService {
             where: { email: validatedData.email.toLowerCase() }
         })
 
-        // active email
+        // change password
         if (
             existingCodeStored &&
-            existingCodeStored.code.split('_').pop() === "activate-email" &&
-            existingUser &&
-            !existingUser.isEmailConfirmed
+            existingCodeStored.code.split('_').pop() === "change-password" &&
+            existingUser
         ) {
 
             // get user
             const existingUser = await userRepository.findOne({
                 where: { email: validatedData.email.toLowerCase() }
             })
-            
+
             // commit database
             if (existingUser) {
-                existingUser.isEmailConfirmed = true
+                existingUser.password = await this.hashPassword(validatedData.password)
                 await userRepository.save(existingUser)
             }
 
@@ -57,9 +57,9 @@ export class ActivateEmailService {
         if (!existingCodeStored) {
 
             throw createCustomError({
-                "message": `${this.t('activate_email_error')}`,
+                "message": `${this.t('change_password_error')}`,
                 "code": 404,
-                "next": "/accounts/activate-email-link",
+                "next": "/accounts/change-password-link",
                 "prev": "/accounts/login",
             })
 
@@ -73,12 +73,32 @@ export class ActivateEmailService {
         return {
             status: 'success',
             code: 200,
-            message: this.t('email_activate'),
+            message: this.t('change_password_ok'),
             links: {
-                self: '/accounts/activate-email',
-                next: '/accounts/login',
-                prev: '/accounts/activate-email-link',
+                self: '/accounts/change-password',
+                next: '/accountslogin',
+                prev: '/accounts/change-password-link',
             }
+        }
+
+    }
+
+    // password hash
+    private async hashPassword(password: string): Promise<string> {
+
+        try {
+
+            const saltRounds = 12
+            return bcrypt.hash(password, saltRounds)
+
+        } catch (error) {
+
+            throw new Error(
+                `[./c_services/CreateAccountService.ts] ` +
+                `[CreateAccountService.hashPassword()] ` +
+                `${error}`
+            )
+
         }
 
     }
