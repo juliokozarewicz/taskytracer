@@ -91,7 +91,9 @@ export class ActivateEmailLinkService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
+            const message = `${this.t('email_greeting')} \n\n${textSend} ` +
+                `\n\n${activationLink} \n\n${this.t('email_closing')}, ` +
+                `\n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(
                 email,

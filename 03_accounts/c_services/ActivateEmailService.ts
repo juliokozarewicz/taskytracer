@@ -69,7 +69,9 @@ export class ActivateEmailService {
         }
 
         // delete all codes
-        await emailCodeRepository.delete({ email: validatedData.email.toLowerCase() })
+        await emailCodeRepository.delete(
+            { email: validatedData.email.toLowerCase() }
+        )
 
         return {
             status: 'success',
@@ -103,7 +105,10 @@ export class ActivateEmailService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${activationLink} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
+            const message = `${this.t('email_greeting')} ` +
+                `\n\n${textSend} \n\n${activationLink} ` +
+                `\n\n${this.t('email_closing')}, ` +
+                `\n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(
                 email,
@@ -118,35 +123,6 @@ export class ActivateEmailService {
             throw new Error(
                 `[./c_services/CreateAccountService.ts] ` +
                 `[CreateAccountService.sendEmailCode()] ` +
-                `${error}`
-            )
-
-        }
-
-    }
-
-    // send email text
-    private async sendEmailText(
-        email: string, textSend: string
-    ): Promise<void> {
-
-        try {
-
-            const emailService = new EmailService()
-            const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
-            const message = `${this.t('email_greeting')} \n\n${textSend} \n\n${this.t('email_closing')}, \n${packageJson.application_name.toUpperCase()}`
-
-            await emailService.sendTextEmail(
-                email,
-                subject,
-                message
-            )
-
-        } catch (error) {
-
-            throw new Error(
-                `[./c_services/CreateAccountService.ts] ` +
-                `[CreateAccountService.sendEmailText()] ` +
                 `${error}`
             )
 
