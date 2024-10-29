@@ -26,3 +26,5 @@ resend_successfully:  "Por favor, ative sua conta através do link enviado para 
 email_activate: "Seu email foi ativado com sucesso."
 email_activate_error: "Ocorreu um erro ao ativar seu email, mais informações foram enviadas para sua caixa de mensagens."
 activate_email_error: "ocorreu um erro ao tentar ativar seu email, por favor refaça o processo."
+change_password_sent_ok: "Altere sua senha clicando no link enviado ao seu email."
+change_password: "Clique no link abaixo para redefinir sua senha."

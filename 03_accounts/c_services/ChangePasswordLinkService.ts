@@ -5,10 +5,9 @@ import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server";
 import { EmailService } from "../f_utils/EmailSend";
 import { EmailActivate } from '../a_entities/EmailActivate';
-import { ActivateEmailValidationType } from '../b_validations/ActivateEmailValidation';
-import { createCustomError } from '../e_middlewares/ErrorHandler';
+import { ChangePasswordLinkValidationType } from '../b_validations/ChangePasswordLinkValidation';
 
-export class ActivateEmailService {
+export class ChangePasswordLinkService {
 
     private t: (key: string) => string
     constructor(t: (key: string) => string) {
@@ -16,67 +15,54 @@ export class ActivateEmailService {
     }
 
     async execute(
-        validatedData: ActivateEmailValidationType,
+        validatedData: ChangePasswordLinkValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
 
-        // search for code and email
-        const existingCodeStored = await emailCodeRepository.findOne({
+        // existing user
+        const existingUser = await userRepository.findOne({
             where: {
-                email: validatedData.email.toLowerCase(),
-                code: validatedData.code + "_activate-email"
+                email: validatedData.email.toLowerCase()
             }
         })
 
-        // existing user
-        const existingUser = await userRepository.findOne({
-            where: { email: validatedData.email.toLowerCase() }
-        });
+        if (existingUser) {
 
-        // active email
-        if (
-            existingCodeStored &&
-            existingCodeStored.code.split('_').pop() === "activate-email" &&
-            existingUser &&
-            !existingUser.isEmailConfirmed
-        ) {
+            // commit code in db transaction
+            // ------------------------------------------------------------------------------
 
-            // get user
-            const existingUser = await userRepository.findOne({
-                where: { email: validatedData.email.toLowerCase() }
-            });
-            
-            // commit database
-            if (existingUser) {
-                existingUser.isEmailConfirmed = true;
-                await userRepository.save(existingUser);
-            }
+            await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
 
-        }
+                // send email with code
+                const codeAccount = await this.sendEmailCode(
+                    validatedData.email,
+                    this.t('change_password'),
+                    validatedData.link
+                )
 
-        // existing code stored
-        if (!existingCodeStored) {
+                // delete all old tokens
+                await emailCodeRepository.delete({ email: existingUser.email.toLowerCase() })
 
-            throw createCustomError({
-                "message": `${this.t('activate_email_error')}`,
-                "code": 404,
-                "next": "/accounts/activate-email-link",
-                "prev": "/accounts/login",
+                // code commit db
+                const newEmailActivate = new EmailActivate()
+                newEmailActivate.createdAt = new Date()
+                newEmailActivate.code = codeAccount + "_change-password"
+                newEmailActivate.email = existingUser.email.toLowerCase()
+                newEmailActivate.user = existingUser
+
+                await emailCodeTransaction.save(newEmailActivate)
             })
 
-        }
+            // ------------------------------------------------------------------------------
 
-        // delete all codes
-        await emailCodeRepository.delete(
-            { email: validatedData.email.toLowerCase() }
-        )
+        }
 
         return {
             status: 'success',
             code: 200,
-            message: this.t('email_activate'),
+            message: this.t('change_password_sent_ok'),
             links: {
                 self: '/accounts/resend-code',
                 next: '/accounts/activate-email',
@@ -105,9 +91,8 @@ export class ActivateEmailService {
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
-            const message = `${this.t('email_greeting')} ` +
-                `\n\n${textSend} \n\n${activationLink} ` +
-                `\n\n${this.t('email_closing')}, ` +
+            const message = `${this.t('email_greeting')} \n\n${textSend} ` +
+                `\n\n${activationLink} \n\n${this.t('email_closing')}, ` +
                 `\n${packageJson.application_name.toUpperCase()}`
 
             await emailService.sendTextEmail(

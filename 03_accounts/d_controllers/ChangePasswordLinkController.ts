@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
-import { ActivateEmailLinkService } from '../c_services/ActivateEmailLinkService'
-import { ActivateEmailLinkValidation } from '../b_validations/ActivateEmailLinkValidation'
+import { ChangePasswordLinkValidation } from '../b_validations/ChangePasswordLinkValidation'
+import { ChangePasswordLinkService } from '../c_services/ChangePasswordLinkService'
 
-export class ResendEmailController {
+export class ChangePasswordLinkController {
 
   async handle(
 
@@ -20,7 +20,7 @@ export class ResendEmailController {
     try {
 
       // validation
-      const validatedBody =  ActivateEmailLinkValidation(req).parse(req.body)
+      const validatedBody =  ChangePasswordLinkValidation(req).parse(req.body)
 
       // data object
       const validatedData = {
@@ -29,8 +29,8 @@ export class ResendEmailController {
       }
 
       // call execute
-      const resendEmailCodeService = new ActivateEmailLinkService(req.t)
-      const response = await resendEmailCodeService.execute(validatedData)
+      const changePasswordLinkService = new ChangePasswordLinkService(req.t)
+      const response = await changePasswordLinkService.execute(validatedData)
 
       //response
       res.status(response.code).json(response)

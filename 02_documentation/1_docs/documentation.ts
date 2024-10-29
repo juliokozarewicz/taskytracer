@@ -1125,6 +1125,128 @@ const documentation = {
       }
     },
     // --------------------------------------------------
+    "/accounts/change-password-link": {
+      post: {
+        summary: "Request a password change link",
+        description: "Sends a password change link to the user's email address. Requires a valid email and a link.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    example: "user@example.com",
+                    description: "The email address of the user requesting the password change."
+                  },
+                  link: {
+                    type: "string",
+                    example: "https://example.com/reset-password",
+                    description: "The URL link where the user can reset their password."
+                  }
+                },
+                required: ["email", "link"]
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Password change link sent successfully.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Altere sua senha clicando no link enviado ao seu email."
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/change-password-link"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/activate-email"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            description: "Invalid request data.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 400
+                    },
+                    message: {
+                      type: "string",
+                      example: "must_be_a_valid_email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            description: "User not found.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 404
+                    },
+                    message: {
+                      type: "string",
+                      example: "User not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    // --------------------------------------------------
   }
 };
 
