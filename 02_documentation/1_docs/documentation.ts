@@ -1278,6 +1278,128 @@ const documentation = {
       }
     },
     // --------------------------------------------------
+    "/accounts/login": {
+      post: {
+        summary: "User login",
+        description: "Allows a user to log in using their email and password. If successful, returns JWT and refresh tokens.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    example: "user@example.com",
+                    description: "The email address of the user logging in."
+                  },
+                  password: {
+                    type: "string",
+                    example: "P@ssw0rd123",
+                    description: "The password of the user. Must be at least 8 characters long."
+                  }
+                },
+                required: ["email", "password"]
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Login successful. Returns access and refresh tokens.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Login successful."
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          access: {
+                            type: "string",
+                            example: "encryptedAccessToken"
+                          },
+                          refresh: {
+                            type: "string",
+                            example: "encryptedRefreshToken"
+                          }
+                        }
+                      }
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/login"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/dashboard"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            description: "Invalid login credentials or account issues.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "error"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 401
+                    },
+                    message: {
+                      type: "string",
+                      example: "Login credentials failed."
+                    },
+                    next: {
+                      type: "string",
+                      example: "/accounts/login"
+                    },
+                    prev: {
+                      type: "string",
+                      example: "/accounts/login"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    // --------------------------------------------------
   }
 };
 
