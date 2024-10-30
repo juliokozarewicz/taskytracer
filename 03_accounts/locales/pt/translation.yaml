@@ -8,7 +8,7 @@ server_error: "Ocorreu um erro, por favor, tente novamente mais tarde."
 too_many_requests: "Muitas solicitações, por favor, tente novamente mais tarde."
 # ----------------------------------------------------------------------------- 
 
-# inputs validation
+# others
 activation_email: "Clique no link abaixo para ativar sua conta."
 account_created_successfully: "Conta criada com sucesso, por favor, ative sua conta através do link enviado para seu e-mail."
 email_greeting: "Olá, como você está?"

@@ -8,7 +8,7 @@ server_error: "An error has occurred, please try again later."
 too_many_requests: "Too many requests, please try again later"
 # -----------------------------------------------------------------------------
 
-# inputs validation
+# others
 activation_email: "Click the link below to activate your account."
 account_created_successfully: "Account created successfully, please activate your account through the link sent to your email."
 email_greeting: "Hello, how are you?"

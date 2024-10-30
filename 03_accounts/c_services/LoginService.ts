@@ -6,6 +6,9 @@ import { createCustomError } from '../e_middlewares/ErrorHandler'
 import bcrypt from 'bcrypt'
 import { LoginValidationType } from "../b_validations/LoginValidation"
 import { EmailService } from "../f_utils/EmailSend"
+import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
+import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
 
 export class LoginService {
 
@@ -19,6 +22,7 @@ export class LoginService {
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
+        const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
         // existing user
         const existingUser = await userRepository.findOne({
@@ -103,10 +107,111 @@ export class LoginService {
 
         }
 
+        // JWT and refresh token
+        // -----------------------------------------------------------------------------
+
+        // empty vars
+        let encryptedJWT = ''
+        let encryptedRefresh = ''
+
+        await refreshTokenRepository.manager.transaction(async tokensGenerate => {
+            
+            // crypto keys #####
+            const keyCrypto = crypto.createHash('sha256')
+                .update(process.env.SECURITY_CODE as string)
+                .digest('hex')
+                .substring(0, 32)
+            const ivCrypto = crypto.createHash('sha256')
+                .update(process.env.SECURITY_CODE as string)
+                .digest('hex')
+                .substring(0, 16)
+
+            // JWT generator
+            // ----------------------------------------------------------------------
+            const payload = {
+                email: validatedData.email.toLocaleLowerCase(),
+                sub: existingUser.id
+            }
+            const jwtTokenRaw = jwt.sign(
+                payload,
+                process.env.SECURITY_CODE as string,
+                { expiresIn: '2m' }
+            )
+            const cipherJWT = crypto.createCipheriv(
+                'aes-256-cbc',
+                keyCrypto,
+                ivCrypto
+            )
+            encryptedJWT = cipherJWT.update(jwtTokenRaw, 'utf8', 'hex') + cipherJWT.final('hex')
+            // ----------------------------------------------------------------------
+
+            // REFRESH TOKEN generator
+            // ----------------------------------------------------------------------
+
+            // delete all tokens < 15 days
+            const expiredTokens = await refreshTokenRepository.find({
+                where: {
+                    email: validatedData.email,
+                },
+            })
+
+            const fifteenDaysAgo = new Date()
+            fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
+
+            for (const token of expiredTokens) {
+                if (token.createdAt <= fifteenDaysAgo) {
+                    await refreshTokenRepository.remove(token);
+                }
+            }
+
+            // Keep only the last 5 valid tokens
+            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo);
+            if (validTokens.length > 4) {
+                const tokensToRemove = validTokens.slice(0, validTokens.length - 4);
+                for (const token of tokensToRemove) {
+                    await refreshTokenRepository.remove(token);
+                }
+            }
+
+            // refresh logic
+            const randomKey = crypto.randomBytes(128).toString('hex')
+            const timestamp = new Date().toISOString();
+            const email = existingUser.email
+            const refreshTokenRaw = `${randomKey}${timestamp}${email}`
+
+            // crypto
+            const cipherRefresh = crypto.createCipheriv(
+                'aes-256-cbc',
+                keyCrypto,
+                ivCrypto
+            )
+            encryptedRefresh = cipherRefresh.update(
+                refreshTokenRaw, 'utf8', 'hex'
+            ) + cipherRefresh.final('hex')
+
+            // store refresh token
+            const RefreshStore = new RefreshTokenEntity()
+            RefreshStore.token = String(encryptedRefresh)
+            RefreshStore.email = validatedData.email
+            RefreshStore.user = existingUser
+            await tokensGenerate.save(RefreshStore)
+
+            // ----------------------------------------------------------------------
+
+
+        })
+        // -----------------------------------------------------------------------------
+
         return {
             status: 'success',
             code: 200,
             message: this.t('login_ok'),
+            data: [
+                {
+                    "access": encryptedJWT,
+                    "refresh": encryptedRefresh,
+                }
+            ],
             links: {
                 self: '/accounts/login'
             }
