@@ -24,6 +24,80 @@ export class RefreshLoginService {
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
+
+        // #####
+        const tokenData = {
+            "email": "email@email.com"
+        }
+
+        // existing user
+        const existingUser = await userRepository.findOne({
+            where: { email: tokenData.email.toLowerCase() }
+        })
+
+        // account banned
+        if (
+            existingUser &&
+            existingUser.isBanned
+        ) {
+
+            // send email with code
+            await this.sendEmailText(
+                tokenData.email,
+                this.t('account_banned')
+            )
+
+            throw createCustomError({
+                "message": `${this.t('login_acc_error')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+
+        }
+
+        // account not activated (deleted)
+        if (
+            existingUser &&
+            !existingUser.isActive
+        ) {
+
+            // send email with code
+            await this.sendEmailText(
+                tokenData.email,
+                this.t('account_user_deactivated')
+            )
+
+            throw createCustomError({
+                "message": `${this.t('login_acc_error')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+
+        }
+
+        // email not confirmed
+        if (
+            existingUser &&
+            !existingUser.isEmailConfirmed
+        ) {
+
+            // send email with code
+            await this.sendEmailText(
+                tokenData.email,
+                this.t('account_email_deactivated')
+            )
+
+            throw createCustomError({
+                "message": `${this.t('login_acc_error')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+
+        }
+
         // #####
 
         return {
