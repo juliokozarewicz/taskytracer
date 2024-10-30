@@ -116,7 +116,7 @@ export class LoginService {
 
         await refreshTokenRepository.manager.transaction(async tokensGenerate => {
             
-            // crypto keys #####
+            // crypto keys
             const keyCrypto = crypto.createHash('sha256')
                 .update(process.env.SECURITY_CODE as string)
                 .digest('hex')

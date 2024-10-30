@@ -14,6 +14,7 @@ account_created_successfully: "Conta criada com sucesso, por favor, ative sua co
 email_greeting: "Olá, como você está?"
 email_closing: "Atenciosamente"
 is_required: "Este campo é obrigatório."
+not_valid: "Esse dado não está correto."
 contains_too_many_characters: "Este campo contém muitos caracteres."
 contains_disallowed_characters: "Este campo contém caracteres não permitidos."
 must_be_a_valid_email: "Deve ser um endereço de e-mail válido."

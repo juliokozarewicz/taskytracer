@@ -14,6 +14,7 @@ account_created_successfully: "Account created successfully, please activate you
 email_greeting: "Hello, how are you?"
 email_closing: "Best regards"
 is_required: "This field is required."
+not_valid: "This data is not valid."
 contains_too_many_characters: "This field contains too many characters."
 contains_disallowed_characters: "This field contains disallowed characters."
 must_be_a_valid_email: "Must be a valid email address."

@@ -5,6 +5,7 @@ import { ActivateEmailLinkController } from './d_controllers/ActivateEmailLinkCo
 import { ChangePasswordLinkController } from './d_controllers/ChangePasswordLinkController'
 import { ChangePasswordController } from './d_controllers/ChangePasswordController'
 import { LoginController } from './d_controllers/LoginController'
+import { RefreshLoginController } from './d_controllers/RefreshLoginController'
 
 const router = Router()
 
@@ -15,6 +16,7 @@ const activeEmailController = new ActiveEmailController()
 const changePasswordLinkController = new ChangePasswordLinkController()
 const changePasswordController = new ChangePasswordController()
 const loginController = new LoginController()
+const refreshLoginController = new RefreshLoginController()
 
 
 // routes
@@ -24,5 +26,6 @@ router.post('/activate-email', activeEmailController.handle.bind(activeEmailCont
 router.post('/change-password-link', changePasswordLinkController.handle.bind(changePasswordLinkController))
 router.patch('/change-password', changePasswordController.handle.bind(changePasswordController))
 router.post('/login', loginController.handle.bind(loginController))
+router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
 
 export default router

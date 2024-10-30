@@ -5,9 +5,9 @@ import { Request } from 'express'
 export const RefreshLoginValidation = (req: Request) => {
     return z.object({
 
-        hash: z.string()
-            .length(128, req.t("hash_length_invalid"))
-            .regex(/^[0-9a-f]+$/, req.t("must_be_a_valid_hash")),
+        refresh: z.string()
+            .min(1, req.t("is_required"))
+            .regex(/^[0-9a-f]+$/, req.t("not_valid")),
 
     })
 }
