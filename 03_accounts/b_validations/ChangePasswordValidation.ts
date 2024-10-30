@@ -13,6 +13,7 @@ export const ChangePasswordValidation = (req: Request) => {
             .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/, req.t("must_contain_at_least_one_uppercase_letter")),
         code: z.string()
             .min(1, req.t("is_required"))
+            .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters"))
             .max(255, req.t("contains_too_many_characters")),
 
     })

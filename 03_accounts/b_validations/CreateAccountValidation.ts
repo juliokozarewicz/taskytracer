@@ -15,6 +15,7 @@ export const CreateAccountValidation = (req: Request) => {
         password: z.string()
             .min(8, req.t("must_be_at_least_8_characters_long")) // Minimum length is 8 characters
             .max(255, req.t("contains_too_many_characters")) // Maximum length is 255 characters
+            .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters")) // disallowed characters
             .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/, req.t("must_contain_at_least_one_uppercase_letter")), // Must include at least one uppercase letter, one lowercase letter, one number, and one special character
         link: z.string()
             .min(1, req.t("is_required"))

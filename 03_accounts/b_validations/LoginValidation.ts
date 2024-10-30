@@ -10,6 +10,7 @@ export const LoginValidation = (req: Request) => {
             .max(255, req.t("contains_too_many_characters")),
         password: z.string()
             .min(8, req.t("is_required"))
+            .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters"))
             .max(255, req.t("contains_too_many_characters")),
 
     })
