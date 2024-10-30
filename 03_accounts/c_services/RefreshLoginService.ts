@@ -24,16 +24,37 @@ export class RefreshLoginService {
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
+        // get token data
+        const tokenData = await refreshTokenRepository.findOne({
+            where: {
+                token: validatedData.refresh
+            }
+        })
 
-        // #####
-        const tokenData = {
-            "email": "email@email.com"
+        // refresh token not exist
+        if (!tokenData) {
+            throw createCustomError({
+                "message": `${this.t('login_credentials_failed')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
         }
 
         // existing user
         const existingUser = await userRepository.findOne({
-            where: { email: tokenData.email.toLowerCase() }
+            where: { email: tokenData?.email.toLowerCase() }
         })
+
+        // user not exist
+        if (!existingUser) {
+            throw createCustomError({
+                "message": `${this.t('login_credentials_failed')}`,
+                "code": 404,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+        }
 
         // account banned
         if (
@@ -43,7 +64,7 @@ export class RefreshLoginService {
 
             // send email with code
             await this.sendEmailText(
-                tokenData.email,
+                tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_banned')
             )
 
@@ -64,7 +85,7 @@ export class RefreshLoginService {
 
             // send email with code
             await this.sendEmailText(
-                tokenData.email,
+                tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_user_deactivated')
             )
 
@@ -85,7 +106,7 @@ export class RefreshLoginService {
 
             // send email with code
             await this.sendEmailText(
-                tokenData.email,
+                tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_email_deactivated')
             )
 
@@ -98,7 +119,105 @@ export class RefreshLoginService {
 
         }
 
-        // #####
+        // JWT and refresh token
+        // -----------------------------------------------------------------------------
+
+        // empty vars
+        let encryptedJWT = ''
+        let encryptedRefresh = ''
+
+        await refreshTokenRepository.manager.transaction(async tokensGenerate => {
+            
+            // crypto keys
+            const keyCrypto = crypto.createHash('sha256')
+                .update(process.env.SECURITY_CODE as string)
+                .digest('hex')
+                .substring(0, 32)
+            const ivCrypto = crypto.createHash('sha256')
+                .update(process.env.SECURITY_CODE as string)
+                .digest('hex')
+                .substring(0, 16)
+
+            // JWT generator
+            // ----------------------------------------------------------------------
+            const payload = {
+                email: existingUser?.email.toLocaleLowerCase(),
+                sub: existingUser?.id
+            }
+            const jwtTokenRaw = jwt.sign(
+                payload,
+                process.env.SECURITY_CODE as string,
+                { expiresIn: '2m' }
+            )
+            const cipherJWT = crypto.createCipheriv(
+                'aes-256-cbc',
+                keyCrypto,
+                ivCrypto
+            )
+            encryptedJWT = cipherJWT.update(jwtTokenRaw, 'utf8', 'hex') + cipherJWT.final('hex')
+            // ----------------------------------------------------------------------
+
+            // REFRESH TOKEN generator
+            // ----------------------------------------------------------------------
+
+            // delete all tokens < 15 days
+            const expiredTokens = await refreshTokenRepository.find({
+                where: {
+                    email: existingUser?.email,
+                },
+            })
+
+            const fifteenDaysAgo = new Date()
+            fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
+
+            for (const token of expiredTokens) {
+                if (token.createdAt <= fifteenDaysAgo) {
+                    await refreshTokenRepository.remove(token);
+                }
+            }
+
+            // Keep only the last 5 valid tokens
+            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo);
+            if (validTokens.length > 4) {
+                const tokensToRemove = validTokens.slice(0, validTokens.length - 4);
+                for (const token of tokensToRemove) {
+                    await refreshTokenRepository.remove(token);
+                }
+            }
+
+            // delete refresh token used
+            await refreshTokenRepository.delete({
+                token: validatedData.refresh
+            });
+
+            // refresh logic
+            const randomKey = crypto.randomBytes(128).toString('hex')
+            const timestamp = new Date().toISOString();
+            const email = existingUser?.email
+            const refreshTokenRaw = `${randomKey}${timestamp}${email}`
+
+            // crypto
+            const cipherRefresh = crypto.createCipheriv(
+                'aes-256-cbc',
+                keyCrypto,
+                ivCrypto
+            )
+            encryptedRefresh = cipherRefresh.update(
+                refreshTokenRaw, 'utf8', 'hex'
+            ) + cipherRefresh.final('hex')
+
+            // store refresh token
+            const RefreshStore = new RefreshTokenEntity()
+            RefreshStore.token = String(encryptedRefresh)
+            RefreshStore.email = existingUser?.email as string
+            RefreshStore.user = existingUser as AccountUserEntity
+            await tokensGenerate.save(RefreshStore)
+
+            // ----------------------------------------------------------------------
+
+
+        })
+        // -----------------------------------------------------------------------------
 
         return {
             status: 'success',
@@ -106,8 +225,8 @@ export class RefreshLoginService {
             message: this.t('login_ok'),
             data: [
                 {
-                    "access": 'encryptedJWT',
-                    "refresh": 'encryptedRefresh',
+                    "access": encryptedJWT,
+                    "refresh": encryptedRefresh,
                 }
             ],
             links: {
