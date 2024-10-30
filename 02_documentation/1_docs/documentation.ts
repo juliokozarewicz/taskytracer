@@ -1364,38 +1364,6 @@ const documentation = {
               }
             }
           },
-          "401": {
-            description: "Invalid login credentials or account issues.",
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    status: {
-                      type: "string",
-                      example: "error"
-                    },
-                    code: {
-                      type: "integer",
-                      example: 401
-                    },
-                    message: {
-                      type: "string",
-                      example: "Login credentials failed."
-                    },
-                    next: {
-                      type: "string",
-                      example: "/accounts/login"
-                    },
-                    prev: {
-                      type: "string",
-                      example: "/accounts/login"
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },
