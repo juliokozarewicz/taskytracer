@@ -9,8 +9,6 @@ too_many_requests: "Too many requests, please try again later"
 # -----------------------------------------------------------------------------
 
 # inputs validation
-account_deactivated: "Your account has been deactivated, please contact support. If you haven't made any changes to your account, please change your password."
-account_active: "You already have an active account with us, now you just need to log in. If you haven't made any changes to your account, please change your password."
 activation_email: "Click the link below to activate your account."
 account_created_successfully: "Account created successfully, please activate your account through the link sent to your email."
 email_greeting: "Hello, how are you?"
@@ -30,3 +28,9 @@ change_password_sent_ok: "Change your password by clicking the link sent to your
 change_password: "Click the link below to reset your password."
 change_password_error: "An error occurred while trying to change your password. Please try the process again."
 change_password_ok: "Password changed successfully. Please log in to continue."
+login_ok: "Login successful."
+login_credentials_failed: "Invalid credentials."
+login_acc_error: "An error occurred while logging in. More information has been sent to your email."
+account_banned: "Your account is disabled by the system, please contact support. If you haven't made any changes to your account, please reset your password."
+account_email_deactivated: "You are registered with us, but your email is deactivated. Please activate your email to continue. If you haven't made any changes to your account, please reset your password."
+account_user_deactivated: "Your account has been deactivated by the user. To reactivate your account, simply change your password. If you haven't made any changes to your account, please reset your password."

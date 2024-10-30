@@ -4,13 +4,11 @@
 bad_request: "Solicitação inválida, por favor, verifique os dados enviados."
 server_error: "Ocorreu um erro, por favor, tente novamente mais tarde."
 
-# ##### rate limiter
+# rate limiter
 too_many_requests: "Muitas solicitações, por favor, tente novamente mais tarde."
 # ----------------------------------------------------------------------------- 
 
 # inputs validation
-account_deactivated: "Sua conta foi desativada, por favor, entre em contato com o suporte. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
-account_active: "Você já possui uma conta ativa conosco, agora você só precisa fazer login. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
 activation_email: "Clique no link abaixo para ativar sua conta."
 account_created_successfully: "Conta criada com sucesso, por favor, ative sua conta através do link enviado para seu e-mail."
 email_greeting: "Olá, como você está?"
@@ -30,3 +28,9 @@ change_password_sent_ok: "Altere sua senha clicando no link enviado ao seu email
 change_password: "Clique no link abaixo para redefinir sua senha."
 change_password_error: "Ocorreu um erro ao tentar alterar sua senha, por favor refaça o processo."
 change_password_ok: "Senha alterada com sucesso, faça login para continuar."
+login_ok: "Login realizado com sucesso."
+login_credentials_failed: "Credenciais inválidas."
+login_acc_error: "Ocorreu um erro ao fazer login, mais informações foram enviadas para seu email."
+account_banned: "Sua conta está desativada pelo sistema, por favor, entre em contato com o suporte. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
+account_email_deactivated: "Você possui cadastro com a gente mas seu email está desativado, por favor, ative seu email para continuar. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
+account_user_deactivated: "Sua conta foi desativada pelo usuário, para reativar novamente sua conta basta alterar sua senha. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."

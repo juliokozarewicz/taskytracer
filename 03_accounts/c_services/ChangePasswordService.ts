@@ -47,6 +47,7 @@ export class ChangePasswordService {
 
             // commit database
             if (existingUser) {
+                existingUser.isActive = true
                 existingUser.password = await this.hashPassword(validatedData.password)
                 await userRepository.save(existingUser)
             }
@@ -76,7 +77,7 @@ export class ChangePasswordService {
             message: this.t('change_password_ok'),
             links: {
                 self: '/accounts/change-password',
-                next: '/accountslogin',
+                next: '/accounts/login',
                 prev: '/accounts/change-password-link',
             }
         }
