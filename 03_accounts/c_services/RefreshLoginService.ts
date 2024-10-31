@@ -129,9 +129,6 @@ export class RefreshLoginService {
 
         await refreshTokenRepository.manager.transaction(async tokensGenerate => {
 
-            // call cryto func
-            const { keyCrypto, ivCrypto } = deriveKeyAndIV()
-
             // JWT generator
             // ----------------------------------------------------------------------
 
