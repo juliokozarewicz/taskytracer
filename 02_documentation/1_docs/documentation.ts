@@ -1368,6 +1368,91 @@ const documentation = {
       }
     },
     // --------------------------------------------------
+    "/accounts/refresh-login": {
+      post: {
+        summary: "Refresh user login",
+        description: "Allows a user to obtain new access and refresh tokens using a valid refresh token.",
+        tags: ["ACCOUNTS"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  refresh: {
+                    type: "string",
+                    example: "a1b2c3d4e5f6",
+                    description: "The refresh token used to obtain new access and refresh tokens. Must be a valid token."
+                  }
+                },
+                required: ["refresh"]
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Refresh successful. Returns new access and refresh tokens.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Login successful."
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          access: {
+                            type: "string",
+                            example: "encryptedNewAccessToken"
+                          },
+                          refresh: {
+                            type: "string",
+                            example: "encryptedNewRefreshToken"
+                          }
+                        }
+                      }
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/refresh-login"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/dashboard"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+        }
+      }
+    },
+    // --------------------------------------------------
   }
 };
 
