@@ -196,7 +196,6 @@ export class RefreshLoginService {
             RefreshStore.email = existingUser?.email as string
             RefreshStore.user = existingUser as AccountUserEntity
             await tokensGenerate.save(RefreshStore)
-
             // ----------------------------------------------------------------------
 
         })
