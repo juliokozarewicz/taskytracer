@@ -3,12 +3,13 @@ import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server"
 import { createCustomError } from '../e_middlewares/ErrorHandler'
-import bcrypt from 'bcrypt'
 import { EmailService } from "../f_utils/EmailSend"
 import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RefreshLoginValidationType } from "../b_validations/RefreshLoginValidation"
+import { deriveKeyAndIV } from "../f_utils/deriveKeyandIV"
+import fs from 'fs'
 
 export class RefreshLoginService {
 
@@ -62,7 +63,7 @@ export class RefreshLoginService {
             existingUser.isBanned
         ) {
 
-            // send email with code
+            // send email banned
             await this.sendEmailText(
                 tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_banned')
@@ -83,7 +84,7 @@ export class RefreshLoginService {
             !existingUser.isActive
         ) {
 
-            // send email with code
+            // send email acc not activated
             await this.sendEmailText(
                 tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_user_deactivated')
@@ -104,7 +105,7 @@ export class RefreshLoginService {
             !existingUser.isEmailConfirmed
         ) {
 
-            // send email with code
+            // send email not activated
             await this.sendEmailText(
                 tokenData?.email.toLocaleLowerCase() as string,
                 this.t('account_email_deactivated')
@@ -127,27 +128,24 @@ export class RefreshLoginService {
         let encryptedRefresh = ''
 
         await refreshTokenRepository.manager.transaction(async tokensGenerate => {
-            
-            // crypto keys
-            const keyCrypto = crypto.createHash('sha256')
-                .update(process.env.SECURITY_CODE as string)
-                .digest('hex')
-                .substring(0, 32)
-            const ivCrypto = crypto.createHash('sha256')
-                .update(process.env.SECURITY_CODE as string)
-                .digest('hex')
-                .substring(0, 16)
+
+            // call cryto func
+            const { keyCrypto, ivCrypto } = deriveKeyAndIV()
 
             // JWT generator
             // ----------------------------------------------------------------------
+
+            // load priv key
+            const privateKey = fs.readFileSync('keys/jwt_priv.pem')
+
             const payload = {
                 email: existingUser?.email.toLocaleLowerCase(),
-                sub: existingUser?.id
+                sub: existingUser.id
             }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                process.env.SECURITY_CODE as string,
-                { expiresIn: '2m' }
+                privateKey,
+                { algorithm: 'RS256', expiresIn: '2m' }
             )
             const cipherJWT = crypto.createCipheriv(
                 'aes-256-cbc',

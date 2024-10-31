@@ -9,6 +9,8 @@ import { EmailService } from "../f_utils/EmailSend"
 import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import { deriveKeyAndIV } from "../f_utils/deriveKeyandIV"
+import fs from 'fs'
 
 export class LoginService {
 
@@ -50,7 +52,7 @@ export class LoginService {
             existingUser.isBanned
         ) {
 
-            // send email with code
+            // send email banned
             await this.sendEmailText(
                 validatedData.email,
                 this.t('account_banned')
@@ -71,7 +73,7 @@ export class LoginService {
             !existingUser.isActive
         ) {
 
-            // send email with code
+            // send email acc not activated
             await this.sendEmailText(
                 validatedData.email,
                 this.t('account_user_deactivated')
@@ -92,7 +94,7 @@ export class LoginService {
             !existingUser.isEmailConfirmed
         ) {
 
-            // send email with code
+            // send email not activated
             await this.sendEmailText(
                 validatedData.email,
                 this.t('account_email_deactivated')
@@ -115,27 +117,24 @@ export class LoginService {
         let encryptedRefresh = ''
 
         await refreshTokenRepository.manager.transaction(async tokensGenerate => {
-            
-            // crypto keys
-            const keyCrypto = crypto.createHash('sha256')
-                .update(process.env.SECURITY_CODE as string)
-                .digest('hex')
-                .substring(0, 32)
-            const ivCrypto = crypto.createHash('sha256')
-                .update(process.env.SECURITY_CODE as string)
-                .digest('hex')
-                .substring(0, 16)
+
+            // call cryto func
+            const { keyCrypto, ivCrypto } = deriveKeyAndIV()
 
             // JWT generator
             // ----------------------------------------------------------------------
+
+            // load priv key
+            const privateKey = fs.readFileSync('keys/jwt_priv.pem')
+
             const payload = {
                 email: validatedData.email.toLocaleLowerCase(),
                 sub: existingUser.id
             }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                process.env.SECURITY_CODE as string,
-                { expiresIn: '2m' }
+                privateKey,
+                { algorithm: 'RS256', expiresIn: '2m' }
             )
             const cipherJWT = crypto.createCipheriv(
                 'aes-256-cbc',
@@ -160,22 +159,22 @@ export class LoginService {
 
             for (const token of expiredTokens) {
                 if (token.createdAt <= fifteenDaysAgo) {
-                    await refreshTokenRepository.remove(token);
+                    await refreshTokenRepository.remove(token)
                 }
             }
 
             // Keep only the last 5 valid tokens
-            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo);
+            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo)
             if (validTokens.length > 4) {
-                const tokensToRemove = validTokens.slice(0, validTokens.length - 4);
+                const tokensToRemove = validTokens.slice(0, validTokens.length - 4)
                 for (const token of tokensToRemove) {
-                    await refreshTokenRepository.remove(token);
+                    await refreshTokenRepository.remove(token)
                 }
             }
 
             // refresh logic
             const randomKey = crypto.randomBytes(128).toString('hex')
-            const timestamp = new Date().toISOString();
+            const timestamp = new Date().toISOString()
             const email = existingUser.email
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
 
@@ -197,7 +196,6 @@ export class LoginService {
             await tokensGenerate.save(RefreshStore)
 
             // ----------------------------------------------------------------------
-
 
         })
         // -----------------------------------------------------------------------------
