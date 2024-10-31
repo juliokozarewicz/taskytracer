@@ -8,8 +8,6 @@ import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RefreshLoginValidationType } from "../b_validations/RefreshLoginValidation"
-import { deriveKeyAndIV } from "../f_utils/deriveKeyandIV"
-import fs from 'fs'
 
 export class RefreshLoginService {
 
@@ -133,8 +131,8 @@ export class RefreshLoginService {
             // ----------------------------------------------------------------------
 
             // load priv key
-            const privateKeyJWT = fs.readFileSync('keys/jwt_priv.pem')
-            const privateKeyEncription = fs.readFileSync('keys/cripto_priv.pem')
+            const privateKeyJWT = process.env.JWT_PRIVATE?.trim() as string
+            const privateKeyEncription = process.env.CRYPTO_PRIVATE?.trim() as string
 
             const payload = {
                 email: existingUser?.email.toLocaleLowerCase(),
