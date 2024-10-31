@@ -118,14 +118,12 @@ export class LoginService {
 
         await refreshTokenRepository.manager.transaction(async tokensGenerate => {
 
-            // call cryto func
-            const { keyCrypto, ivCrypto } = deriveKeyAndIV()
-
             // JWT generator
             // ----------------------------------------------------------------------
 
             // load priv key
-            const privateKey = fs.readFileSync('keys/jwt_priv.pem')
+            const privateKeyJWT = fs.readFileSync('keys/jwt_priv.pem')
+            const privateKeyEncription = fs.readFileSync('keys/cripto_priv.pem')
 
             const payload = {
                 email: validatedData.email.toLocaleLowerCase(),
@@ -133,15 +131,12 @@ export class LoginService {
             }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                privateKey,
+                privateKeyJWT,
                 { algorithm: 'RS256', expiresIn: '2m' }
             )
-            const cipherJWT = crypto.createCipheriv(
-                'aes-256-cbc',
-                keyCrypto,
-                ivCrypto
-            )
-            encryptedJWT = cipherJWT.update(jwtTokenRaw, 'utf8', 'hex') + cipherJWT.final('hex')
+
+            // encript
+            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex');
             // ----------------------------------------------------------------------
 
             // REFRESH TOKEN generator
@@ -179,14 +174,7 @@ export class LoginService {
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
 
             // crypto
-            const cipherRefresh = crypto.createCipheriv(
-                'aes-256-cbc',
-                keyCrypto,
-                ivCrypto
-            )
-            encryptedRefresh = cipherRefresh.update(
-                refreshTokenRaw, 'utf8', 'hex'
-            ) + cipherRefresh.final('hex')
+            encryptedRefresh = crypto.privateEncrypt(privateKeyEncription, Buffer.from(refreshTokenRaw)).toString('hex')
 
             // store refresh token
             const RefreshStore = new RefreshTokenEntity()
@@ -194,7 +182,6 @@ export class LoginService {
             RefreshStore.email = validatedData.email
             RefreshStore.user = existingUser
             await tokensGenerate.save(RefreshStore)
-
             // ----------------------------------------------------------------------
 
         })

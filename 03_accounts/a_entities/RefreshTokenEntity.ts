@@ -12,7 +12,7 @@ export class RefreshTokenEntity {
     @Column({ type: 'varchar', length: 255 })
     email: string
 
-    @Column({ type: 'varchar', length: 1000 })
+    @Column({ type: 'varchar', length: 3500 })
     token: string
 
     @ManyToOne(() => AccountUserEntity, user => user.tokenRefresh)
