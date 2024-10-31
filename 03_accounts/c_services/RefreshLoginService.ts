@@ -145,7 +145,7 @@ export class RefreshLoginService {
             )
 
             // encript
-            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex');
+            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex')
             // ----------------------------------------------------------------------
 
             // REFRESH TOKEN generator
@@ -163,31 +163,30 @@ export class RefreshLoginService {
 
             for (const token of expiredTokens) {
                 if (token.createdAt <= fifteenDaysAgo) {
-                    await refreshTokenRepository.remove(token);
+                    await refreshTokenRepository.remove(token)
                 }
             }
 
             // Keep only the last 5 valid tokens
-            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo);
+            const validTokens = expiredTokens.filter(token => token.createdAt > fifteenDaysAgo)
             if (validTokens.length > 4) {
-                const tokensToRemove = validTokens.slice(0, validTokens.length - 4);
+                const tokensToRemove = validTokens.slice(0, validTokens.length - 4)
                 for (const token of tokensToRemove) {
-                    await refreshTokenRepository.remove(token);
+                    await refreshTokenRepository.remove(token)
                 }
             }
 
             // delete refresh token used
             await refreshTokenRepository.delete({
                 token: validatedData.refresh
-            });
+            })
 
             // refresh logic
             const randomKey = crypto.randomBytes(128).toString('hex')
-            const timestamp = new Date().toISOString();
+            const timestamp = new Date().toISOString()
             const email = existingUser?.email
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
 
-            // crypto
             // crypto
             encryptedRefresh = crypto.privateEncrypt(privateKeyEncription, Buffer.from(refreshTokenRaw)).toString('hex')
 

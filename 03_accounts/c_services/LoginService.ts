@@ -134,7 +134,7 @@ export class LoginService {
             )
 
             // encript
-            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex');
+            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex')
             // ----------------------------------------------------------------------
 
             // REFRESH TOKEN generator
