@@ -120,7 +120,6 @@ export class LoginService {
             // ----------------------------------------------------------------------
 
             // load priv key
-            const privateKeyJWT = process.env.JWT_PRIVATE?.trim() as string
             const privateKeyEncription = process.env.CRYPTO_PRIVATE?.trim() as string
 
             const payload = {
@@ -129,8 +128,8 @@ export class LoginService {
             }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                privateKeyJWT,
-                { algorithm: 'RS256', expiresIn: '2m' }
+                process.env.JWT_SECURITY_CODE as string,
+                { expiresIn: '2m' }
             )
 
             // encript
@@ -166,7 +165,7 @@ export class LoginService {
             }
 
             // refresh logic
-            const randomKey = crypto.randomBytes(128).toString('hex')
+            const randomKey = crypto.randomBytes(16).toString('hex')
             const timestamp = new Date().toISOString()
             const email = existingUser.email
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
