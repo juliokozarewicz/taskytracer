@@ -119,9 +119,6 @@ export class LoginService {
             // JWT generator
             // ----------------------------------------------------------------------
 
-            // load priv key
-            const privateKeyEncription = process.env.CRYPTO_PRIVATE?.trim() as string
-
             const payload = {
                 email: validatedData.email.toLocaleLowerCase(),
                 sub: existingUser.id
@@ -133,7 +130,10 @@ export class LoginService {
             )
 
             // encript
-            encryptedJWT = crypto.privateEncrypt(privateKeyEncription, Buffer.from(jwtTokenRaw)).toString('hex')
+            encryptedJWT = crypto.privateEncrypt(
+                process.env.CRYPTO_PRIVATE?.trim() as string,
+                Buffer.from(jwtTokenRaw)
+            ).toString('hex')
             // ----------------------------------------------------------------------
 
             // REFRESH TOKEN generator
@@ -171,7 +171,10 @@ export class LoginService {
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
 
             // crypto
-            encryptedRefresh = crypto.privateEncrypt(privateKeyEncription, Buffer.from(refreshTokenRaw)).toString('hex')
+            encryptedRefresh = crypto.privateEncrypt(
+                process.env.CRYPTO_PRIVATE?.trim() as string,
+                Buffer.from(refreshTokenRaw)
+            ).toString('hex')
 
             // store refresh token
             const RefreshStore = new RefreshTokenEntity()

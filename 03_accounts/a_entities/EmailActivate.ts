@@ -9,7 +9,7 @@ export class EmailActivate {
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 200 })
     email: string
 
     @Column({ type: 'varchar', length: 515 })

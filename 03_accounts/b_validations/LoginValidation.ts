@@ -7,7 +7,7 @@ export const LoginValidation = (req: Request) => {
 
         email: z.string()
             .email(req.t("must_be_a_valid_email"))
-            .max(255, req.t("contains_too_many_characters")),
+            .max(200, req.t("contains_too_many_characters")),
         password: z.string()
             .min(8, req.t("is_required"))
             .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters"))
