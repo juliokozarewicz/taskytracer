@@ -6,7 +6,7 @@ export const ChangePasswordValidation = (req: Request) => {
 
         email: z.string()
             .email(req.t("must_be_a_valid_email"))
-            .max(200, req.t("contains_too_many_characters")),
+            .max(255, req.t("contains_too_many_characters")),
         password: z.string()
             .min(8, req.t("must_be_at_least_8_characters_long"))
             .max(255, req.t("contains_too_many_characters"))

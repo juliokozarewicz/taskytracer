@@ -11,7 +11,7 @@ export const CreateAccountValidation = (req: Request) => {
             .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters")), // Regex to disallow certain characters
         email: z.string()
             .email(req.t("must_be_a_valid_email")) // Must be a valid email format
-            .max(200, req.t("contains_too_many_characters")), // Maximum length is 255 characters
+            .max(255, req.t("contains_too_many_characters")), // Maximum length is 255 characters
         password: z.string()
             .min(8, req.t("must_be_at_least_8_characters_long")) // Minimum length is 8 characters
             .max(255, req.t("contains_too_many_characters")) // Maximum length is 255 characters

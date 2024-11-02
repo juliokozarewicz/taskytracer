@@ -28,7 +28,7 @@ export class AccountUserEntity {
   @Column({ type: 'varchar', length: 255, nullable: false })
   name: string
 
-  @Column({ type: 'varchar', length: 200, nullable: false })
+  @Column({ type: 'varchar', length: 255, nullable: false })
   email: string
 
   @Column({ type: 'boolean', default: false, nullable: false })

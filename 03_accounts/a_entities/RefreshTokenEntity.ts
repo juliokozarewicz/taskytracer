@@ -9,7 +9,7 @@ export class RefreshTokenEntity {
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date
 
-    @Column({ type: 'varchar', length: 200 })
+    @Column({ type: 'varchar', length: 255 })
     email: string
 
     @Column({ type: 'varchar', length: 3500 })

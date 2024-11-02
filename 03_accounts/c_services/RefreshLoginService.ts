@@ -130,10 +130,7 @@ export class RefreshLoginService {
             // JWT generator
             // ----------------------------------------------------------------------
 
-            const payload = {
-                email: existingUser?.email.toLocaleLowerCase(),
-                sub: existingUser.id
-            }
+            const payload = {email: existingUser?.email.toLocaleLowerCase()}
             const jwtTokenRaw = jwt.sign(
                 payload,
                 process.env.JWT_SECURITY_CODE as string,
@@ -181,9 +178,9 @@ export class RefreshLoginService {
             })
 
             // refresh logic
-            const randomKey = crypto.randomBytes(128).toString('hex')
+            const randomKey = crypto.randomBytes(16).toString('hex')
             const timestamp = new Date().toISOString()
-            const email = existingUser?.email
+            const email = existingUser.email
             const refreshTokenRaw = `${randomKey}${timestamp}${email}`
 
             // crypto
