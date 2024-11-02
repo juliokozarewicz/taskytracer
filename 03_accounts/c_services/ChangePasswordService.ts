@@ -5,6 +5,7 @@ import { EmailActivate } from '../a_entities/EmailActivate'
 import { ChangePasswordValidationType } from '../b_validations/ChangePasswordValidation'
 import { createCustomError } from '../e_middlewares/ErrorHandler'
 import bcrypt from 'bcrypt'
+import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 
 export class ChangePasswordService {
 
@@ -19,6 +20,7 @@ export class ChangePasswordService {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
+        const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
         // search for code and email
         const existingCodeStored = await emailCodeRepository.findOne({
@@ -68,6 +70,11 @@ export class ChangePasswordService {
 
         // delete all codes
         await emailCodeRepository.delete(
+            { email: validatedData.email.toLowerCase() }
+        )
+
+        // delete all refresh tokens
+        await refreshTokenRepository.delete(
             { email: validatedData.email.toLowerCase() }
         )
 
