@@ -6,6 +6,7 @@ import { AppDataSource } from "../server";
 import { EmailService } from "../f_utils/EmailSend";
 import { EmailActivate } from '../a_entities/EmailActivate';
 import { ActivateEmailLinkValidationType } from '../b_validations/ActivateEmailLinkValidation';
+import crypto from 'crypto'
 
 export class ActivateEmailLinkService {
 
@@ -82,7 +83,8 @@ export class ActivateEmailLinkService {
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
 
-            const hashString = `${Date.now()*135}${email}${process.env.SECURITY_CODE}`
+            const randomKey = crypto.randomBytes(16).toString('hex')
+            const hashString = `${Date.now()*135}${email}${randomKey}${process.env.SECURITY_CODE}`
             const codeAccount = createHash('sha256').update(hashString).digest('hex')
 
             const activationLink = (

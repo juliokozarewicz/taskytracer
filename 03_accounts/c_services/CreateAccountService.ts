@@ -8,6 +8,7 @@ import { AccountProfileEntity } from "../a_entities/AccountProfileEntity"
 import { EmailService } from "../f_utils/EmailSend"
 import { createHash } from 'crypto'
 import { EmailActivate } from "../a_entities/EmailActivate"
+import crypto from 'crypto'
 
 export class CreateAccountService {
 
@@ -150,7 +151,8 @@ export class CreateAccountService {
             const emailService = new EmailService()
             const subject = `[ ${packageJson.application_name.toUpperCase()} ] - Account Service`
 
-            const hashString = `${Date.now()*135}${email}${process.env.SECURITY_CODE}`
+            const randomKey = crypto.randomBytes(16).toString('hex')
+            const hashString = `${Date.now()*135}${email}${randomKey}${process.env.SECURITY_CODE}`
             const codeAccount = createHash('sha256').update(hashString).digest('hex')
 
             const activationLink = (

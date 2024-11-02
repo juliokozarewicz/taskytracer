@@ -119,10 +119,13 @@ export class LoginService {
             // JWT generator
             // ----------------------------------------------------------------------
 
-            const payload = {email: validatedData.email.toLocaleLowerCase()}
+            const payload = {
+                id: existingUser.id,
+                email: validatedData.email.toLocaleLowerCase()
+            }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                process.env.JWT_SECURITY_CODE as string,
+                process.env.SECURITY_CODE as string,
                 { expiresIn: '2m' }
             )
 

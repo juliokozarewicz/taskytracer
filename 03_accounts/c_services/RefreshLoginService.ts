@@ -130,10 +130,13 @@ export class RefreshLoginService {
             // JWT generator
             // ----------------------------------------------------------------------
 
-            const payload = {email: existingUser?.email.toLocaleLowerCase()}
+            const payload = {
+                id: existingUser?.id,
+                email: existingUser?.email.toLocaleLowerCase()
+            }
             const jwtTokenRaw = jwt.sign(
                 payload,
-                process.env.JWT_SECURITY_CODE as string,
+                process.env.SECURITY_CODE as string,
                 { expiresIn: '2m' }
             )
 
