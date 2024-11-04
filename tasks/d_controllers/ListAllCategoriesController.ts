@@ -4,9 +4,11 @@ import { ListAllCategoriesService } from '../c_services/ListAllCategoriesService
 export class ListAllCategoriesController {
 
     async handle(
+
         req: Request,
         res: Response,
         next: NextFunction
+
     ): Promise<void> {
 
         try {
@@ -19,7 +21,9 @@ export class ListAllCategoriesController {
             res.status(response.code).json(response)
 
         } catch (error) {
+
             next(error)
+
         }
 
     }

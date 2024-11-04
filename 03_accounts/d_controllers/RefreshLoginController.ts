@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
 import { RefreshLoginService } from '../c_services/RefreshLoginService'
-import { access } from 'fs'
 import { RefreshLoginValidation } from '../b_validations/RefreshLoginValidation'
 
 export class RefreshLoginController {

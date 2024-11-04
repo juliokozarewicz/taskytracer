@@ -6,6 +6,7 @@ import { ChangePasswordLinkController } from './d_controllers/ChangePasswordLink
 import { ChangePasswordController } from './d_controllers/ChangePasswordController'
 import { LoginController } from './d_controllers/LoginController'
 import { RefreshLoginController } from './d_controllers/RefreshLoginController'
+import { ListProfileController } from './d_controllers/ListProfileController'
 
 const router = Router()
 
@@ -17,7 +18,7 @@ const changePasswordLinkController = new ChangePasswordLinkController()
 const changePasswordController = new ChangePasswordController()
 const loginController = new LoginController()
 const refreshLoginController = new RefreshLoginController()
-
+const listProfileController = new ListProfileController()
 
 // routes
 router.post('/signup', createAccountController.handle.bind(createAccountController))
@@ -27,5 +28,6 @@ router.post('/change-password-link', changePasswordLinkController.handle.bind(ch
 router.patch('/change-password', changePasswordController.handle.bind(changePasswordController))
 router.post('/login', loginController.handle.bind(loginController))
 router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
+router.get('/profile', listProfileController.handle.bind(listProfileController))
 
 export default router

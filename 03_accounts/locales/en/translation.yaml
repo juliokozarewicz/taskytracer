@@ -35,3 +35,4 @@ login_acc_error: "An error occurred while logging in. More information has been 
 account_banned: "Your account is disabled by the system, please contact support. If you haven't made any changes to your account, please reset your password."
 account_email_deactivated: "You are registered with us, but your email is deactivated. Please activate your email to continue. If you haven't made any changes to your account, please reset your password."
 account_user_deactivated: "Your account has been deactivated by the user. To reactivate your account, simply change your password. If you haven't made any changes to your account, please reset your password."
+data_received_successfully: "data received successfully."

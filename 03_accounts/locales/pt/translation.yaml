@@ -35,3 +35,4 @@ login_acc_error: "Ocorreu um erro ao fazer login, mais informações foram envia
 account_banned: "Sua conta está desativada pelo sistema, por favor, entre em contato com o suporte. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
 account_email_deactivated: "Você possui cadastro com a gente mas seu email está desativado, por favor, ative seu email para continuar. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
 account_user_deactivated: "Sua conta foi desativada pelo usuário, para reativar novamente sua conta basta alterar sua senha. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
+data_received_successfully: "dados recebidos com sucesso."
