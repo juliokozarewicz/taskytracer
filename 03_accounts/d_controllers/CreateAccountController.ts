@@ -32,7 +32,9 @@ export class CreateAccountController {
       res.status(response.code).json(response)
 
     } catch (error) {
+
       next(error)
+
     }
 
   }
