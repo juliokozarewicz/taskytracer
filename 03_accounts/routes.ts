@@ -7,6 +7,8 @@ import { ChangePasswordController } from './d_controllers/ChangePasswordControll
 import { LoginController } from './d_controllers/LoginController'
 import { RefreshLoginController } from './d_controllers/RefreshLoginController'
 import { ListProfileController } from './d_controllers/ListProfileController'
+import { AuthGuardian } from './e_middlewares/AuthGuardian'
+
 
 const router = Router()
 
@@ -28,6 +30,6 @@ router.post('/change-password-link', changePasswordLinkController.handle.bind(ch
 router.patch('/change-password', changePasswordController.handle.bind(changePasswordController))
 router.post('/login', loginController.handle.bind(loginController))
 router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
-router.get('/profile', listProfileController.handle.bind(listProfileController))
+router.get('/profile', AuthGuardian, listProfileController.handle.bind(listProfileController))
 
 export default router
