@@ -26,27 +26,14 @@ export class ListProfileService {
         })
         //-------------------------------------------------------------------------
 
-        if (existingProfile) {
-            return {
-                "status": 'success',
-                "code": 200,
-                "message": this.t("data_received_successfully"),
-                "data": existingProfile,
-                "meta": {
-                    "total": existingProfile.length
-                },
-                "links": {
-                    "self": '/accounts/profile',
-                    "next": '/accounts/profile-update',
-                    "prev": '/accounts/login',
-                }
-            }
-        }
-
         return {
-            "status": 'error',
-            "code": 404,
-            "message": this.t("data_not_found"),
+            "status": 'success',
+            "code": 200,
+            "message": this.t("data_received_successfully"),
+            "data": existingProfile,
+            "meta": {
+                "total": existingProfile.length,
+            },
             "links": {
                 "self": '/accounts/profile',
                 "next": '/accounts/profile-update',

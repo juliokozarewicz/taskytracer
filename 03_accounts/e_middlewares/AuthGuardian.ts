@@ -36,12 +36,10 @@ export const AuthGuardian = (
             ).toString('utf-8')
 
             // validate token
-            try {
-                const decodedJWT = jwt.verify(
-                    decryptedJWT,
-                    process.env.SECURITY_CODE?.trim() as string
-                )
-            } catch
+            const decodedJWT = jwt.verify(
+                decryptedJWT,
+                process.env.SECURITY_CODE?.trim() as string
+            )
 
         }
 
@@ -49,12 +47,19 @@ export const AuthGuardian = (
 
     } catch (error) {
 
-        throw createCustomError({
-            "message": `${req.t('login_credentials_failed')}`,
-            "code": 401,
-            "next": "/accounts/login",
-            "prev": "/accounts/login",
-        })
+        // JWT errors
+        if (error instanceof jwt.JsonWebTokenError) {
+
+            throw createCustomError({
+                "message": `${req.t('login_credentials_failed')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+
+        }
+
+        next(error)
 
     }
 
