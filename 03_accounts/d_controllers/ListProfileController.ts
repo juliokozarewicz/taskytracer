@@ -2,11 +2,19 @@ import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
 import { ListProfileService } from '../c_services/ListProfileService'
 
+// interface
+interface CustomRequest extends Request {
+  validatedAuthData?: {
+    email: string;
+    id: string;
+  };
+}
+
 export class ListProfileController {
 
   async handle(
 
-    req: Request,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
 
@@ -17,6 +25,8 @@ export class ListProfileController {
   {
 
     try {
+
+      console.log(req.validatedAuthData)
 
       // call execute
       const listProfileService = new ListProfileService(req.t)
