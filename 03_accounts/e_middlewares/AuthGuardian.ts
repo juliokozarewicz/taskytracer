@@ -2,11 +2,10 @@ import { Request, Response, NextFunction } from 'express'
 import { createCustomError } from './ErrorHandler'
 import crypto from 'crypto'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { z } from 'zod'
 
 // interface
 export interface CustomRequest extends Request {
-    validatedAuthData?: {
+    authData?: {
         email: string;
         id: string;
     };
@@ -35,15 +34,6 @@ export const AuthGuardian = (
 
         }
 
-        // validation
-        const schema = z.object({
-            email: z.string()
-                .email(req.t("login_credentials_failed"))
-                .max(255, req.t("login_credentials_failed")),
-            id: z.string()
-                .uuid(req.t("login_credentials_failed"))
-        })
-
         // token exists
         if (token) {
 
@@ -60,14 +50,11 @@ export const AuthGuardian = (
                 process.env.SECURITY_CODE?.trim() as string
             ) as JwtPayload
 
-            // validate data
-            const validatedAuthData = schema.parse({
+            // Attach data to the request object
+            req.authData = {
                 email: decodedJWT.email,
                 id: decodedJWT.id,
-            })
-
-            // Attach validated data to the request object
-            req.validatedAuthData = validatedAuthData
+            }
 
         }
 

@@ -1,6 +1,7 @@
 import { StandardResponse } from '../f_utils/StandardResponse'
 import { AppDataSource } from '../server'
 import { AccountProfileEntity } from '../a_entities/AccountProfileEntity'
+import { ListProfileValidationType } from '../b_validations/ListProfileValidation'
 
 export class ListProfileService {
 
@@ -9,7 +10,9 @@ export class ListProfileService {
         this.t = t
     }
 
-    async execute(): Promise<StandardResponse> {
+    async execute(
+        validatedData: ListProfileValidationType
+    ): Promise<StandardResponse> {
 
         // database operations
         //-------------------------------------------------------------------------
@@ -22,6 +25,7 @@ export class ListProfileService {
                 'biography',
                 'phone',
                 'cpf',
+                'user'
             ],
         })
         //-------------------------------------------------------------------------
