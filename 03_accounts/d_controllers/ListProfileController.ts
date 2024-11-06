@@ -1,14 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
-import { escape } from 'lodash'
+import { NextFunction, Response } from 'express'
 import { ListProfileService } from '../c_services/ListProfileService'
-
-// interface
-interface CustomRequest extends Request {
-  validatedAuthData?: {
-    email: string;
-    id: string;
-  };
-}
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class ListProfileController {
 
@@ -25,8 +17,6 @@ export class ListProfileController {
   {
 
     try {
-
-      console.log(req.validatedAuthData)
 
       // call execute
       const listProfileService = new ListProfileService(req.t)

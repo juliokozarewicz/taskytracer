@@ -5,7 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { z } from 'zod'
 
 // interface
-interface CustomRequest extends Request {
+export interface CustomRequest extends Request {
     validatedAuthData?: {
         email: string;
         id: string;
