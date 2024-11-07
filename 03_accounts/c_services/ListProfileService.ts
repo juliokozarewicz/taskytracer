@@ -28,9 +28,13 @@ export class ListProfileService {
                 'id',
                 'biography',
                 'phone',
-                'cpf',
-                'user'
+                'cpf'
             ],
+        })
+
+        // remove id
+        existingProfile.forEach(profile => {
+            delete (profile as any).id
         })
         //-------------------------------------------------------------------------
 
