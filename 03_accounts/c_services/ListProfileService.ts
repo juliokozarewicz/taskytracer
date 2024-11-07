@@ -19,7 +19,11 @@ export class ListProfileService {
         const profileRepository = AppDataSource.getRepository(AccountProfileEntity)
 
         const existingProfile = await profileRepository.find({
-            where: {},
+            where: {
+                user: {
+                    id: validatedData.id,
+                },
+            },
             select: [
                 'id',
                 'biography',
