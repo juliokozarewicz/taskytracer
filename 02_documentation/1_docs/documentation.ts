@@ -18,11 +18,6 @@ const documentation = {
       }
     }
   },
-  security: [
-    {
-      BearerAuth: []
-    }
-  ],
   // endpoints
   paths: {
     // --------------------------------------------------
@@ -85,11 +80,6 @@ const documentation = {
       post: {
         summary: "Create a new category",
         description: "Creates a new category for tasks. Requires a category name.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         requestBody: {
           required: true,
@@ -158,11 +148,6 @@ const documentation = {
       get: {
         summary: "List all categories",
         description: "Retrieves a list of all categories that have been created.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         responses: {
           "200": {
@@ -240,11 +225,6 @@ const documentation = {
       delete: {
         summary: "Delete a category by ID",
         description: "Deletes a specific category based on the provided category ID.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         parameters: [
           {
@@ -308,11 +288,6 @@ const documentation = {
       post: {
         summary: "Create a new task",
         description: "Creates a new task under a specified category. Requires task details.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         requestBody: {
           required: true,
@@ -447,11 +422,6 @@ const documentation = {
       get: {
         summary: "List all tasks based on provided filters",
         description: "Retrieves all tasks, optionally filtered by task name, category, status, and due dates.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         parameters: [
           {
@@ -596,11 +566,6 @@ const documentation = {
       patch: {
         summary: "Update an existing task",
         description: "Updates the details of an existing task specified by its ID.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         parameters: [
           {
@@ -742,11 +707,6 @@ const documentation = {
       delete: {
         summary: "Delete a task by ID",
         description: "Deletes a specific task identified by its ID.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["TASKS"],
         parameters: [
           {
@@ -972,11 +932,6 @@ const documentation = {
       post: {
         summary: "Resend activation email code",
         description: "Sends a new activation email code to the specified email address. The email must be registered in the system.",
-        security: [
-          {
-            BearerAuth: []
-          }
-        ],
         tags: ["ACCOUNTS"],
         requestBody: {
           required: true,
@@ -1117,11 +1072,6 @@ const documentation = {
             }
           }
         },
-        security: [
-          {
-            BearerAuth: []
-          }
-        ]
       }
     },
     // --------------------------------------------------
@@ -1453,6 +1403,91 @@ const documentation = {
       }
     },
     // --------------------------------------------------
+    "/accounts/profile": {
+      get: {
+        summary: "List user profile",
+        description: "Fetches the user's profile information based on the authenticated user's ID.",
+        tags: ["ACCOUNTS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
+        responses: {
+          "200": {
+            description: "Profile data retrieved successfully.",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "string",
+                      example: "success"
+                    },
+                    code: {
+                      type: "integer",
+                      example: 200
+                    },
+                    message: {
+                      type: "string",
+                      example: "Data received successfully."
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          biography: {
+                            type: "string",
+                            example: "This is a sample biography."
+                          },
+                          phone: {
+                            type: "string",
+                            example: "+55 11 91234-5678"
+                          },
+                          cpf: {
+                            type: "string",
+                            example: "123.456.789-00"
+                          }
+                        }
+                      }
+                    },
+                    meta: {
+                      type: "object",
+                      properties: {
+                        total: {
+                          type: "integer",
+                          example: 1
+                        }
+                      }
+                    },
+                    links: {
+                      type: "object",
+                      properties: {
+                        self: {
+                          type: "string",
+                          example: "/accounts/profile"
+                        },
+                        next: {
+                          type: "string",
+                          example: "/accounts/profile-update"
+                        },
+                        prev: {
+                          type: "string",
+                          example: "/accounts/login"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  // --------------------------------------------------
   }
 };
 
