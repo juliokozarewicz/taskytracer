@@ -7,6 +7,7 @@ export const RefreshLoginValidation = (req: Request) => {
 
         refresh: z.string()
             .min(1, req.t("is_required"))
+            .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters"))
             .regex(/^[0-9a-f]+$/, req.t("not_valid")),
 
     })

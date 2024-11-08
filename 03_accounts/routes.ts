@@ -8,6 +8,7 @@ import { LoginController } from './d_controllers/LoginController'
 import { RefreshLoginController } from './d_controllers/RefreshLoginController'
 import { ListProfileController } from './d_controllers/ListProfileController'
 import { AuthGuardian } from './e_middlewares/AuthGuardian'
+import { UpdateProfileController } from './d_controllers/UpdateProfileController'
 
 
 const router = Router()
@@ -21,6 +22,7 @@ const changePasswordController = new ChangePasswordController()
 const loginController = new LoginController()
 const refreshLoginController = new RefreshLoginController()
 const listProfileController = new ListProfileController()
+const updateProfileController = new UpdateProfileController()
 
 // routes
 router.post('/signup', createAccountController.handle.bind(createAccountController))
@@ -30,6 +32,7 @@ router.post('/change-password-link', changePasswordLinkController.handle.bind(ch
 router.patch('/change-password', changePasswordController.handle.bind(changePasswordController))
 router.post('/login', loginController.handle.bind(loginController))
 router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
-router.get('/profile', AuthGuardian, listProfileController.handle.bind(listProfileController))
+router.get('/profile', AuthGuardian, listProfileController.handle.bind(updateProfileController))
+router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
 
 export default router
