@@ -21,7 +21,6 @@ export const UpdateProfileValidation = (req: Request) => {
             .optional(),
 
         phone: z.string()
-            .regex(/^\+?[1-9]\d{1,14}$/, req.t("not_valid"))
             .regex(/^[^<>&'"/]+$/, req.t("contains_disallowed_characters"))
             .max(25, req.t("contains_too_many_characters"))
             .optional(),

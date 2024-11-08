@@ -30,9 +30,9 @@ export class UpdateProfileController {
       const validatedData = {
         email: escape(validatedAuthData.email),
         id: escape(validatedAuthData.id),
-        biography: escape(validatedAuthData.biography),
-        phone: escape(validatedAuthData.phone),
-        cpf: escape(validatedAuthData.cpf),
+        biography: validatedAuthData.biography ? escape(validatedAuthData.biography) : undefined,
+        phone: validatedAuthData.phone ? escape(validatedAuthData.phone) : undefined,
+        cpf: validatedAuthData.cpf ? escape(validatedAuthData.cpf) : undefined,
       }
 
       // call execute
