@@ -1488,6 +1488,90 @@ const documentation = {
       }
     },
   // --------------------------------------------------
+  "/accounts/profile-update": {
+    patch: {
+      summary: "Update user profile",
+      description: "Updates the authenticated user's profile information, such as biography, phone, and CPF. Only the fields provided in the request body will be updated.",
+      tags: ["ACCOUNTS"],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                biography: {
+                  type: "string",
+                  description: "The user's biography (optional). Maximum length of 500 characters.",
+                  example: "This is a new biography."
+                },
+                phone: {
+                  type: "string",
+                  description: "The user's phone number (optional). Maximum length of 25 characters.",
+                  example: "+55 11 91234-5678"
+                },
+                cpf: {
+                  type: "string",
+                  description: "The user's CPF (optional). Must contain 11 digits.",
+                  example: "12345678901"
+                }
+              },
+              required: ["email", "id"]
+            }
+          }
+        }
+      },
+      responses: {
+        "200": {
+          description: "Profile updated successfully.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    example: "success"
+                  },
+                  code: {
+                    type: "integer",
+                    example: 200
+                  },
+                  message: {
+                    type: "string",
+                    example: "Profile updated successfully."
+                  },
+                  links: {
+                    type: "object",
+                    properties: {
+                      self: {
+                        type: "string",
+                        example: "/accounts/profile-update"
+                      },
+                      next: {
+                        type: "string",
+                        example: "/accounts/profile"
+                      },
+                      prev: {
+                        type: "string",
+                        example: "/accounts/profile-update"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  // --------------------------------------------------
   }
 };
 
