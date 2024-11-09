@@ -1572,6 +1572,80 @@ const documentation = {
     }
   },
   // --------------------------------------------------
+  "/accounts/delete-account-link": {
+    post: {
+      summary: "Send delete account link",
+      description: "Sends an email with a secure link for deleting the user's account. The link contains a unique code that will allow the user to confirm account deletion. The user must provide a valid email address and a link to be used in the email for account deletion confirmation.",
+      tags: ["ACCOUNTS"],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                link: {
+                  type: "string",
+                  description: "The URL where the user can confirm the account deletion. Must be a valid URL.",
+                  example: "https://example.com/delete-account"
+                }
+              },
+              required: ["link"]
+            }
+          }
+        }
+      },
+      responses: {
+        "200": {
+          description: "Delete account link sent successfully.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    example: "success"
+                  },
+                  code: {
+                    type: "integer",
+                    example: 200
+                  },
+                  message: {
+                    type: "string",
+                    example: "Account deletion link sent successfully."
+                  },
+                  links: {
+                    type: "object",
+                    properties: {
+                      self: {
+                        type: "string",
+                        example: "/accounts/delete-account-link"
+                      },
+                      next: {
+                        type: "string",
+                        example: "/accounts/delete-account"
+                      },
+                      prev: {
+                        type: "string",
+                        example: "/accounts/login"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  // --------------------------------------------------
   }
 };
 
