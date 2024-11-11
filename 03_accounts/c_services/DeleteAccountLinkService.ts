@@ -5,8 +5,8 @@ import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server"
 import { EmailService } from "../f_utils/EmailSend"
 import { EmailActivate } from '../a_entities/EmailActivate'
-import { ChangePasswordLinkValidationType } from '../b_validations/ChangePasswordLinkValidation'
 import crypto from 'crypto'
+import { DeleteAccountLinkValidationType } from '../b_validations/DeleteAccountLinkValidation'
 
 export class DeleteAccountLinkService {
 
@@ -16,7 +16,7 @@ export class DeleteAccountLinkService {
     }
 
     async execute(
-        validatedData: ChangePasswordLinkValidationType,
+        validatedData: DeleteAccountLinkValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
@@ -25,7 +25,8 @@ export class DeleteAccountLinkService {
         // existing user
         const existingUser = await userRepository.findOne({
             where: {
-                email: validatedData.email.toLowerCase()
+                email: validatedData.email.toLowerCase(),
+                id: validatedData.id,
             }
         })
 

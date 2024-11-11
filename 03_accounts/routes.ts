@@ -10,6 +10,7 @@ import { ListProfileController } from './d_controllers/ListProfileController'
 import { AuthGuardian } from './e_middlewares/AuthGuardian'
 import { UpdateProfileController } from './d_controllers/UpdateProfileController'
 import { DeleteAccountLinkController } from './d_controllers/DeleteAccountLinkController'
+import { DeleteAccountController } from './d_controllers/DeleteAccountController'
 
 
 const router = Router()
@@ -25,6 +26,7 @@ const refreshLoginController = new RefreshLoginController()
 const listProfileController = new ListProfileController()
 const updateProfileController = new UpdateProfileController()
 const deleteAccountLinkController = new DeleteAccountLinkController()
+const deleteAccountController = new DeleteAccountController()
 
 // routes
 router.post('/signup', createAccountController.handle.bind(createAccountController))
@@ -37,5 +39,6 @@ router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginCon
 router.get('/profile', AuthGuardian, listProfileController.handle.bind(updateProfileController))
 router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
 router.post('/delete-account-link', AuthGuardian, deleteAccountLinkController.handle.bind(deleteAccountLinkController))
+router.delete('/delete-account', AuthGuardian, deleteAccountController.handle.bind(deleteAccountController))
 
 export default router
