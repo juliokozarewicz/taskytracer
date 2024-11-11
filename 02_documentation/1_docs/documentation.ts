@@ -1575,7 +1575,7 @@ const documentation = {
   "/accounts/delete-account-link": {
     post: {
       summary: "Send delete account link",
-      description: "Sends an email with a secure link for deleting the user's account. The link contains a unique code that will allow the user to confirm account deletion. The user must provide a valid email address and a link to be used in the email for account deletion confirmation.",
+      description: "Sends an email with a secure link to delete the user's account. The link contains a unique code that allows the user to confirm the account deletion. The user must be logged in and provide a link to be included in the email for account deletion confirmation.",
       tags: ["ACCOUNTS"],
       security: [
         {
@@ -1634,6 +1634,85 @@ const documentation = {
                       prev: {
                         type: "string",
                         example: "/accounts/login"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  // --------------------------------------------------
+  "/accounts/delete-account": {
+    delete: {
+      summary: "Delete user account",
+      description: "Deletes the user's account after validating the provided JWT token, password, and code. The user must provide their verification code (sent to the user), and password for confirmation. The request is only processed if the provided token is valid, the password matches the user's stored password, and the verification code is correct. Once the account is deleted, associated refresh tokens and email verification codes will also be removed, and the account will be deactivated.",
+      tags: ["ACCOUNTS"],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                code: {
+                  type: "string",
+                  description: "The verification code sent to the user. This code is required to confirm the account deletion.",
+                  example: "abc123"
+                },
+                password: {
+                  type: "string",
+                  description: "The user's password. It must meet specific security requirements, including length and complexity.",
+                  example: "Password123!"
+                }
+              },
+              required: ["email", "id", "code", "password"]
+            }
+          }
+        }
+      },
+      responses: {
+        "200": {
+          description: "Account successfully deleted.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    example: "success"
+                  },
+                  code: {
+                    type: "integer",
+                    example: 200
+                  },
+                  message: {
+                    type: "string",
+                    example: "Account deletion commit successful."
+                  },
+                  links: {
+                    type: "object",
+                    properties: {
+                      self: {
+                        type: "string",
+                        example: "/accounts/delete-account"
+                      },
+                      next: {
+                        type: "string",
+                        example: "/accounts/login"
+                      },
+                      prev: {
+                        type: "string",
+                        example: "/accounts/delete-account-link"
                       }
                     }
                   }
