@@ -5,6 +5,7 @@ import { EmailActivate } from '../a_entities/EmailActivate'
 import { DeleteAccountValidationType } from '../b_validations/DeleteAccountValidation'
 import bcrypt from 'bcrypt'
 import { createCustomError } from "../e_middlewares/ErrorHandler"
+import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 
 export class DeleteAccountService {
 
@@ -19,11 +20,13 @@ export class DeleteAccountService {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
         const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
+        const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
         // get user
         const existingUser = await userRepository.findOne({
             where: {
-                email: validatedData.email.toLowerCase()
+                email: validatedData.email.toLowerCase(),
+                id: validatedData.id,
             }
         })
 
@@ -55,7 +58,6 @@ export class DeleteAccountService {
         }
 
         // all correct
-        // ##### existing user, existing code (delete all), password ok
         if (
             existingUser &&
             existingCode &&
@@ -63,8 +65,18 @@ export class DeleteAccountService {
                 validatedData.password, existingUser.password
             )
         ) {
-            console.log("delete ok")
+            // deactive acc
+            existingUser.isActive = false
+            await userRepository.save(existingUser)
         }
+
+        // delete all old tokens
+        await emailCodeRepository.delete({ email: validatedData.email.toLowerCase() })
+
+        // delete all refresh tokens
+        await refreshTokenRepository.delete(
+            { email: validatedData.email.toLowerCase() }
+        )
 
         return {
             status: 'success',
