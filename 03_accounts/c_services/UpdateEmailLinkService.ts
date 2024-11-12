@@ -6,9 +6,9 @@ import { AppDataSource } from "../server"
 import { EmailService } from "../f_utils/EmailSend"
 import { EmailActivate } from '../a_entities/EmailActivate'
 import crypto from 'crypto'
-import { DeleteAccountLinkValidationType } from '../b_validations/DeleteAccountLinkValidation'
+import { UpdateEmailLinkValidationType } from '../b_validations/UpdateEmailLinkValidation'
 
-export class DeleteAccountLinkService {
+export class UpdateEmailLinkService {
 
     private t: (key: string) => string
     constructor(t: (key: string) => string) {
@@ -16,7 +16,7 @@ export class DeleteAccountLinkService {
     }
 
     async execute(
-        validatedData: DeleteAccountLinkValidationType,
+        validatedData: UpdateEmailLinkValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
@@ -24,23 +24,24 @@ export class DeleteAccountLinkService {
 
         // existing user
         const existingUser = await userRepository.findOne({
+
             where: {
                 email: validatedData.email.toLowerCase(),
                 id: validatedData.id,
             }
+
         })
 
         if (existingUser) {
 
             // commit code in db transaction
             // ------------------------------------------------------------------------------
-
             await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
-                    validatedData.email,
-                    this.t('delete_account'),
+                    validatedData.newemail,
+                    this.t('update_email'),
                     validatedData.link
                 )
 
@@ -52,13 +53,12 @@ export class DeleteAccountLinkService {
                 // code commit db
                 const newEmailActivate = new EmailActivate()
                 newEmailActivate.createdAt = new Date()
-                newEmailActivate.code = codeAccount + "_delete-account"
+                newEmailActivate.code = codeAccount + "_update-email"
                 newEmailActivate.email = existingUser.email.toLowerCase()
                 newEmailActivate.user = existingUser
 
                 await emailCodeTransaction.save(newEmailActivate)
             })
-
             // ------------------------------------------------------------------------------
 
         }
@@ -66,10 +66,10 @@ export class DeleteAccountLinkService {
         return {
             status: 'success',
             code: 200,
-            message: this.t('delete_account_sent_ok'),
+            message: this.t('update_email_sent_ok'),
             links: {
-                self: '/accounts/delete-account-link',
-                next: '/accounts/delete-account',
+                self: '/accounts/update-email-link',
+                next: '/accounts/update-email',
                 prev: '/accounts/login',
             }
         }
@@ -92,6 +92,7 @@ export class DeleteAccountLinkService {
 
             const activationLink = (
                 `${link}?` +
+                `newemail=${email}&` +
                 `code=${encodeURIComponent(codeAccount)}`
             )
 

@@ -1572,6 +1572,85 @@ const documentation = {
     }
   },
   // --------------------------------------------------
+  "/accounts/update-email-link": {
+    post: {
+      summary: "Update user email",
+      description: "Sends a verification email to the user with a link to confirm their new email address. The user must provide the new email address and a link to complete the update process. The system will generate a unique code, send it via email, and store it in the database for verification. This process ensures that the email update is secure and verified before being committed.",
+      tags: ["ACCOUNTS"],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                newemail: {
+                  type: "string",
+                  description: "The new email address to associate with the user's account.",
+                  example: "new-email@example.com"
+                },
+                link: {
+                  type: "string",
+                  description: "The link to which the user must navigate to complete the email update process. This link includes the unique verification code for the email change.",
+                  example: "https://yourdomain.com/confirm-email-update"
+                }
+              },
+              required: ["newemail", "link"]
+            }
+          }
+        }
+      },
+      responses: {
+        "200": {
+          description: "Email update request successfully sent.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    example: "success"
+                  },
+                  code: {
+                    type: "integer",
+                    example: 200
+                  },
+                  message: {
+                    type: "string",
+                    example: "Update email sent successfully."
+                  },
+                  links: {
+                    type: "object",
+                    properties: {
+                      self: {
+                        type: "string",
+                        example: "/accounts/update-email-link"
+                      },
+                      next: {
+                        type: "string",
+                        example: "/accounts/update-email"
+                      },
+                      prev: {
+                        type: "string",
+                        example: "/accounts/login"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  // --------------------------------------------------
   "/accounts/delete-account-link": {
     post: {
       summary: "Send delete account link",

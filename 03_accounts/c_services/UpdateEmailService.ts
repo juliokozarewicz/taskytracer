@@ -2,12 +2,12 @@ import { AccountUserEntity } from "../a_entities/AccountUserEntity"
 import { StandardResponse } from "../f_utils/StandardResponse"
 import { AppDataSource } from "../server"
 import { EmailActivate } from '../a_entities/EmailActivate'
-import { DeleteAccountValidationType } from '../b_validations/DeleteAccountValidation'
 import bcrypt from 'bcrypt'
 import { createCustomError } from "../e_middlewares/ErrorHandler"
 import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
+import { UpdateEmailValidationType } from "../b_validations/UpdateEmailValidation"
 
-export class DeleteAccountService {
+export class UpdateEmailService {
 
     private t: (key: string) => string
     constructor(t: (key: string) => string) {
@@ -15,7 +15,7 @@ export class DeleteAccountService {
     }
 
     async execute(
-        validatedData: DeleteAccountValidationType,
+        validatedData: UpdateEmailValidationType,
     ): Promise<StandardResponse> {
 
         const userRepository = AppDataSource.getRepository(AccountUserEntity)
@@ -37,7 +37,7 @@ export class DeleteAccountService {
                 user: {
                     id: validatedData.id,
                 },
-                code: validatedData.code + "_delete-account",
+                code: validatedData.code + "_update-email",
             }
         })
 
@@ -57,7 +57,7 @@ export class DeleteAccountService {
             })
         }
 
-        // all correct
+        // ##### all correct
         if (
             existingUser &&
             existingCode &&
@@ -65,9 +65,7 @@ export class DeleteAccountService {
                 validatedData.password, existingUser.password
             )
         ) {
-            // deactive acc
-            existingUser.isActive = false
-            await userRepository.save(existingUser)
+            console.log('*** UPDATED EMAIL ***')
         }
 
         // delete all old tokens
@@ -83,11 +81,11 @@ export class DeleteAccountService {
         return {
             status: 'success',
             code: 200,
-            message: this.t('delete_account_commit'),
+            message: this.t('email_updated_ok'),
             links: {
-                self: '/accounts/delete-account',
-                next: '/accounts/login',
-                prev: '/accounts/delete-account-link',
+                self: '/accounts/update-email',
+                next: '/accounts/activate-email',
+                prev: '/accounts/login',
             }
         }
 

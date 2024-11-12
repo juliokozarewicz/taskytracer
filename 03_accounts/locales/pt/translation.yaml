@@ -42,3 +42,6 @@ update_profile_error: "Ocorreu um erro ao tentar alterar seu perfil, por favor r
 delete_account: "Clique no link abaixo para DELETAR sua conta. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
 delete_account_sent_ok: "Delete sua conta clicando no link enviado para o seu e-mail."
 delete_account_commit: "Sua conta foi desativada com sucesso! Seus dados serão apagados em breve. Você ainda pode reativar sua conta mudando sua senha, dentro desse período."
+email_updated_ok: "Usuário alterado com sucesso! Ative o novo email clicando no link enviado ao novo endereço."
+update_email: "Clique no link abaixo para ALTERAR seu email. Se você não fez nenhuma alteração na sua conta, por favor, troque sua senha."
+update_email_sent_ok: "Altere seu usuário clicando no link enviado para o seu novo e-mail."

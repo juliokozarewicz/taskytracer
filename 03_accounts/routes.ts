@@ -11,7 +11,7 @@ import { AuthGuardian } from './e_middlewares/AuthGuardian'
 import { UpdateProfileController } from './d_controllers/UpdateProfileController'
 import { DeleteAccountLinkController } from './d_controllers/DeleteAccountLinkController'
 import { DeleteAccountController } from './d_controllers/DeleteAccountController'
-
+import { UpdateEmailLinkController } from './d_controllers/UpdateEmailLinkController'
 
 const router = Router()
 
@@ -25,6 +25,7 @@ const loginController = new LoginController()
 const refreshLoginController = new RefreshLoginController()
 const listProfileController = new ListProfileController()
 const updateProfileController = new UpdateProfileController()
+const updateEmailLinkController = new UpdateEmailLinkController()
 const deleteAccountLinkController = new DeleteAccountLinkController()
 const deleteAccountController = new DeleteAccountController()
 
@@ -37,7 +38,8 @@ router.patch('/change-password', changePasswordController.handle.bind(changePass
 router.post('/login', loginController.handle.bind(loginController))
 router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
 router.get('/profile', AuthGuardian, listProfileController.handle.bind(updateProfileController))
-router.put('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
+router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
+router.post('/update-email-link', AuthGuardian, updateEmailLinkController.handle.bind(updateEmailLinkController))
 router.post('/delete-account-link', AuthGuardian, deleteAccountLinkController.handle.bind(deleteAccountLinkController))
 router.delete('/delete-account', AuthGuardian, deleteAccountController.handle.bind(deleteAccountController))
 
