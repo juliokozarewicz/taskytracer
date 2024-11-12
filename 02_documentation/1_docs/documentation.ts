@@ -563,7 +563,7 @@ const documentation = {
     },
     // --------------------------------------------------
     "/tasks/update/{updateId}": {
-      patch: {
+      put: {
         summary: "Update an existing task",
         description: "Updates the details of an existing task specified by its ID.",
         tags: ["TASKS"],
@@ -1489,7 +1489,7 @@ const documentation = {
     },
   // --------------------------------------------------
   "/accounts/profile-update": {
-    patch: {
+    put: {
       summary: "Update user profile",
       description: "Updates the authenticated user's profile information, such as biography, phone, and CPF. Only the fields provided in the request body will be updated.",
       tags: ["ACCOUNTS"],

@@ -24,7 +24,7 @@ router.get('/category/list-all', listAllCategoriesController.handle.bind(listAll
 router.delete('/category/delete/:categoryId', deleteCategoryController.handle.bind(deleteCategoryController))
 router.post('/create', createTaskController.handle.bind(createTaskController))
 router.get('/list', listTasksController.handle.bind(listTasksController))
-router.patch('/update/:updateId', updateTaskController.handle.bind(updateTaskController))
+router.put('/update/:updateId', updateTaskController.handle.bind(updateTaskController))
 router.delete('/delete/:deleteId', deleteTaskController.handle.bind(deleteTaskController))
 
 export default router;
