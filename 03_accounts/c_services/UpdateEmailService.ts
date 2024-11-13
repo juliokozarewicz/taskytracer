@@ -22,29 +22,38 @@ export class UpdateEmailService {
         const emailCodeRepository = AppDataSource.getRepository(EmailActivate)
         const refreshTokenRepository = AppDataSource.getRepository(RefreshTokenEntity)
 
-        // get user
-        const existingUser = await userRepository.findOne({
-            where: {
-                email: validatedData.email.toLowerCase(),
-                id: validatedData.id,
-            }
-        })
-
         // get code
         const existingCode = await emailCodeRepository.findOne({
             where: {
-                email: validatedData.email.toLowerCase(),
-                user: {
-                    id: validatedData.id,
-                },
+                email: validatedData.newemail.toLowerCase(),
                 code: validatedData.code + "_update-email",
-            }
+            },
+            relations: ['user']
+        })
+
+        // existingCode not found
+        if (
+            !existingCode
+        ) {
+            throw createCustomError({
+                "message": `${this.t('login_credentials_failed')}`,
+                "code": 401,
+                "next": "/accounts/login",
+                "prev": "/accounts/login",
+            })
+        }
+
+        // get user id
+        const userId = existingCode.user.id
+
+        // get user
+        const existingUser = await userRepository.findOne({
+            where: { id: userId }
         })
 
         // invalid credentials
         if (
             !existingUser ||
-            !existingCode ||
             !await bcrypt.compare(
                 validatedData.password, existingUser.password
             )
@@ -65,27 +74,34 @@ export class UpdateEmailService {
                 validatedData.password, existingUser.password
             )
         ) {
-            console.log('*** UPDATED EMAIL ***')
+
+            existingUser.email = validatedData.newemail.toLocaleLowerCase()
+            await userRepository.save(existingUser)
+
         }
 
         // delete all old tokens
         await emailCodeRepository.delete(
-            { email: validatedData.email.toLowerCase() }
+            {
+                user: { id: userId }
+            }
         )
 
         // delete all refresh tokens
         await refreshTokenRepository.delete(
-            { email: validatedData.email.toLowerCase() }
+            {
+                user: { id: userId }
+            }
         )
 
         return {
             status: 'success',
             code: 200,
-            message: this.t('email_updated_ok'),
+            message: this.t('email_activate'),
             links: {
                 self: '/accounts/update-email',
-                next: '/accounts/activate-email',
-                prev: '/accounts/login',
+                next: '/accounts/login',
+                prev: '/accounts/update-email-link',
             }
         }
 

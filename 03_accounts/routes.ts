@@ -12,6 +12,7 @@ import { UpdateProfileController } from './d_controllers/UpdateProfileController
 import { DeleteAccountLinkController } from './d_controllers/DeleteAccountLinkController'
 import { DeleteAccountController } from './d_controllers/DeleteAccountController'
 import { UpdateEmailLinkController } from './d_controllers/UpdateEmailLinkController'
+import { UpdateEmailController } from './d_controllers/UpdateEmailController'
 
 const router = Router()
 
@@ -28,6 +29,7 @@ const updateProfileController = new UpdateProfileController()
 const updateEmailLinkController = new UpdateEmailLinkController()
 const deleteAccountLinkController = new DeleteAccountLinkController()
 const deleteAccountController = new DeleteAccountController()
+const updateEmailController = new UpdateEmailController()
 
 // routes
 router.post('/signup', createAccountController.handle.bind(createAccountController))
@@ -40,6 +42,7 @@ router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginCon
 router.get('/profile', AuthGuardian, listProfileController.handle.bind(updateProfileController))
 router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
 router.post('/update-email-link', AuthGuardian, updateEmailLinkController.handle.bind(updateEmailLinkController))
+router.patch('/update-email', updateEmailController.handle.bind(updateEmailController))
 router.post('/delete-account-link', AuthGuardian, deleteAccountLinkController.handle.bind(deleteAccountLinkController))
 router.delete('/delete-account', deleteAccountController.handle.bind(deleteAccountController))
 
