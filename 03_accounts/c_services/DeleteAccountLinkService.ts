@@ -92,6 +92,7 @@ export class DeleteAccountLinkService {
 
             const activationLink = (
                 `${link}?` +
+                `email=${email}&` +
                 `code=${encodeURIComponent(codeAccount)}`
             )
 
