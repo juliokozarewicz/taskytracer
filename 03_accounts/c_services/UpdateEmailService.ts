@@ -66,7 +66,7 @@ export class UpdateEmailService {
             })
         }
 
-        // ##### all correct
+        // all correct
         if (
             existingUser &&
             existingCode &&
@@ -75,7 +75,7 @@ export class UpdateEmailService {
             )
         ) {
 
-            existingUser.email = validatedData.newemail.toLocaleLowerCase()
+            existingUser.email = validatedData.newemail.toLowerCase()
             await userRepository.save(existingUser)
 
         }

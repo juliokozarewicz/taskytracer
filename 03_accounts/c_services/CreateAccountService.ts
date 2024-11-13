@@ -42,7 +42,7 @@ export class CreateAccountService {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
-                    validatedData.email,
+                    validatedData.email.toLowerCase(),
                     this.t('activation_email'),
                     validatedData.link
                 )

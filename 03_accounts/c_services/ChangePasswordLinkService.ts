@@ -38,7 +38,7 @@ export class ChangePasswordLinkService {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
-                    validatedData.email,
+                    validatedData.email.toLowerCase(),
                     this.t('change_password'),
                     validatedData.link
                 )

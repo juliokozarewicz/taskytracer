@@ -1651,6 +1651,90 @@ const documentation = {
     }
   },
   // --------------------------------------------------
+  "/accounts/update-email": {
+    patch: {
+      summary: "Update user email",
+      description: "Updates the user's email address after verifying the provided code and password. The user must submit the new email address, a verification code, and their password to complete the update. If successful, the user's email is updated in the database, and all related tokens (email verification and refresh tokens) are deleted for security purposes.",
+      tags: ["ACCOUNTS"],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                newemail: {
+                  type: "string",
+                  description: "The new email address to associate with the user's account.",
+                  example: "new-email@example.com"
+                },
+                code: {
+                  type: "string",
+                  description: "The verification code sent to the user's old email address for confirming the email update.",
+                  example: "123456_update-email"
+                },
+                password: {
+                  type: "string",
+                  description: "The user's current password, required for authentication.",
+                  example: "SecureP@ssw0rd!"
+                }
+              },
+              required: ["newemail", "code", "password"]
+            }
+          }
+        }
+      },
+      responses: {
+        "200": {
+          description: "User email successfully updated.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    example: "success"
+                  },
+                  code: {
+                    type: "integer",
+                    example: 200
+                  },
+                  message: {
+                    type: "string",
+                    example: "Email updated successfully."
+                  },
+                  links: {
+                    type: "object",
+                    properties: {
+                      self: {
+                        type: "string",
+                        example: "/accounts/update-email"
+                      },
+                      next: {
+                        type: "string",
+                        example: "/accounts/login"
+                      },
+                      prev: {
+                        type: "string",
+                        example: "/accounts/update-email-link"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  // --------------------------------------------------
   "/accounts/delete-account-link": {
     post: {
       summary: "Send delete account link",

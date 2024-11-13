@@ -34,12 +34,11 @@ export class DeleteAccountLinkService {
 
             // commit code in db transaction
             // ------------------------------------------------------------------------------
-
             await emailCodeRepository.manager.transaction(async emailCodeTransaction => {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
-                    validatedData.email,
+                    validatedData.email.toLowerCase(),
                     this.t('delete_account'),
                     validatedData.link
                 )
@@ -58,7 +57,6 @@ export class DeleteAccountLinkService {
 
                 await emailCodeTransaction.save(newEmailActivate)
             })
-
             // ------------------------------------------------------------------------------
 
         }

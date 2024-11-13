@@ -24,12 +24,10 @@ export class UpdateEmailLinkService {
 
         // existing user
         const existingUser = await userRepository.findOne({
-
             where: {
                 email: validatedData.email.toLowerCase(),
                 id: validatedData.id,
             }
-
         })
 
         if (existingUser) {
@@ -40,7 +38,7 @@ export class UpdateEmailLinkService {
 
                 // send email with code
                 const codeAccount = await this.sendEmailCode(
-                    validatedData.newemail,
+                    validatedData.newemail.toLocaleLowerCase(),
                     this.t('update_email'),
                     validatedData.link
                 )
