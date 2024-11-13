@@ -41,7 +41,6 @@ export class DeleteAccountService {
         if (
             !existingUser ||
             !existingCode ||
-            existingUser.email != existingCode.email ||
             !await bcrypt.compare(
                 validatedData.password, existingUser.password
             )
@@ -58,7 +57,6 @@ export class DeleteAccountService {
         if (
             existingUser &&
             existingCode &&
-            existingCode.code.split('_').pop() === "delete-account" &&
             await bcrypt.compare(
                 validatedData.password, existingUser.password
             )

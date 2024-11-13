@@ -38,7 +38,6 @@ export class ChangePasswordService {
         // change password
         if (
             existingCodeStored &&
-            existingCodeStored.code.split('_').pop() === "change-password" &&
             existingUser
         ) {
 

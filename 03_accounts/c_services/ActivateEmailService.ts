@@ -35,7 +35,6 @@ export class ActivateEmailService {
         // active email
         if (
             existingCodeStored &&
-            existingCodeStored.code.split('_').pop() === "activate-email" &&
             existingUser &&
             !existingUser.isEmailConfirmed
         ) {
