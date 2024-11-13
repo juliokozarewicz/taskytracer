@@ -40,6 +40,7 @@ export class DeleteAccountService {
         // invalid credentials
         if (
             !existingUser ||
+            !existingUser.isActive ||
             !existingCode ||
             !await bcrypt.compare(
                 validatedData.password, existingUser.password

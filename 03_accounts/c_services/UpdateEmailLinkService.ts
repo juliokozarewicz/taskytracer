@@ -54,7 +54,7 @@ export class UpdateEmailLinkService {
                 const newEmailActivate = new EmailActivate()
                 newEmailActivate.createdAt = new Date()
                 newEmailActivate.code = codeAccount + "_update-email"
-                newEmailActivate.email = existingUser.email.toLowerCase()
+                newEmailActivate.email = validatedData.newemail.toLowerCase()
                 newEmailActivate.user = existingUser
 
                 await emailCodeTransaction.save(newEmailActivate)
