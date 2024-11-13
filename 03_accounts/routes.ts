@@ -41,6 +41,6 @@ router.get('/profile', AuthGuardian, listProfileController.handle.bind(updatePro
 router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
 router.post('/update-email-link', AuthGuardian, updateEmailLinkController.handle.bind(updateEmailLinkController))
 router.post('/delete-account-link', AuthGuardian, deleteAccountLinkController.handle.bind(deleteAccountLinkController))
-router.delete('/delete-account', AuthGuardian, deleteAccountController.handle.bind(deleteAccountController))
+router.delete('/delete-account', deleteAccountController.handle.bind(deleteAccountController))
 
 export default router

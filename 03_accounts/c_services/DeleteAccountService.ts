@@ -25,8 +25,7 @@ export class DeleteAccountService {
         // get user
         const existingUser = await userRepository.findOne({
             where: {
-                email: validatedData.email.toLowerCase(),
-                id: validatedData.id,
+                email: validatedData.email.toLowerCase()
             }
         })
 
@@ -34,9 +33,6 @@ export class DeleteAccountService {
         const existingCode = await emailCodeRepository.findOne({
             where: {
                 email: validatedData.email.toLowerCase(),
-                user: {
-                    id: validatedData.id,
-                },
                 code: validatedData.code + "_delete-account",
             }
         })
@@ -45,6 +41,7 @@ export class DeleteAccountService {
         if (
             !existingUser ||
             !existingCode ||
+            existingUser.email != existingCode.email ||
             !await bcrypt.compare(
                 validatedData.password, existingUser.password
             )

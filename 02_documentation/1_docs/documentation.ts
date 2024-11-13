@@ -1728,13 +1728,8 @@ const documentation = {
   "/accounts/delete-account": {
     delete: {
       summary: "Delete user account",
-      description: "Deletes the user's account after validating the provided JWT token, password, and code. The user must provide their verification code (sent to the user), and password for confirmation. The request is only processed if the provided token is valid, the password matches the user's stored password, and the verification code is correct. Once the account is deleted, associated refresh tokens and email verification codes will also be removed, and the account will be deactivated.",
+      description: "The user account is deleted after validating the email, password, and token. Once the account is deleted, the associated refresh tokens and email verification codes will also be removed, and the account will be deactivated.",
       tags: ["ACCOUNTS"],
-      security: [
-        {
-          BearerAuth: []
-        }
-      ],
       requestBody: {
         required: true,
         content: {
@@ -1747,13 +1742,18 @@ const documentation = {
                   description: "The verification code sent to the user. This code is required to confirm the account deletion.",
                   example: "abc123"
                 },
+                email: {
+                  type: "string",
+                  description: "The email address of the user. It is required to validate the account before deletion.",
+                  example: "emailexample@email.com"
+                },
                 password: {
                   type: "string",
                   description: "The user's password. It must meet specific security requirements, including length and complexity.",
                   example: "Password123!"
                 }
               },
-              required: ["email", "id", "code", "password"]
+              required: ["code", "email", "password"]
             }
           }
         }

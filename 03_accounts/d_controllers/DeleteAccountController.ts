@@ -22,14 +22,12 @@ export class DeleteAccountController {
 
       // validation    
       const validatedAuthData = DeleteAccountValidation(req).parse({
-        ...req.authData,
         ...req.body
       })
 
       // data object
       const validatedData = {
         email: escape(validatedAuthData.email),
-        id: escape(validatedAuthData.id),
         code: escape(validatedAuthData.code),
         password: escape(validatedAuthData.password),
       }
