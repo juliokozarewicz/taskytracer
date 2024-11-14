@@ -41,14 +41,10 @@ export class ChangePasswordService {
             existingUser
         ) {
 
-            // get user
-            const existingUser = await userRepository.findOne({
-                where: { email: validatedData.email.toLowerCase() }
-            })
-
             // commit database
             if (existingUser) {
                 existingUser.isActive = true
+                existingUser.isEmailConfirmed = true
                 existingUser.password = await this.hashPassword(validatedData.password)
                 await userRepository.save(existingUser)
             }

@@ -928,80 +928,6 @@ const documentation = {
       }
     },
     // --------------------------------------------------
-    "/accounts/activate-email-link": {
-      post: {
-        summary: "Resend activation email code",
-        description: "Sends a new activation email code to the specified email address. The email must be registered in the system.",
-        tags: ["ACCOUNTS"],
-        requestBody: {
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  email: {
-                    type: "string",
-                    format: "email",
-                    example: "user@example.com"
-                  },
-                  link: {
-                    type: "string",
-                    format: "uri",
-                    example: "https://example.com/activate"
-                  }
-                },
-                required: ["email", "link"]
-              }
-            }
-          }
-        },
-        responses: {
-          "201": {
-            description: "Activation email code resent successfully.",
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    status: {
-                      type: "string",
-                      example: "success"
-                    },
-                    code: {
-                      type: "integer",
-                      example: 201
-                    },
-                    message: {
-                      type: "string",
-                      example: "Please activate your account through the link sent to your email."
-                    },
-                    links: {
-                      type: "object",
-                      properties: {
-                        self: {
-                          type: "string",
-                          example: "/accounts/activate-email-link"
-                        },
-                        next: {
-                          type: "string",
-                          example: "/accounts/activate-email"
-                        },
-                        prev: {
-                          type: "string",
-                          example: "/accounts/login"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-        }
-      }
-    },
-    // --------------------------------------------------
     "/accounts/activate-email": {
       post: {
         summary: "Activate email",
@@ -1656,11 +1582,6 @@ const documentation = {
       summary: "Update user email",
       description: "Updates the user's email address after verifying the provided code and password. The user must submit the new email address, a verification code, and their password to complete the update. If successful, the user's email is updated in the database, and all related tokens (email verification and refresh tokens) are deleted for security purposes.",
       tags: ["ACCOUNTS"],
-      security: [
-        {
-          BearerAuth: []
-        }
-      ],
       requestBody: {
         required: true,
         content: {

@@ -32,12 +32,14 @@ export class RefreshLoginService {
 
         // refresh token not exist
         if (!tokenData) {
+
             throw createCustomError({
                 "message": `${this.t('login_credentials_failed')}`,
                 "code": 401,
                 "next": "/accounts/login",
                 "prev": "/accounts/login",
             })
+
         }
 
         // existing user
@@ -47,12 +49,14 @@ export class RefreshLoginService {
 
         // user not exist
         if (!existingUser) {
+
             throw createCustomError({
                 "message": `${this.t('login_credentials_failed')}`,
-                "code": 404,
+                "code": 401,
                 "next": "/accounts/login",
                 "prev": "/accounts/login",
             })
+
         }
 
         // account banned
