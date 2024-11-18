@@ -37,7 +37,7 @@ router.patch('/change-password', changePasswordController.handle.bind(changePass
 router.post('/login', loginController.handle.bind(loginController))
 router.post('/refresh-login', refreshLoginController.handle.bind(refreshLoginController))
 router.get('/profile', AuthGuardian, listProfileController.handle.bind(updateProfileController))
-router.patch('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
+router.put('/profile-update', AuthGuardian, updateProfileController.handle.bind(listProfileController))
 router.post('/update-email-link', AuthGuardian, updateEmailLinkController.handle.bind(updateEmailLinkController))
 router.patch('/update-email', updateEmailController.handle.bind(updateEmailController))
 router.post('/delete-account-link', AuthGuardian, deleteAccountLinkController.handle.bind(deleteAccountLinkController))

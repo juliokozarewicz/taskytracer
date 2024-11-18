@@ -6,6 +6,7 @@ import { CreateTaskController } from './d_controllers/CreateTaskController';
 import { ListTasksController } from './d_controllers/ListTasksController';
 import { UpdateTaskController } from './d_controllers/UpdateTaskController';
 import { DeleteTaskController } from './d_controllers/DeleteTaskController';
+import { AuthGuardian } from './e_middlewares/AuthGuardian'
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const updateTaskController = new UpdateTaskController()
 const deleteTaskController = new DeleteTaskController()
 
 // routes
-router.post('/category/create', createCategoryController.handle.bind(createCategoryController))
+router.post('/category/create', AuthGuardian, createCategoryController.handle.bind(createCategoryController))
 router.get('/category/list-all', listAllCategoriesController.handle.bind(listAllCategoriesController))
 router.delete('/category/delete/:categoryId', deleteCategoryController.handle.bind(deleteCategoryController))
 router.post('/create', createTaskController.handle.bind(createTaskController))

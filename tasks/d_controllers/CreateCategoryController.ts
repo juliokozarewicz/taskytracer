@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import { CreateCategoryService } from '../c_services/CreateCategoryService'
 import { CreateCategoryValidation } from '../b_validations/CreateCategoryValidation'
 import { escape } from 'lodash'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class CreateCategoryController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
@@ -14,11 +15,16 @@ export class CreateCategoryController {
         try {
 
             // validation
-            const validatedBody =  CreateCategoryValidation(req).parse(req.body)
+            const validatedAuthData = CreateCategoryValidation(req).parse({
+                ...req.body,
+                ...req.authData
+            })
 
             // data init
             const validatedData = {
-                categoryName: escape(validatedBody.categoryName)
+                email: escape(validatedAuthData.email),
+                id: escape(validatedAuthData.id),
+                categoryName: escape(validatedAuthData.categoryName),
             }
 
             // call execute
