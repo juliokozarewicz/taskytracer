@@ -152,7 +152,7 @@ export class RefreshLoginService {
             ).toString('hex')
             // ----------------------------------------------------------------------
 
-            // ##### REFRESH TOKEN generator
+            // REFRESH TOKEN generator
             // ----------------------------------------------------------------------
 
             // 15 days old
@@ -167,12 +167,6 @@ export class RefreshLoginService {
                 },
             })
 
-            // ##### current token expired
-            const tokenExpired = expiredTokens.some(expiredToken => expiredToken === tokenData);
-            if (tokenExpired) {
-                console.log('****************************************')
-            }
-
             // delete all tokens < 15 days
             for (const oldToken of expiredTokens) {
                 await refreshTokenRepository.remove(oldToken)
@@ -185,6 +179,25 @@ export class RefreshLoginService {
                 for (const token of tokensToRemove) {
                     await refreshTokenRepository.remove(token)
                 }
+            }
+
+            // current token expired
+            const tokenExpired = expiredTokens.some(item => item.token === validatedData.refresh)
+
+            if (tokenExpired) {
+
+                // delete old refresh token
+                await refreshTokenRepository.delete({
+                    token: validatedData.refresh
+                })
+
+                throw createCustomError({
+                    "message": `${this.t('login_credentials_failed')}`,
+                    "code": 401,
+                    "next": "/accounts/login",
+                    "prev": "/accounts/login",
+                })
+
             }
 
             // delete refresh token used
