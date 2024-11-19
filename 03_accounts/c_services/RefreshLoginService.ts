@@ -8,6 +8,7 @@ import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RefreshLoginValidationType } from "../b_validations/RefreshLoginValidation"
+import { LessThan } from "typeorm"
 
 export class RefreshLoginService {
 
@@ -151,23 +152,30 @@ export class RefreshLoginService {
             ).toString('hex')
             // ----------------------------------------------------------------------
 
-            // REFRESH TOKEN generator
+            // ##### REFRESH TOKEN generator
             // ----------------------------------------------------------------------
 
-            // delete all tokens < 15 days
-            const expiredTokens = await refreshTokenRepository.find({
-                where: {
-                    email: existingUser?.email,
-                },
-            })
-
+            // 15 days old
             const fifteenDaysAgo = new Date()
             fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
 
-            for (const token of expiredTokens) {
-                if (token.createdAt <= fifteenDaysAgo) {
-                    await refreshTokenRepository.remove(token)
-                }
+            // get old tokens
+            const expiredTokens = await refreshTokenRepository.find({
+                where: {
+                    email: existingUser?.email,
+                    createdAt: LessThan(fifteenDaysAgo)
+                },
+            })
+
+            // ##### current token expired
+            const tokenExpired = expiredTokens.some(expiredToken => expiredToken === tokenData);
+            if (tokenExpired) {
+                console.log('****************************************')
+            }
+
+            // delete all tokens < 15 days
+            for (const oldToken of expiredTokens) {
+                await refreshTokenRepository.remove(oldToken)
             }
 
             // Keep only the last 5 valid tokens

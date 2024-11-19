@@ -9,6 +9,7 @@ import { EmailService } from "../f_utils/EmailSend"
 import { RefreshTokenEntity } from "../a_entities/RefreshTokenEntity"
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import { LessThan } from "typeorm"
 
 export class LoginService {
 
@@ -139,20 +140,21 @@ export class LoginService {
             // REFRESH TOKEN generator
             // ----------------------------------------------------------------------
 
-            // delete all tokens < 15 days
-            const expiredTokens = await refreshTokenRepository.find({
-                where: {
-                    email: validatedData.email,
-                },
-            })
-
+            // 15 days old
             const fifteenDaysAgo = new Date()
             fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
 
-            for (const token of expiredTokens) {
-                if (token.createdAt <= fifteenDaysAgo) {
-                    await refreshTokenRepository.remove(token)
-                }
+            // get old tokens
+            const expiredTokens = await refreshTokenRepository.find({
+                where: {
+                    email: existingUser?.email,
+                    createdAt: LessThan(fifteenDaysAgo)
+                },
+            })
+
+            // delete all tokens < 15 days
+            for (const oldToken of expiredTokens) {
+                await refreshTokenRepository.remove(oldToken)
             }
 
             // Keep only the last 5 valid tokens
