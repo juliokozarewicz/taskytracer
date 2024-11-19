@@ -2,27 +2,30 @@ import { NextFunction, Request, Response } from 'express'
 import { DeleteCategoryService } from '../c_services/DeleteCategoryService'
 import { DeleteCategoryValidation } from '../b_validations/DeleteCategoryValidation'
 import { escape } from 'lodash'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class DeleteCategoryController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
 
         try {
 
+            // validation
+            const validatedAuthData = DeleteCategoryValidation(req).parse({
+                ...req.params,
+                ...req.authData
+            })
+
             // data init
             const validatedData = {
-                categoryId: ''
+                email: escape(validatedAuthData.email),
+                id: escape(validatedAuthData.id),
+                categoryId: escape(validatedAuthData.categoryId),
             }
-
-            // validation
-            const validatedCategoryId =  DeleteCategoryValidation.parse(req.params)
-
-            // assembled data
-            validatedData.categoryId = escape(validatedCategoryId.categoryId)
 
             // call execute
             const deleteCategoryService = new DeleteCategoryService(req.t)

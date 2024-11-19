@@ -80,9 +80,7 @@ export const rateLimiter = rateLimit({
     }
     return req.ip || 'unknown';
   },
-});
-
-app.use(rateLimiter);
+})
 //----------------------------------------------------------------------
 
 // rate limiter

@@ -20,6 +20,7 @@ export class DeleteCategoryService {
         const categoryRepository = AppDataSource.getRepository(CategoryEntity)
 
         const deleteCategoryResult = await categoryRepository.delete({
+            userId: validatedData.id,
             id: validatedData.categoryId,
         })
 
