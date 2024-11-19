@@ -26,4 +26,7 @@ export class CategoryEntity {
     nullable: false
   })
   category: string;
+
+  @Column()
+  userId: string;
 }

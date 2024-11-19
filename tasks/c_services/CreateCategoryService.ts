@@ -32,7 +32,10 @@ export class CreateCategoryService {
             })
         }
 
-        const newCategory = categoryRepository.create({ category: validatedData.categoryName })
+        const newCategory = categoryRepository.create({
+            userId: validatedData.id,
+            category: validatedData.categoryName 
+        })
         await categoryRepository.save(newCategory)
         //-------------------------------------------------------------------------
 
