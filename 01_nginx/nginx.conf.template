@@ -36,7 +36,7 @@ http {
         location @json_error_500 {
             default_type application/json;
             add_header Content-Type application/json;
-            return 500 '{"status": "error", "code": 500, "message": "An error has occurred, we are investigating. Please try again later."}';
+            return 500 '{"status": "error", "code": 500, "message": "Service unavailable, we are investigating. Please try again later."}';
         }
         #-----------------------------------------------
 
