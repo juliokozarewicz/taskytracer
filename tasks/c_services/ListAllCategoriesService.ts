@@ -1,6 +1,7 @@
 import { StandardResponse } from '../f_utils/StandardResponse'
 import { AppDataSource } from '../server'
 import { CategoryEntity } from '../a_entities/CategoryEntity'
+import { ListAllCategoriesValidationType } from '../b_validations/ListAllCategoriesValidation'
 
 export class ListAllCategoriesService {
 
@@ -9,14 +10,18 @@ export class ListAllCategoriesService {
         this.t = t
     }
 
-    async execute(): Promise<StandardResponse> {
+    async execute(
+        validatedAuthData: ListAllCategoriesValidationType
+    ): Promise<StandardResponse> {
 
         // database operations
         //-------------------------------------------------------------------------
         const categoryRepository = AppDataSource.getRepository(CategoryEntity)
 
         const existingCategory = await categoryRepository.find({
-            where: {},
+            where: {
+                userId: validatedAuthData.id
+            },
             select: ['id', 'category'],
         })
         //-------------------------------------------------------------------------

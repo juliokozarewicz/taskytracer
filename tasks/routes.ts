@@ -21,7 +21,7 @@ const deleteTaskController = new DeleteTaskController()
 
 // routes
 router.post('/category/create', AuthGuardian, createCategoryController.handle.bind(createCategoryController))
-router.get('/category/list-all', listAllCategoriesController.handle.bind(listAllCategoriesController))
+router.get('/category/list-all', AuthGuardian, listAllCategoriesController.handle.bind(listAllCategoriesController))
 router.delete('/category/delete/:categoryId', deleteCategoryController.handle.bind(deleteCategoryController))
 router.post('/create', createTaskController.handle.bind(createTaskController))
 router.get('/list', listTasksController.handle.bind(listTasksController))
