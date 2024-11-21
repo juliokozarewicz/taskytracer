@@ -26,6 +26,6 @@ router.delete('/category/delete/:categoryId', AuthGuardian, deleteCategoryContro
 router.post('/create', AuthGuardian, createTaskController.handle.bind(createTaskController))
 router.get('/list', AuthGuardian, listTasksController.handle.bind(listTasksController))
 router.put('/update/:updateId', AuthGuardian, updateTaskController.handle.bind(updateTaskController))
-router.delete('/delete/:deleteId', deleteTaskController.handle.bind(deleteTaskController))
+router.delete('/delete/:deleteId', AuthGuardian, deleteTaskController.handle.bind(deleteTaskController))
 
 export default router;

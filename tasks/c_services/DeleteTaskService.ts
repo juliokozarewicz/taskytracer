@@ -22,6 +22,7 @@ export class DeleteTaskService {
 
         const deleteTaskResult = await taskRepository.delete({
             id: validatedData.deleteId,
+            userId: validatedData.id
         })
 
         if (deleteTaskResult.affected === 0) {

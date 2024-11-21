@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
 import { DeleteTaskValidation } from '../b_validations/DeleteTaskValidation'
 import { DeleteTaskService } from '../c_services/DeleteTaskService'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class DeleteTaskController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
@@ -14,12 +15,15 @@ export class DeleteTaskController {
         try {
 
             // validation
-            const validatedBody = DeleteTaskValidation.parse({
+            const validatedBody = DeleteTaskValidation(req).parse({
                 deleteId: req.params.deleteId,
+                ...req.authData
             })
 
             // data object
             const validatedData = {
+                email: escape(validatedBody.email),
+                id: escape(validatedBody.id),
                 deleteId: escape(validatedBody.deleteId),
             }
 
