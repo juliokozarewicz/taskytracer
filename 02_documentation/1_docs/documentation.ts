@@ -81,6 +81,11 @@ const documentation = {
         summary: "Create a new category",
         description: "Creates a new category for tasks. Requires a category name.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         requestBody: {
           required: true,
           content: {
@@ -149,6 +154,11 @@ const documentation = {
         summary: "List all categories",
         description: "Retrieves a list of all categories that have been created.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         responses: {
           "200": {
             description: "A list of categories retrieved successfully.",
@@ -226,6 +236,11 @@ const documentation = {
         summary: "Delete a category by ID",
         description: "Deletes a specific category based on the provided category ID.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         parameters: [
           {
             name: "categoryId",
@@ -289,6 +304,11 @@ const documentation = {
         summary: "Create a new task",
         description: "Creates a new task under a specified category. Requires task details.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         requestBody: {
           required: true,
           content: {
@@ -423,6 +443,11 @@ const documentation = {
         summary: "List all tasks based on provided filters",
         description: "Retrieves all tasks, optionally filtered by task name, category, status, and due dates.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         parameters: [
           {
             name: "taskname",
@@ -567,6 +592,11 @@ const documentation = {
         summary: "Update an existing task",
         description: "Updates the details of an existing task specified by its ID.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         parameters: [
           {
             name: "updateId",
@@ -708,6 +738,11 @@ const documentation = {
         summary: "Delete a task by ID",
         description: "Deletes a specific task identified by its ID.",
         tags: ["TASKS"],
+        security: [
+          {
+            BearerAuth: []
+          }
+        ],
         parameters: [
           {
             name: "deleteId",

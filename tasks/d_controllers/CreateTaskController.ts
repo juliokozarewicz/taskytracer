@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
 import { CreateTaskService } from '../c_services/CreateTaskService'
 import { CreateTaskValidation } from '../b_validations/CreateTaskValidation'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class CreateTaskController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
@@ -14,10 +15,15 @@ export class CreateTaskController {
         try {
             
             // validation
-            const validatedBody =  CreateTaskValidation(req).parse(req.body)
+            const validatedBody =  CreateTaskValidation(req).parse({
+                ...req.body,
+                ...req.authData
+            })
 
             // data object
             const validatedData = {
+                email: escape(validatedBody.email),
+                id: escape(validatedBody.id),
                 taskName: escape(validatedBody.taskName),
                 category: escape(validatedBody.category),
                 description: escape(validatedBody.description),

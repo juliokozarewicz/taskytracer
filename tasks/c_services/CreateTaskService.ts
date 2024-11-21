@@ -37,6 +37,7 @@ export class CreateTaskService {
         }
 
         const newTask = taskRepository.create({
+            userId: validatedData.id,
             taskName: validatedData.taskName,
             category: validatedData.category,
             description: validatedData.description,

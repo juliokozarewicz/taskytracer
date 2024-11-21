@@ -52,4 +52,11 @@ import {
       nullable: false
     })
     statusName: string;
+
+    @Column({
+      type: 'varchar',
+      length: 255,
+      nullable: false
+    })
+    userId: string;
   }

@@ -27,6 +27,10 @@ export class CategoryEntity {
   })
   category: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false
+  })
   userId: string;
 }
