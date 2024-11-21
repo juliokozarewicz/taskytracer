@@ -56,6 +56,14 @@ cd taskytracer
 npm install
 ```
 
-3. Set up environment variables for hosts, email, database and JWT configuration.
+3. Creating Migrations:
 
-4. Access the API documentation via Swagger at http://localhost:3000/documentation/swagger or Redocly http://localhost:3000/documentation/redocly
+To create a new migration after modifying your entities, run:
+```bash
+npm run typeorm migration:run -- -d server.ts #(linux)
+npm run typeorm:win migration:run -- -d server.ts #(windows)
+```
+
+4. Set up environment variables for hosts, email, database and JWT configuration.
+
+5. Access the API documentation via Swagger at http://localhost:3000/documentation/swagger or Redocly http://localhost:3000/documentation/redocly.
