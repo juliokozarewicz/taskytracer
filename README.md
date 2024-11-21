@@ -21,8 +21,11 @@ Tasky Tracer is a secure API for managing tasks, featuring user authentication w
 - **Account Management Service**: A service for managing user accounts, roles, and permissions.
 - **JWT Authentication & Refresh Token**: Secure authentication system with JSON Web Tokens and Refresh Tokens for session management.
 
+### Swagger
 <img src="00_utils/1.jpg" >
 <img src="00_utils/2.jpg" >
+
+### Redocly
 <img src="00_utils/3.jpg" >
 
 ## Features
