@@ -24,8 +24,8 @@ router.post('/category/create', AuthGuardian, createCategoryController.handle.bi
 router.get('/category/list-all', AuthGuardian, listAllCategoriesController.handle.bind(listAllCategoriesController))
 router.delete('/category/delete/:categoryId', AuthGuardian, deleteCategoryController.handle.bind(deleteCategoryController))
 router.post('/create', AuthGuardian, createTaskController.handle.bind(createTaskController))
-router.get('/list', listTasksController.handle.bind(listTasksController))
-router.put('/update/:updateId', updateTaskController.handle.bind(updateTaskController))
+router.get('/list', AuthGuardian, listTasksController.handle.bind(listTasksController))
+router.put('/update/:updateId', AuthGuardian, updateTaskController.handle.bind(updateTaskController))
 router.delete('/delete/:deleteId', deleteTaskController.handle.bind(deleteTaskController))
 
 export default router;

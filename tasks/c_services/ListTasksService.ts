@@ -72,6 +72,7 @@ export class ListAllTasksService {
                 'task.dueDate',
                 'task.statusName'
             ])
+            .where('task.userId = :userId', { userId: validatedData.id })
             .getMany()
         //-------------------------------------------------------------------------
 

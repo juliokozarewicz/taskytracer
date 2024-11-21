@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import { escape } from 'lodash'
 import { UpdateTaskValidation } from '../b_validations/UpdateTaskValidation'
 import { UpdateTaskService } from '../c_services/UpdateTaskService'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class UpdateTaskController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
@@ -17,10 +18,13 @@ export class UpdateTaskController {
             const validatedBody = UpdateTaskValidation(req).parse({
                 updateId: req.params.updateId,
                 ...req.body,
+                ...req.authData
             })
 
             // data object
             const validatedData = {
+                email: escape(validatedBody.email),
+                id: escape(validatedBody.id),
                 updateId: escape(validatedBody.updateId),
                 taskName: validatedBody.taskName ? escape(validatedBody.taskName) : undefined,
                 category: validatedBody.category ? escape(validatedBody.category) : undefined,

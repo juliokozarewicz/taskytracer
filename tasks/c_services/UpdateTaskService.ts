@@ -23,7 +23,10 @@ export class UpdateTaskService {
 
         // update
         const updateTask = await taskRepository.update(
-            validatedData.updateId,
+            {
+                id: validatedData.updateId,
+                userId: validatedData.id
+            },
             {
                 taskName: validatedData.taskName,
                 category: validatedData.category,

@@ -3,11 +3,12 @@ import { ListAllTasksService } from '../c_services/ListTasksService'
 import { ListTaskValidation } from '../b_validations/ListTaskValidation'
 import { escape } from 'lodash'
 import { object } from 'zod'
+import { CustomRequest } from '../e_middlewares/AuthGuardian'
 
 export class ListTasksController {
 
     async handle(
-        req: Request,
+        req: CustomRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
@@ -27,12 +28,17 @@ export class ListTasksController {
 
             // validation (ZOD)
             //----------------------------------------------------------------
-            const validatingData = ListTaskValidation(req).parse(cleanedQuery)
+            const validatingData = ListTaskValidation(req).parse({
+                ...cleanedQuery,
+                ...req.authData
+            })
             //----------------------------------------------------------------
 
             // data object (escape)
             //----------------------------------------------------------------
             const validatedData = {
+                email: escape(validatingData.email),
+                id: escape(validatingData.id),
                 taskname: escape(validatingData.taskname),
                 category: validatingData.category,
                 description: validatingData.description,
